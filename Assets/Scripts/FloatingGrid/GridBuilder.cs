@@ -52,8 +52,9 @@ namespace ButterBoard.FloatingGrid
 
                 // get offset to place points in center
                 case GridBuildOffsetType.CENTER:
-                    xOffset = (width / 2f) * -spacing;
-                    yOffset = (height / 2f) * -spacing;
+                    Vector2 gridCenter = GetGridCenter(width, height, spacing);
+                    xOffset = -gridCenter.x;
+                    yOffset = -gridCenter.y;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(offsetType), offsetType, null);
@@ -76,6 +77,17 @@ namespace ButterBoard.FloatingGrid
                     _activePoints.Add(newGridPoint);
                 }
             }
+        }
+
+        public static Vector2 GetGridCenter(int width, int height, float spacing)
+        {
+            // xOffset = ((width - 1) * spacing) / 2f;
+            // yOffset = ((height - 1) * spacing) / 2f;
+
+            float x = ((width - 1) * spacing) / 2f;
+            float y = ((height - 1) * spacing) / 2f;
+
+            return new Vector2(x, y);
         }
     }
 }
