@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aca1ec18cb140f3809a013b91697bcb, type: 3}
-  m_Name: Grid_Point
+  m_Name: SamplePlaceable
   m_EditorClassIdentifier: 
-  key: FloatingGrid/Grid_Point
-  storedObject: {fileID: 59571282917886616, guid: 7df2817ec87d1054b9472c9c7b31df75, type: 3}
+  key: FloatingGrid/SamplePlaceable
+  storedObject: {fileID: 244099433457350390, guid: 070ae063a8685df49917e6ee7a9e440f, type: 3}

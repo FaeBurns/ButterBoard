@@ -19,11 +19,11 @@ namespace Tests.PlayMode.FloatingGrid
             GameObject gridBuilderObject = new GameObject();
             GridBuilder gridBuilder = gridBuilderObject.AddComponent<GridBuilder>();
 
-            gridBuilder.Build(gridBuilderObject.transform, width, height, spacing, GridBuildOffsetType.TOP_LEFT);
+            GridHost gridHost = gridBuilder.Build(gridBuilderObject.transform, width, height, spacing, GridBuildOffsetType.TOP_LEFT);
 
-            Assert.AreEqual(width * height, gridBuilder.ActivePoints.Count);
+            Assert.AreEqual(width * height, gridHost.GridPoints.Count);
 
-            List<Vector2> actualPositions = gridBuilder.ActivePoints.Select(p => p.transform.position).Select(v => (Vector2)v).ToList();
+            List<Vector2> actualPositions = gridHost.GridPoints.Select(p => p.transform.position).Select(v => (Vector2)v).ToList();
 
             List<Vector2> desiredPositions = new List<Vector2>
             {
@@ -52,11 +52,11 @@ namespace Tests.PlayMode.FloatingGrid
             GameObject gridBuilderObject = new GameObject();
             GridBuilder gridBuilder = gridBuilderObject.AddComponent<GridBuilder>();
 
-            gridBuilder.Build(gridBuilderObject.transform, width, height, spacing, GridBuildOffsetType.CENTER);
+            GridHost gridHost = gridBuilder.Build(gridBuilderObject.transform, width, height, spacing, GridBuildOffsetType.CENTER);
 
-            Assert.AreEqual(width * height, gridBuilder.ActivePoints.Count);
+            Assert.AreEqual(width * height, gridHost.GridPoints.Count);
 
-            List<Vector2> actualPositions = gridBuilder.ActivePoints.Select(p => p.transform.position).Select(v => (Vector2)v).ToList();
+            List<Vector2> actualPositions = gridHost.GridPoints.Select(p => p.transform.position).Select(v => (Vector2)v).ToList();
 
             List<Vector2> desiredPositions = new List<Vector2>
             {
@@ -86,6 +86,24 @@ namespace Tests.PlayMode.FloatingGrid
             Assert.AreEqual(new Vector2(3f, 1f), GridBuilder.GetGridCenter(4, 2, 2f));
 
             Assert.AreEqual(new Vector2(0, 0.5f), GridBuilder.GetGridCenter(1, 2, 1f));
+        }
+
+        [Test]
+        public void GridBuilderTestHostSet()
+        {
+            const int width = 4;
+            const int height = 2;
+            const float spacing = 1;
+
+            GameObject gridBuilderObject = new GameObject();
+            GridBuilder gridBuilder = gridBuilderObject.AddComponent<GridBuilder>();
+
+            GridHost gridHost = gridBuilder.Build(gridBuilderObject.transform, width, height, spacing, GridBuildOffsetType.TOP_LEFT);
+
+            foreach (GridPoint gridPoint in gridHost.GridPoints)
+            {
+                Assert.IsTrue(gridPoint.HostGridHost == gridHost);
+            }
         }
     }
 }

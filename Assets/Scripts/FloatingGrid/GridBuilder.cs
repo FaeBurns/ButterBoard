@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.Lookup;
@@ -11,33 +12,46 @@ namespace ButterBoard.FloatingGrid
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class GridBuilder : MonoBehaviour
     {
-        private List<GridPoint> _activePoints = new List<GridPoint>();
-
         [SerializeField]
-        private string gridPointPrefabName = "Grid_Point";
+        private string gridPointPrefabName = "FloatingGrid/Grid_Point";
 
-        public IReadOnlyList<GridPoint> ActivePoints => _activePoints;
-
-        public void Clear()
+        public void Clear(GridHost clearingHost)
         {
-            foreach (GridPoint point in _activePoints)
+            foreach (GridPoint point in clearingHost.GridPoints)
             {
+                // check for if already destroyed
+                if (point == null)
+                    continue;
+
+                // free on both ends if possible
                 if (point.ConnectedPin != null)
                     point.ConnectedPin.Free();
                 point.Free();
 
+                // destroy - different versions required if in edit or play mode
                 if (Application.isPlaying)
                     Destroy(point.gameObject);
                 else
                     DestroyImmediate(point.gameObject);
             }
-            _activePoints.Clear();
+
+            if (Application.isPlaying)
+                Destroy(clearingHost.gameObject);
+            else
+                DestroyImmediate(clearingHost.gameObject);
         }
 
-        public void Build(Transform? parent, int width, int height, float spacing, GridBuildOffsetType offsetType)
+        public GridHost Build(Transform? parent, int width, int height, float spacing, GridBuildOffsetType offsetType)
         {
             Debug.Log($"Building grid with width {width}, height {height}, spacing {spacing}, offsetType {offsetType}");
             GameObject pointPrefab = AssetSource.Fetch<GameObject>(gridPointPrefabName);
+
+
+            GridHost gridHost = new GameObject("New Grid", typeof(GridHost)).GetComponent<GridHost>();
+
+            // set parent of GridHost if set
+            if (parent != null)
+                gridHost.transform.SetParent(parent);
 
             // get offsets to use during placement
             float xOffset;
@@ -60,6 +74,11 @@ namespace ButterBoard.FloatingGrid
                     throw new ArgumentOutOfRangeException(nameof(offsetType), offsetType, null);
             }
 
+            List<GridPoint> allPoints = new List<GridPoint>();
+            Vector3 offset = new Vector3(xOffset, yOffset, 0);
+
+            gridHost.Initialize(width, height, spacing, offset, allPoints);
+
             // go y-x instead of x-y so that it runs horizontally first
             // loop vertical
             for (int y = 0; y < height; y++)
@@ -71,12 +90,19 @@ namespace ButterBoard.FloatingGrid
                     // scale by spacing to set distance between points
                     // add offsets to modify position if placing at center of parent
                     Vector3 position = new Vector3((x * spacing) + xOffset, (y * spacing) + yOffset, 0);
-                    GameObject newObject = Instantiate(pointPrefab, position, Quaternion.identity, parent);
+                    GameObject newObject = Instantiate(pointPrefab, position, Quaternion.identity, gridHost.transform);
                     GridPoint newGridPoint = newObject.GetComponent<GridPoint>();
 
-                    _activePoints.Add(newGridPoint);
+                    allPoints.Add(newGridPoint);
                 }
             }
+
+            foreach (GridPoint gridPoint in gridHost.GridPoints)
+            {
+                gridPoint.Initialize(gridHost);
+            }
+
+            return gridHost;
         }
 
         public static Vector2 GetGridCenter(int width, int height, float spacing)

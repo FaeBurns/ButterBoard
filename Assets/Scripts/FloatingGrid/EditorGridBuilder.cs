@@ -14,12 +14,8 @@ namespace ButterBoard.FloatingGrid
         [BindComponent]
         public GridBuilder GridBuilder { get; private set; } = null!;
 
-#if DEBUG
-        #pragma warning disable CS0414
         [SerializeField]
-        private bool revalidate = false;
-        #pragma warning restore CS0414
-#endif
+        public GridHost? activeHost;
 
         [SerializeField]
         public Transform targetTransform = null!;
@@ -34,14 +30,6 @@ namespace ButterBoard.FloatingGrid
         public int height = 4;
 
         [SerializeField]
-        public float spacing = 0.1f;
-
-        private void Awake()
-        {
-            RunResolve();
-
-            if (targetTransform == null)
-                targetTransform = transform;
-        }
+        public float spacing = 1;
     }
 }
