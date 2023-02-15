@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BeanCore.Unity.ReferenceResolver;
+using UnityEditor;
 using UnityEngine;
 
 namespace ButterBoard.Lookup
@@ -8,10 +10,15 @@ namespace ButterBoard.Lookup
     [DefaultExecutionOrder(-100)]
     public class PrefabSource : MonoBehaviour
     {
+        private void Awake()
+        {
+            ReferenceStore.RegisterReference(this);
+        }
+
         [SerializeField]
         private List<PrefabEntry> prefabs = new List<PrefabEntry>();
 
-        private static Dictionary<string, GameObject> _mappedPrefabs = new Dictionary<string, GameObject>();
+        private readonly Dictionary<string, GameObject> _mappedPrefabs = new Dictionary<string, GameObject>();
 
         private void OnValidate()
         {
@@ -23,7 +30,7 @@ namespace ButterBoard.Lookup
             }
         }
 
-        public static GameObject Fetch(string key)
+        public GameObject Fetch(string key)
         {
             return _mappedPrefabs[key];
         }

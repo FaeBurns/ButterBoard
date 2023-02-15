@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BeanCore.Unity.ReferenceResolver;
+using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.Lookup;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -13,6 +15,8 @@ namespace ButterBoard.FloatingGrid
 
         [SerializeField]
         private string gridPointPrefabName = "Grid_Point";
+
+        public IReadOnlyList<GridPoint> ActivePoints => _activePoints;
 
         public void Clear()
         {
@@ -30,10 +34,30 @@ namespace ButterBoard.FloatingGrid
             _activePoints.Clear();
         }
 
-        public void Build(Transform parent, int width, int height, float spacing, GridBuildOffsetType offsetType)
+        public void Build(Transform? parent, int width, int height, float spacing, GridBuildOffsetType offsetType)
         {
             Debug.Log($"Building grid with width {width}, height {height}, spacing {spacing}, offsetType {offsetType}");
-            GameObject pointPrefab = PrefabSource.Fetch(gridPointPrefabName);
+            GameObject pointPrefab = AssetSource.Fetch<GameObject>(gridPointPrefabName);
+
+            // get offsets to use during placement
+            float xOffset;
+            float yOffset;
+            switch (offsetType)
+            {
+                // no offset as placing in top left
+                case GridBuildOffsetType.TOP_LEFT:
+                    xOffset = 0;
+                    yOffset = 0;
+                    break;
+
+                // get offset to place points in center
+                case GridBuildOffsetType.CENTER:
+                    xOffset = (width / 2f) * -spacing;
+                    yOffset = (height / 2f) * -spacing;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(offsetType), offsetType, null);
+            }
 
             // go y-x instead of x-y so that it runs horizontally first
             // loop vertical
@@ -44,10 +68,12 @@ namespace ButterBoard.FloatingGrid
                 {
                     // spawn new point at position
                     // scale by spacing to set distance between points
-                    Vector3 position = new Vector3(x * spacing, y * spacing, 0);
-                    GameObject newGridPoint = Instantiate(pointPrefab, position, Quaternion.identity, parent);
+                    // add offsets to modify position if placing at center of parent
+                    Vector3 position = new Vector3((x * spacing) + xOffset, (y * spacing) + yOffset, 0);
+                    GameObject newObject = Instantiate(pointPrefab, position, Quaternion.identity, parent);
+                    GridPoint newGridPoint = newObject.GetComponent<GridPoint>();
 
-                    _activePoints.Add(newGridPoint.GetComponent<GridPoint>());
+                    _activePoints.Add(newGridPoint);
                 }
             }
         }
