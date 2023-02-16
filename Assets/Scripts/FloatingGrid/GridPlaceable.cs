@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using BeanCore.Unity.ReferenceResolver;
+using BeanCore.Unity.ReferenceResolver.Attributes;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
 {
-    public class GridPlaceable : MonoBehaviour
+    public class GridPlaceable : ReferenceResolvedBehaviour
     {
         public IReadOnlyList<GridPin> Pins => pins;
 
@@ -15,5 +17,16 @@ namespace ButterBoard.FloatingGrid
 
         [field: SerializeField]
         public Vector3 GridOffset { get; private set; } = Vector3.zero;
+
+        [BindMultiComponent(Child = true)]
+        public SpriteRenderer[] AllSprites { get; private set; }= null!;
+
+        public void SetSpriteColor(Color statusColor)
+        {
+            foreach (SpriteRenderer spriteRenderer in AllSprites)
+            {
+                spriteRenderer.color = statusColor;
+            }
+        }
     }
 }

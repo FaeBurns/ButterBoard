@@ -21,6 +21,11 @@ namespace ButterBoard
             return Quaternion.Euler(0, 0, angle) * vector;
         }
 
+        public static Vector3 Mod(this Vector3 vector, float value)
+        {
+            return new Vector3(vector.x % value, vector.y % value, vector.z % value);
+        }
+
         private static bool Approximately(float a, float b, float epsilon = float.Epsilon)
         {
             return (double) Mathf.Abs(b - a) < (double) Mathf.Max(1E-06f * Mathf.Max(Mathf.Abs(a), Mathf.Abs(b)), epsilon * 8f);

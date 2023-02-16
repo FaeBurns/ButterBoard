@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BeanCore.Unity.ReferenceResolver;
 using UnityEngine;
@@ -9,15 +10,17 @@ namespace ButterBoard.FloatingGrid
     {
         private readonly GameObject _placeablePrefab;
         private readonly LerpSettings _lerpSettings;
+        private readonly float _checkDistanceRadiusThreshold;
         private GameObject _placingObject = null!;
         private GridPlaceable _placingPlaceable = null!;
 
         private Vector2 _placingSize = Vector2.zero;
 
-        public GridPlaceableDeployer(GameObject placeablePrefab, LerpSettings lerpSettings)
+        public GridPlaceableDeployer(GameObject placeablePrefab, LerpSettings lerpSettings, float checkDistanceRadiusThreshold)
         {
             _placeablePrefab = placeablePrefab;
             _lerpSettings = lerpSettings;
+            _checkDistanceRadiusThreshold = checkDistanceRadiusThreshold;
         }
 
         public bool IsPlacing { get; private set; } = false;
@@ -45,6 +48,7 @@ namespace ButterBoard.FloatingGrid
             List<GridHost> overlappingGrids = GetOverlappingGrids(desiredWorldPosition, desiredRotation.eulerAngles.z);
             if (overlappingGrids.Count == 0)
             {
+                _placingPlaceable.SetSpriteColor(Color.white);
                 _placingObject.transform.position = position;
                 _placingObject.transform.rotation = rotation;
                 return;
@@ -62,18 +66,55 @@ namespace ButterBoard.FloatingGrid
             _placingObject.transform.position = position;
             _placingObject.transform.rotation = rotation;
 
-            List<PinPlacementIssue> pinPlacementIssues = GetInvalidPins(targetGrid);
-
-            Debug.Log($"GetInvalidPins returned with {pinPlacementIssues.Count} issues");
-
-            foreach (PinPlacementIssue placementIssue in pinPlacementIssues)
+            if (CheckValidPlacement(targetGrid))
             {
-                Debug.Log(placementIssue.ToString());
+                _placingPlaceable.SetSpriteColor(Color.green);
+            }
+            else
+            {
+                _placingPlaceable.SetSpriteColor(Color.red);
             }
         }
 
         public bool CommitPlacement()
         {
+            // get all grids under placeable
+            List<GridHost> overlappingGrids = GetOverlappingGrids(_placingObject.transform.position, _placingObject.transform.rotation.eulerAngles.z);
+
+            // exit if none found
+            if (overlappingGrids.Count == 0)
+                return false;
+
+            // get first if any were found
+            GridHost targetGrid = overlappingGrids[0];
+
+            // check if placement is valid
+            if (CheckValidPlacement(targetGrid))
+            {
+                List<GridPoint> overlappingPoints = GetOverlappingPoints(_placingObject.transform.position, _placingObject.transform.rotation.eulerAngles.z);
+                Dictionary<GridPin, GridPoint> pinTargets = GetPointsUnderPins(targetGrid);
+                HashSet<GridPoint> pinPoints = new HashSet<GridPoint>(pinTargets.Values);
+
+                foreach (GridPoint gridPoint in overlappingPoints)
+                {
+                    // skip if found in pinPoints
+                    if (pinPoints.Contains(gridPoint))
+                        continue;
+
+                    gridPoint.Blocked = true;
+                }
+
+                foreach ((GridPin gridPin, GridPoint gridPoint) in pinTargets)
+                {
+                    gridPin.Connect(gridPoint);
+                    gridPoint.Connect(gridPin);
+                }
+
+                _placingObject.transform.SetParent(targetGrid.transform);
+
+                return true;
+            }
+
             return false;
         }
 
@@ -92,21 +133,31 @@ namespace ButterBoard.FloatingGrid
 
         private List<GridHost> GetOverlappingGrids(Vector2 location, float rotation)
         {
-            // ReSharper disable once Unity.PreferNonAllocApi
-            Collider2D[] overlapResults = Physics2D.OverlapBoxAll(location, _placingSize, rotation);
-
             HashSet<GridHost> hosts = new HashSet<GridHost>();
 
-            foreach (Collider2D collider2D in overlapResults)
+            foreach (GridPoint point in GetOverlappingPoints(location, rotation))
             {
-                GridPoint? point = collider2D.GetComponent<GridPoint>();
-                if (point == null)
-                    continue;
-
                 hosts.Add(point.HostGridHost);
             }
 
             return hosts.ToList();
+        }
+
+        private List<GridPoint> GetOverlappingPoints(Vector2 location, float rotation)
+        {
+            // ReSharper disable once Unity.PreferNonAllocApi
+            Collider2D[] overlapResults = Physics2D.OverlapBoxAll(location, _placingSize, rotation);
+
+            List<GridPoint> result = new List<GridPoint>();
+
+            foreach (Collider2D collider2D in overlapResults)
+            {
+                GridPoint? point = collider2D.GetComponent<GridPoint>();
+                if (point != null)
+                    result.Add(point);
+            }
+
+            return result;
         }
 
         public List<PinPlacementIssue> GetInvalidPins(GridHost targetGrid)
@@ -129,13 +180,29 @@ namespace ButterBoard.FloatingGrid
             return result;
         }
 
+        private Dictionary<GridPin, GridPoint> GetPointsUnderPins(GridHost targetGrid)
+        {
+            Dictionary<GridPin, GridPoint> result = new Dictionary<GridPin, GridPoint>();
+            foreach (GridPin gridPin in _placingPlaceable.Pins)
+            {
+                GridPoint? point = GetPointUnderPin(targetGrid, gridPin);
+
+                if (point == null)
+                    throw new InvalidOperationException();
+
+                result.Add(gridPin, point);
+            }
+
+            return result;
+        }
+
         private GridPoint? GetPointUnderPin(GridHost targetGrid, GridPin pin)
         {
             foreach (GridPoint gridPoint in targetGrid.GridPoints)
             {
                 Vector3 offset = pin.transform.position - gridPoint.transform.position;
                 float distanceSquared = offset.sqrMagnitude;
-                if (distanceSquared <= gridPoint.Radius * gridPoint.Radius)
+                if (distanceSquared <= (gridPoint.Radius * gridPoint.Radius) * _checkDistanceRadiusThreshold)
                 {
                     return gridPoint;
                 }
@@ -150,7 +217,7 @@ namespace ButterBoard.FloatingGrid
             Vector3 gridPosition = gridTransform.position;
             float gridRotation = gridTransform.rotation.eulerAngles.z;
             float gridScale = targetGrid.Spacing;
-            Vector3 offset = targetGrid.TopLeftOffsetFromCenter;
+            Vector3 offset = targetGrid.TopLeftOffsetFromCenter.Mod(gridScale);
             Vector3 localPlacementOffset = _placingPlaceable.GridOffset;
 
             // rotate grid and position back so that they're in default space
@@ -159,7 +226,7 @@ namespace ButterBoard.FloatingGrid
             // rotate position back
 
             // get position relative to grid origin
-            Vector3 relativePosition = position - gridPosition;
+            Vector3 relativePosition = (position + offset) - gridPosition;
 
             // initial position rotation
             Vector3 rotatedPosition = relativePosition.Rotate(-gridRotation);
@@ -168,7 +235,7 @@ namespace ButterBoard.FloatingGrid
             Vector3 snappedPosition = SnapPositionToLocalGridOfSize(rotatedPosition, gridScale);
 
             // offset snapped position
-            Vector3 offsetSnappedPosition = snappedPosition + localPlacementOffset;
+            Vector3 offsetSnappedPosition = (snappedPosition + localPlacementOffset) - offset;
 
             // rotate position back to where it was before (now with snap applied)
             Vector3 gridRotatedPosition = offsetSnappedPosition.Rotate(gridRotation);
