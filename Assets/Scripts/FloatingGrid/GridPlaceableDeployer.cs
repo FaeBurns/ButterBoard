@@ -39,6 +39,33 @@ namespace ButterBoard.FloatingGrid
             IsPlacing = true;
         }
 
+        public void BeginMove(GridPlaceable movingPlaceable)
+        {
+            if (IsPlacing)
+                return;
+
+            _placingObject = movingPlaceable.gameObject;
+            _placingPlaceable = movingPlaceable;
+            _placingSize = _placingPlaceable.BoundsCollider.bounds.size;
+
+            foreach (GridPin pin in movingPlaceable.Pins)
+            {
+                GridPoint? point = pin.ConnectedPoint;
+                if (point != null)
+                {
+                    point.Free();
+                }
+                pin.Free();
+            }
+
+            foreach (GridPoint point in GetOverlappingPoints(movingPlaceable.transform.position, movingPlaceable.transform.rotation.eulerAngles.z))
+            {
+                point.Blocked = false;
+            }
+
+            IsPlacing = true;
+        }
+
         // ReSharper disable Unity.PerformanceAnalysis
         public void UpdatePlacement(Vector3 desiredWorldPosition, Quaternion desiredRotation)
         {
@@ -73,6 +100,13 @@ namespace ButterBoard.FloatingGrid
             else
             {
                 _placingPlaceable.SetSpriteColor(Color.red);
+            }
+
+            List<PinPlacementIssue> issues = GetInvalidPins(targetGrid);
+            Debug.Log(issues.Count);
+            foreach (PinPlacementIssue issue in issues)
+            {
+                Debug.Log(issue.ToString());
             }
         }
 

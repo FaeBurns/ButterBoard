@@ -20,6 +20,7 @@ namespace ButterBoard.FloatingGrid
 
         public float Radius { get; private set; }
 
+        [field: SerializeField]
         public bool Blocked { get; set; } = false;
 
         public bool Open => ConnectedPin == null && !Blocked;

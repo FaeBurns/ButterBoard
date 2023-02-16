@@ -40,7 +40,18 @@ namespace ButterBoard.FloatingGrid
         {
             // exit if not placing
             if (!Placing)
+            {
+                GridPlaceable? placeable = CheckForMove();
+
+                // exit if nothing found
+                if (placeable == null)
+                    return;
+
+                _activeDeployer = new GridPlaceableDeployer(null!, lerpSettings, checkDistanceRadiusThreshold);
+                _activeDeployer.BeginMove(placeable);
+
                 return;
+            }
 
             Vector3 mouseWorldPosition = GetMouseWorldPosition();
 
@@ -61,6 +72,28 @@ namespace ButterBoard.FloatingGrid
                     _activeDeployer = null;
                 }
             }
+        }
+
+        private GridPlaceable? CheckForMove()
+        {
+            // return if no click input
+            if (!Input.GetMouseButtonDown(0))
+                return null;
+
+            Vector2 mousePosition = GetMouseWorldPosition();
+            // ReSharper disable once Unity.PreferNonAllocApi
+            Collider2D[] overlaps = Physics2D.OverlapCircleAll(mousePosition, 0.1f);
+
+            foreach (Collider2D overlap in overlaps)
+            {
+                GridPlaceable? placeable = overlap.GetComponent<GridPlaceable>();
+                if (placeable != null)
+                {
+                    return placeable;
+                }
+            }
+
+            return null;
         }
 
         private Vector3 GetMouseWorldPosition()
