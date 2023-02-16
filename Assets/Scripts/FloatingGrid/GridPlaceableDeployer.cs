@@ -37,16 +37,16 @@ namespace ButterBoard.FloatingGrid
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public void UpdatePlacement(Vector3 desiredWorldPosition, float desiredRotation)
+        public void UpdatePlacement(Vector3 desiredWorldPosition, Quaternion desiredRotation)
         {
             Vector3 position = Vector3.Lerp(_placingObject.transform.position, desiredWorldPosition + _placingPlaceable.GridOffset, _lerpSettings.TranslateLerp);
-            float rotation = Mathf.Lerp(_placingObject.transform.rotation.eulerAngles.z, desiredRotation, _lerpSettings.RotateLerp);
+            Quaternion rotation = Quaternion.Lerp(_placingObject.transform.rotation, desiredRotation, _lerpSettings.RotateLerp);
 
-            List<GridHost> overlappingGrids = GetOverlappingGrids(desiredWorldPosition, desiredRotation);
+            List<GridHost> overlappingGrids = GetOverlappingGrids(desiredWorldPosition, desiredRotation.eulerAngles.z);
             if (overlappingGrids.Count == 0)
             {
                 _placingObject.transform.position = position;
-                _placingObject.transform.rotation = Quaternion.Euler(0, 0, rotation);
+                _placingObject.transform.rotation = rotation;
                 return;
             }
 
@@ -55,15 +55,21 @@ namespace ButterBoard.FloatingGrid
             // will need to test
             GridHost targetGrid = overlappingGrids[0];
 
-
             Vector3 snappedDesiredPosition = SnapPositionToGrid(targetGrid, desiredWorldPosition);
             position = Vector3.Lerp(_placingObject.transform.position, snappedDesiredPosition, _lerpSettings.TranslateLerp);
-            rotation = Mathf.Lerp(_placingObject.transform.rotation.eulerAngles.z, desiredRotation + targetGrid.transform.rotation.eulerAngles.z, _lerpSettings.RotateLerp);
+            rotation = Quaternion.Lerp(_placingObject.transform.rotation, Quaternion.Euler(desiredRotation.eulerAngles + targetGrid.transform.rotation.eulerAngles), _lerpSettings.RotateLerp);
 
             _placingObject.transform.position = position;
-            _placingObject.transform.rotation = Quaternion.Euler(0, 0, rotation);
+            _placingObject.transform.rotation = rotation;
 
-            CheckValidPlacement(targetGrid);
+            List<PinPlacementIssue> pinPlacementIssues = GetInvalidPins(targetGrid);
+
+            Debug.Log($"GetInvalidPins returned with {pinPlacementIssues.Count} issues");
+
+            foreach (PinPlacementIssue placementIssue in pinPlacementIssues)
+            {
+                Debug.Log(placementIssue.ToString());
+            }
         }
 
         public bool CommitPlacement()
@@ -127,7 +133,9 @@ namespace ButterBoard.FloatingGrid
         {
             foreach (GridPoint gridPoint in targetGrid.GridPoints)
             {
-                if (pin.transform.position.Approximately(gridPoint.transform.position))
+                Vector3 offset = pin.transform.position - gridPoint.transform.position;
+                float distanceSquared = offset.sqrMagnitude;
+                if (distanceSquared <= gridPoint.Radius * gridPoint.Radius)
                 {
                     return gridPoint;
                 }
@@ -202,6 +210,11 @@ namespace ButterBoard.FloatingGrid
             PinWithIssue = pinWithIssue;
             PointProvidingIssue = pointProvidingIssue;
             IssueType = issueType;
+        }
+
+        public override string ToString()
+        {
+            return IssueType.ToString();
         }
     }
 

@@ -18,6 +18,8 @@ namespace ButterBoard.FloatingGrid
 
         public GridHost HostGridHost { get; private set; } = null!;
 
+        public float Radius { get; private set; }
+
         public bool Blocked { get; set; } = false;
 
         public bool Open => ConnectedPin == null && !Blocked;
@@ -31,7 +33,8 @@ namespace ButterBoard.FloatingGrid
 
             Vector3 scale = new Vector3(gridHost.Spacing / 2f, gridHost.Spacing / 2f, 1f);
             _scalableSprite.transform.localScale = scale;
-            _pointCollider.radius = gridHost.Spacing / 4f;
+            Radius = gridHost.Spacing / 4f;
+            _pointCollider.radius = Radius;
         }
 
         public void Connect(GridPin target)

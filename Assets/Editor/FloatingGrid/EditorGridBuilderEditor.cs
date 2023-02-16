@@ -24,19 +24,12 @@ namespace ButterBoard.Editor.FloatingGrid
                 }
             }
 
-            if (GUILayout.Button("Clear Grid"))
-            {
-                editorGridBuilder.ResolveReferences();
-                if (editorGridBuilder.activeHost != null)
-                    editorGridBuilder.GridBuilder.Clear(editorGridBuilder.activeHost);
-            }
-
             if (GUILayout.Button("Build Grid"))
             {
                 editorGridBuilder.ResolveReferences();
                 if (editorGridBuilder.activeHost != null)
                     editorGridBuilder.GridBuilder.Clear(editorGridBuilder.activeHost);
-                editorGridBuilder.activeHost = editorGridBuilder.GridBuilder.Build(editorGridBuilder.targetTransform, editorGridBuilder.width, editorGridBuilder.height, editorGridBuilder.spacing, editorGridBuilder.gridOffsetType);
+                editorGridBuilder.GridBuilder.Build(editorGridBuilder.targetTransform, editorGridBuilder.width, editorGridBuilder.height, editorGridBuilder.spacing, editorGridBuilder.gridOffsetType);
             }
         }
     }

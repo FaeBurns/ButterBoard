@@ -46,7 +46,7 @@ namespace ButterBoard.FloatingGrid
             else if (Input.GetKeyDown(KeyCode.E))
                 _rotationTarget -= 90;
 
-            _activeDeployer!.UpdatePlacement(mouseWorldPosition, _rotationTarget);
+            _activeDeployer!.UpdatePlacement(mouseWorldPosition, Quaternion.Euler(0, 0, _rotationTarget));
         }
 
         private Vector3 GetMouseWorldPosition()
