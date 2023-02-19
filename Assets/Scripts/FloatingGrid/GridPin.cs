@@ -1,8 +1,5 @@
-﻿using System;
-using BeanCore.Unity.ReferenceResolver;
+﻿using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
-using JetBrains.Annotations;
-using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
 {
@@ -11,7 +8,7 @@ namespace ButterBoard.FloatingGrid
         public GridPoint? ConnectedPoint { get; private set; }
 
         [BindComponent(Parent = true)]
-        public GridPlaceable HostPlaceable { get; private set; } = null!;
+        public GridPlaceable Host { get; private set; } = null!;
 
         public void Connect(GridPoint target)
         {

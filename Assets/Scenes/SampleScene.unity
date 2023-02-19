@@ -254,6 +254,8 @@ MonoBehaviour:
   lerpSettings:
     <TranslateLerp>k__BackingField: 0.05
     <RotateLerp>k__BackingField: 0.1
+    <FinalizeScalarTime>k__BackingField: 0.25
+  checkDistanceRadiusThreshold: 0.025
 --- !u!1 &1709731712
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,8 +289,8 @@ MonoBehaviour:
   activeHost: {fileID: 0}
   targetTransform: {fileID: 1709731715}
   gridOffsetType: 1
-  width: 15
-  height: 5
+  width: 10
+  height: 4
   spacing: 1
 --- !u!114 &1709731714
 MonoBehaviour:

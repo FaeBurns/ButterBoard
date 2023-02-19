@@ -1,7 +1,5 @@
-﻿using System;
-using BeanCore.Unity.ReferenceResolver;
+﻿using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -16,6 +14,8 @@ namespace ButterBoard.FloatingGrid
 
         public GridPin? ConnectedPin { get; private set; }
 
+
+        [field: SerializeField]
         public GridHost HostGridHost { get; private set; } = null!;
 
         public float Radius { get; private set; }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ButterBoard
 {
@@ -16,6 +14,11 @@ namespace ButterBoard
             return Approximately(vector.x, target.x) && Approximately(vector.y, target.y) && Approximately(vector.z, target.z);
         }
 
+        public static bool Approximately(this Quaternion quaternion, Quaternion target, float epsilon = float.Epsilon)
+        {
+            return Approximately(quaternion.eulerAngles, target.eulerAngles, epsilon);
+        }
+
         public static Vector3 Rotate(this Vector3 vector, float angle)
         {
             return Quaternion.Euler(0, 0, angle) * vector;
@@ -24,6 +27,11 @@ namespace ButterBoard
         public static Vector3 Mod(this Vector3 vector, float value)
         {
             return new Vector3(vector.x % value, vector.y % value, vector.z % value);
+        }
+
+        public static Quaternion Add(this Quaternion quaternion, Quaternion other)
+        {
+            return Quaternion.Euler(quaternion.eulerAngles + other.eulerAngles);
         }
 
         private static bool Approximately(float a, float b, float epsilon = float.Epsilon)

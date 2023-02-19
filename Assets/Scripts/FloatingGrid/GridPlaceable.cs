@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ButterBoard.FloatingGrid
 {
-    public class GridPlaceable : ReferenceResolvedBehaviour
+    public class GridPlaceable : BasePlaceable
     {
         public IReadOnlyList<GridPin> Pins => pins;
 
@@ -13,7 +15,7 @@ namespace ButterBoard.FloatingGrid
         private List<GridPin> pins = new List<GridPin>();
 
         [field: SerializeField]
-        public Collider2D BoundsCollider { get; private set; } = null!;
+        public bool AllowFloating { get; private set; }
 
         [field: SerializeField]
         public Vector3 GridOffset { get; private set; } = Vector3.zero;
@@ -21,7 +23,11 @@ namespace ButterBoard.FloatingGrid
         [BindMultiComponent(Child = true)]
         public SpriteRenderer[] AllSprites { get; private set; }= null!;
 
-        public void SetSpriteColor(Color statusColor)
+        public GridPoint[] OverlappingPoints { get; set; } = Array.Empty<GridPoint>();
+
+        public GridHost? PlacedGrid { get; set; }
+
+        public override void SetPlaceStatus(Color statusColor)
         {
             foreach (SpriteRenderer spriteRenderer in AllSprites)
             {

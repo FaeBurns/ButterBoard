@@ -1,11 +1,12 @@
 ﻿using ButterBoard.FloatingGrid;
+using ButterBoard.FloatingGrid.Placement;
 using ButterBoard.Lookup;
 using UnityEditor;
 using UnityEngine;
 
 namespace ButterBoard.Editor.FloatingGrid
 {
-    [CustomEditor(typeof(GridPlacementService))]
+    [CustomEditor(typeof(PlacementService))]
     public class GridPlacementServiceEditor : UnityEditor.Editor
     {
         // ReSharper disable Unity.PerformanceAnalysis
@@ -17,14 +18,14 @@ namespace ButterBoard.Editor.FloatingGrid
             if (!Application.isPlaying)
                 return;
 
-            GridPlacementService service = (GridPlacementService)target;
+            PlacementService service = (PlacementService)target;
 
             EditorGUI.BeginDisabledGroup(service.Placing);
 
             if (GUILayout.Button("Begin Test Placement"))
             {
                 GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/SamplePlaceable");
-                service.BeginPlacement(prefab);
+                service.BeginPrefabPlacement(prefab);
             }
 
             EditorGUI.EndDisabledGroup();

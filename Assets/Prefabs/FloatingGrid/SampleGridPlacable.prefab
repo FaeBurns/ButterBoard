@@ -92,6 +92,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20198db1a7864decb821431a2fad3e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <BoundsCollider>k__BackingField: {fileID: 9077913995179929035}
+  <Place>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <Pickup>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <Remove>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
   pins:
   - {fileID: 2147042530293810852}
   - {fileID: 172639063978730146}
@@ -103,7 +113,7 @@ MonoBehaviour:
   - {fileID: 5397141253676851316}
   - {fileID: 8066914506012949385}
   - {fileID: 2368391484039613077}
-  <BoundsCollider>k__BackingField: {fileID: 9077913995179929035}
+  <AllowFloating>k__BackingField: 1
   <GridOffset>k__BackingField: {x: 0, y: 0, z: 0}
 --- !u!61 &9077913995179929035
 BoxCollider2D:
