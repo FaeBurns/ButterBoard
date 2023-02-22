@@ -16,7 +16,7 @@ namespace ButterBoard.FloatingGrid
 
 
         [field: SerializeField]
-        public GridHost HostGridHost { get; private set; } = null!;
+        public GridHost HostingGrid { get; private set; } = null!;
 
         public float Radius { get; private set; }
 
@@ -30,7 +30,7 @@ namespace ButterBoard.FloatingGrid
             // resolve references now
             this.ResolveReferences();
 
-            HostGridHost = gridHost;
+            HostingGrid = gridHost;
 
             Vector3 scale = new Vector3(gridHost.Spacing / 2f, gridHost.Spacing / 2f, 1f);
             _scalableSprite.transform.localScale = scale;

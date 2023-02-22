@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
 {
-    public static class SnapHelpers
+    public static class PlacementHelpers
     {
         public static Vector3 SnapPositionToGrid(GridHost targetGrid, Vector3 position, Vector3 localOffset)
         {
@@ -42,6 +43,20 @@ namespace ButterBoard.FloatingGrid
         public static Vector3 SnapPositionToLocalGridOfSize(Vector3 position, float size)
         {
             return new Vector3(Mathf.Round(position.x) * size, Mathf.Round(position.y) * size, Mathf.Round(position.z) * size);
+        }
+
+        public static Vector3 GetMouseWorldPosition()
+        {
+            // get position of mouse on screen
+            Vector3 screenPosition = Input.mousePosition;
+
+            // translate to world position
+            Vector3 result = Camera.main!.ScreenToWorldPoint(screenPosition);
+
+            // set z of world position to 0
+            result.z = 0;
+
+            return result;
         }
     }
 }

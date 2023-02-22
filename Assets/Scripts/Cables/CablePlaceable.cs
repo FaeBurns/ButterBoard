@@ -1,7 +1,10 @@
-﻿namespace ButterBoard.FloatingGrid
+﻿using ButterBoard.FloatingGrid;
+
+namespace ButterBoard.Cables
 {
-    public class FloatingPlaceable : BasePlaceable
+    public class CablePlaceable : BasePlaceable
     {
+
         public override void DisplayPlacementStatus(string statusMessage, bool isOk)
         {
             throw new System.NotImplementedException();

@@ -1,32 +1,65 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ButterBoard.FloatingGrid.Placement
 {
-    public class GridPlacementContext
+    public class PlacementContext<T> where T : BasePlaceable
     {
-        public GridPlacementContext(GameObject placingObject, GridPlaceable placeable)
+        public PlacementContext(GameObject placingObject, GameObject displayObject, T placeable, T displayPlaceable, PlacementType placementType)
         {
             PlacingObject = placingObject;
+            DisplayObject = displayObject;
             Placeable = placeable;
+            DisplayPlaceable = displayPlaceable;
+            PlacementType = placementType;
             Size = placeable.BoundsCollider.bounds.size;
         }
 
+        /// <summary>
+        /// Gets the object being placed.
+        /// </summary>
         public GameObject PlacingObject { get; }
 
-        public BasePlaceable Placeable { get; }
+        /// <summary>
+        /// Gets the preview object being displayed.
+        /// </summary>
+        public GameObject DisplayObject { get; }
 
-        public GridPlaceable GridPlaceable => (GridPlaceable)Placeable;
+        /// <summary>
+        /// Gets the <see cref="T"/> placeable found on <see cref="PlacingObject"/>.
+        /// </summary>
+        public T Placeable { get; }
 
-        public FloatingPlaceable FloatingPlaceable => (FloatingPlaceable)Placeable;
+        /// <summary>
+        /// Gets the <see cref="T"/> placeable found on <see cref="DisplayObject"/>.
+        /// </summary>
+        public T DisplayPlaceable { get; }
 
+        /// <summary>
+        /// Gets the type of placement occuring.
+        /// </summary>
+        public PlacementType PlacementType { get; }
+
+        /// <summary>
+        /// Gets the bounds of the placeable.
+        /// </summary>
         public Vector2 Size { get; }
 
-        public GridPlacementState State { get; set; } = GridPlacementState.POSITION;
+        /// <summary>
+        /// Gets the current state of the placement.
+        /// </summary>
+        public PlacementState State { get; set; } = PlacementState.POSITION;
     }
 
-    public enum GridPlacementState
+    public enum PlacementState
     {
         POSITION,
         FINALIZE,
+    }
+
+    public enum PlacementType
+    {
+        PLACE,
+        MOVE,
     }
 }

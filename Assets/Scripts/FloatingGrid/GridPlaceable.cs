@@ -7,10 +7,9 @@ using UnityEngine.Events;
 
 namespace ButterBoard.FloatingGrid
 {
+    [Serializable]
     public class GridPlaceable : BasePlaceable
     {
-        public IReadOnlyList<GridPin> Pins => pins;
-
         [SerializeField]
         private List<GridPin> pins = new List<GridPin>();
 
@@ -20,18 +19,45 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public Vector3 GridOffset { get; private set; } = Vector3.zero;
 
-        [BindMultiComponent(Child = true)]
-        public SpriteRenderer[] AllSprites { get; private set; }= null!;
+        [field: SerializeField]
+        public SpriteRenderer[] MainSprites { get; private set; }= null!;
 
+        [field: SerializeField]
         public GridPoint[] OverlappingPoints { get; set; } = Array.Empty<GridPoint>();
 
-        public GridHost? PlacedGrid { get; set; }
+        [field: SerializeField]
+        public GridHost? HostingGrid { get; set; }
 
-        public override void SetPlaceStatus(Color statusColor)
+        public IReadOnlyList<GridPin> Pins => pins;
+
+        public override void DisplayPlacementStatus(string statusMessage, bool isOk)
         {
-            foreach (SpriteRenderer spriteRenderer in AllSprites)
+            Color displayColor = isOk ? Color.green : Color.red;
+
+            foreach (SpriteRenderer sprite in MainSprites)
             {
-                spriteRenderer.color = statusColor;
+                sprite.color = displayColor;
+            }
+        }
+
+        public override void ClearPlacementStatus()
+        {
+            foreach (SpriteRenderer sprite in MainSprites)
+            {
+                sprite.color = Color.white;
+            }
+        }
+
+        public void DisplayPinIssue(PinPlacementIssue issue)
+        {
+            issue.PinWithIssue.DisplayIssue(issue.IssueType);
+        }
+
+        public void ClearPinIssues()
+        {
+            foreach (GridPin gridPin in Pins)
+            {
+                gridPin.ClearIssue();
             }
         }
     }

@@ -22,6 +22,7 @@
     public enum PinPlacementIssueType
     {
         EXISTING_INVALID_CONNECTION,
+        INVALID_HOST,
         PORT_NOT_FOUND,
         PORT_OCCUPIED,
         PORT_BLOCKED,

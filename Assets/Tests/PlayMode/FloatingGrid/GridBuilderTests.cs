@@ -102,7 +102,7 @@ namespace Tests.PlayMode.FloatingGrid
 
             foreach (GridPoint gridPoint in gridHost.GridPoints)
             {
-                Assert.IsTrue(gridPoint.HostGridHost == gridHost);
+                Assert.IsTrue(gridPoint.HostingGrid == gridHost);
             }
         }
     }

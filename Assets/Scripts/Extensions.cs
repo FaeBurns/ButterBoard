@@ -4,19 +4,17 @@ namespace ButterBoard
 {
     public static class Extensions
     {
-        public static bool Approximately(this Vector2 vector, Vector2 target)
+        public static bool Approximately(this Vector2 vector, Vector2 target, float epsilon = float.Epsilon)
         {
-            return Mathf.Approximately(vector.x, target.x) && Mathf.Approximately(vector.y, target.y);
+            return Approximately_Internal(vector.x, target.x, epsilon) && Approximately_Internal(vector.y, target.y, epsilon);
         }
 
-        public static bool Approximately(this Vector3 vector, Vector3 target, float epsilon = float.Epsilon)
+        public static bool ApproximateDistance(this Vector3 vector, Vector3 target, float epsilon = float.Epsilon)
         {
-            return Approximately(vector.x, target.x) && Approximately(vector.y, target.y) && Approximately(vector.z, target.z);
-        }
+            Vector3 difference = target - vector;
+            float distanceSquared = difference.sqrMagnitude;
 
-        public static bool Approximately(this Quaternion quaternion, Quaternion target, float epsilon = float.Epsilon)
-        {
-            return Approximately(quaternion.eulerAngles, target.eulerAngles, epsilon);
+            return distanceSquared < epsilon * epsilon;
         }
 
         public static Vector3 Rotate(this Vector3 vector, float angle)
@@ -34,7 +32,12 @@ namespace ButterBoard
             return Quaternion.Euler(quaternion.eulerAngles + other.eulerAngles);
         }
 
-        private static bool Approximately(float a, float b, float epsilon = float.Epsilon)
+        public static bool Approximately(this float a, float b, float epsilon = float.Epsilon)
+        {
+            return Approximately_Internal(a, b, epsilon);
+        }
+
+        private static bool Approximately_Internal(float a, float b, float epsilon = float.Epsilon)
         {
             return (double) Mathf.Abs(b - a) < (double) Mathf.Max(1E-06f * Mathf.Max(Mathf.Abs(a), Mathf.Abs(b)), epsilon * 8f);
         }

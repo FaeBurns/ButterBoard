@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 9
+  <PinSprites>k__BackingField:
+  - {fileID: 7317660249805404572}
 --- !u!1 &244099433457350390
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,6 +118,10 @@ MonoBehaviour:
   - {fileID: 2368391484039613077}
   <AllowFloating>k__BackingField: 1
   <GridOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <MainSprites>k__BackingField:
+  - {fileID: 4086898101632536357}
+  <OverlappingPoints>k__BackingField: []
+  <HostingGrid>k__BackingField: {fileID: 0}
 --- !u!61 &9077913995179929035
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -270,6 +277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 6
+  <PinSprites>k__BackingField:
+  - {fileID: 6188911231896690707}
 --- !u!1 &1854735473614711427
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +693,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 1
+  <PinSprites>k__BackingField:
+  - {fileID: 4937555008881726802}
 --- !u!1 &4567546178418029602
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +825,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 4
+  <PinSprites>k__BackingField:
+  - {fileID: 7839145812329304790}
 --- !u!1 &5458519251281100191
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,6 +957,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 8
+  <PinSprites>k__BackingField:
+  - {fileID: 2767855520767658322}
 --- !u!1 &6124924080834390161
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +1005,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 3
+  <PinSprites>k__BackingField:
+  - {fileID: 9100817832636846730}
 --- !u!1 &6571920868386296356
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,6 +1221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 7
+  <PinSprites>k__BackingField:
+  - {fileID: 9039639735543043469}
 --- !u!1 &7033193810083361515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,6 +1269,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 2
+  <PinSprites>k__BackingField:
+  - {fileID: 1378346398624349091}
 --- !u!1 &7311294262450006824
 GameObject:
   m_ObjectHideFlags: 0
@@ -1498,6 +1526,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 5
+  <PinSprites>k__BackingField:
+  - {fileID: 305533477654536213}
 --- !u!1 &8312697506479701242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1543,3 +1574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <PinIndex>k__BackingField: 0
+  <PinSprites>k__BackingField:
+  - {fileID: 5776813652669015903}

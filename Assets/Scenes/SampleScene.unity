@@ -216,6 +216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1501067717}
+  - component: {fileID: 1501067719}
   - component: {fileID: 1501067718}
   m_Layer: 0
   m_Name: PlacementService
@@ -248,14 +249,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1501067716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e79a63b2e79e404ab31397400ef12304, type: 3}
+  m_Script: {fileID: 11500000, guid: 57d5efb9f95b4dfc842b11da7703b2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpSettings:
-    <TranslateLerp>k__BackingField: 0.05
+  pinCheckDistanceRadiusThreshold: 0.1
+  <LerpSettings>k__BackingField:
+    <TranslateLerp>k__BackingField: 0.1
     <RotateLerp>k__BackingField: 0.1
     <FinalizeScalarTime>k__BackingField: 0.25
-  checkDistanceRadiusThreshold: 0.025
+--- !u!114 &1501067719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501067716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403cf9eec223431db03e59c82a0b170a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1709731712
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,8 +302,8 @@ MonoBehaviour:
   activeHost: {fileID: 0}
   targetTransform: {fileID: 1709731715}
   gridOffsetType: 1
-  width: 10
-  height: 4
+  width: 15
+  height: 5
   spacing: 1
 --- !u!114 &1709731714
 MonoBehaviour:

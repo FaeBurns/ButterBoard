@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aca1ec18cb140f3809a013b91697bcb, type: 3}
-  m_Name: SampleGrid
-  m_EditorClassIdentifier: 
-  key: FloatingGrid/SampleGrid
-  storedObject: {fileID: 6240298647749843894, guid: c90867dbff94ff049a59cca37504dbf0, type: 3}
+  m_Name: SampleGridPlaceable
+  m_EditorClassIdentifier:
+  key: FloatingGrid/SampleGridPlaceable
+  storedObject: {fileID: 244099433457350390, guid: 070ae063a8685df49917e6ee7a9e440f, type: 3}
