@@ -59,17 +59,20 @@ namespace ButterBoard.FloatingGrid.Placement
             _activeService = null;
         }
 
-        public BasePlaceable GetTargetUnderCursor()
-        {
-            throw new NotImplementedException();
-        }
-
         private void Update()
         {
             // return if not placing
             if (!Placing)
             {
                 PickupUpdate();
+                return;
+            }
+
+            // cancel placement if space is pressed
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Debug.Log("Cancelling");
+                CancelPlace();
                 return;
             }
 
@@ -101,19 +104,19 @@ namespace ButterBoard.FloatingGrid.Placement
             _activeService = null;
         }
 
-        private bool PickupUpdate()
+        private void PickupUpdate()
         {
             // if mouse button is not pressed
             // return
             if (!Input.GetMouseButtonDown(0))
-                return false;
+                return;
 
             // if mouse is over ui, exit
             if (EventSystem.current != null)
             {
                 bool pointOverUI = EventSystem.current.IsPointerOverGameObject();
                 if (pointOverUI)
-                    return false;
+                    return;
             }
 
             Vector3 mouseWorldPosition = PlacementHelpers.GetMouseWorldPosition();
@@ -124,7 +127,7 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // exit early to avoid having to sort
             if (placeables.Count == 0)
-                return false;
+                return;
 
             // order collection of found placeables by priority
             IOrderedEnumerable<BasePlaceable> orderedPlaceables = placeables.OrderByDescending(GetPriority);
@@ -134,8 +137,6 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // begin movement
             BeginMove(pickupTarget.gameObject);
-
-            return true;
         }
 
         private IPlacementService GetTargetService(GameObject target)
@@ -168,6 +169,7 @@ namespace ButterBoard.FloatingGrid.Placement
 
         private List<TComponent> GetOverlaps<TComponent>(Vector2 position, Vector2 size, float rotation)
         {
+            // ReSharper disable once Unity.PreferNonAllocApi
             Collider2D[] overlaps = Physics2D.OverlapBoxAll(position, size, rotation);
             List<TComponent> result = new List<TComponent>();
             foreach (Collider2D overlap in overlaps)
