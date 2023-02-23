@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeanCore.Unity.ReferenceResolver;
+using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.Cables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace ButterBoard.FloatingGrid.Placement
 {
@@ -40,7 +43,7 @@ namespace ButterBoard.FloatingGrid.Placement
                 throw new InvalidOperationException();
 
             _activeService = GetTargetService(target);
-            _activeService.BeginPrefabPlacement(target);
+            _activeService.BeginMovePlacement(target);
         }
 
         /// <summary>
@@ -65,7 +68,10 @@ namespace ButterBoard.FloatingGrid.Placement
         {
             // return if not placing
             if (!Placing)
+            {
+                PickupUpdate();
                 return;
+            }
 
             // get mouse pos in world
             Vector3 mouseWorldPosition = PlacementHelpers.GetMouseWorldPosition();
@@ -85,7 +91,7 @@ namespace ButterBoard.FloatingGrid.Placement
             if (!finished)
             {
                 if (Input.GetMouseButtonDown(0))
-                    _activeService.TryCommitPlacement();
+                    _activeService.TryCommitPlacement(mouseWorldPosition, rotation);
 
                 return;
             }
@@ -93,6 +99,43 @@ namespace ButterBoard.FloatingGrid.Placement
             // complete placement and clear _activeService
             _activeService.CompletePlacement();
             _activeService = null;
+        }
+
+        private bool PickupUpdate()
+        {
+            // if mouse button is not pressed
+            // return
+            if (!Input.GetMouseButtonDown(0))
+                return false;
+
+            // if mouse is over ui, exit
+            if (EventSystem.current != null)
+            {
+                bool pointOverUI = EventSystem.current.IsPointerOverGameObject();
+                if (pointOverUI)
+                    return false;
+            }
+
+            Vector3 mouseWorldPosition = PlacementHelpers.GetMouseWorldPosition();
+
+            // get all placeables under cursor
+            // size of zero still allows for collision checks
+            List<BasePlaceable> placeables = GetOverlaps<BasePlaceable>(mouseWorldPosition, Vector2.zero, 0f);
+
+            // exit early to avoid having to sort
+            if (placeables.Count == 0)
+                return false;
+
+            // order collection of found placeables by priority
+            IOrderedEnumerable<BasePlaceable> orderedPlaceables = placeables.OrderByDescending(GetPriority);
+
+            // get first target
+            BasePlaceable pickupTarget = orderedPlaceables.First();
+
+            // begin movement
+            BeginMove(pickupTarget.gameObject);
+
+            return true;
         }
 
         private IPlacementService GetTargetService(GameObject target)
@@ -110,6 +153,30 @@ namespace ButterBoard.FloatingGrid.Placement
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        private int GetPriority(BasePlaceable placeable)
+        {
+            return placeable switch
+            {
+                FloatingPlaceable => 0,
+                GridPlaceable => 1,
+                CablePlaceable => 2,
+                _ => throw new ArgumentOutOfRangeException(nameof(placeable), placeable, null),
+            };
+        }
+
+        private List<TComponent> GetOverlaps<TComponent>(Vector2 position, Vector2 size, float rotation)
+        {
+            Collider2D[] overlaps = Physics2D.OverlapBoxAll(position, size, rotation);
+            List<TComponent> result = new List<TComponent>();
+            foreach (Collider2D overlap in overlaps)
+            {
+                TComponent component = overlap.GetComponent<TComponent>();
+                if (component != null)
+                    result.Add(component);
+            }
+            return result;
         }
     }
 }

@@ -4,7 +4,6 @@ namespace ButterBoard.Cables
 {
     public class CablePlaceable : BasePlaceable
     {
-
         public override void DisplayPlacementStatus(string statusMessage, bool isOk)
         {
             throw new System.NotImplementedException();

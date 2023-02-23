@@ -14,9 +14,6 @@ namespace ButterBoard.FloatingGrid
         private List<GridPin> pins = new List<GridPin>();
 
         [field: SerializeField]
-        public bool AllowFloating { get; private set; }
-
-        [field: SerializeField]
         public Vector3 GridOffset { get; private set; } = Vector3.zero;
 
         [field: SerializeField]

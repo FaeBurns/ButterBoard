@@ -65,14 +65,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // if not overlapping grids - can check for floating placement
             if (overlappingGrids.Count == 0)
             {
-                // if not overlapping, can perform floating placement
-                bool isOverlapping = GetOverlaps<Transform>(Context.Placeable).Count > 0;
-
-                // if overlapping, placement is not valid
-                if (isOverlapping)
-                    return false;
-
-                return true;
+                return false;
             }
 
             // get first grid
@@ -111,6 +104,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 gridPoint.Connect(gridPin);
             }
 
+            Context.Placeable.OverlappingPoints = overlappingPoints.ToArray();
+
             Context.DisplayPlaceable.ClearPlacementStatus();
             Context.PlacingObject.transform.SetParent(gridTarget.transform);
 
@@ -135,14 +130,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 // set position and rotation to the raw values and return
                 SetPositionAndRotation(targetPosition, targetRotation);
 
-                // check if we're overlapping anything by checking if there are any overlaps with objects with transform components
-                // all objects will have transform components
-                // if there is at least one, the placeable is overlapping
-                bool isOverlapping = GetOverlaps<Transform>(Context.Placeable).Count > 0;
-
-                // set display status
-                string placementStatus = isOverlapping ? "Destination occupied" : String.Empty;
-                Context.DisplayPlaceable.DisplayPlacementStatus(placementStatus, !isOverlapping);
+                // notify user of error
+                Context.DisplayPlaceable.DisplayPlacementStatus("Must be placed on a grid", false);
                 return;
             }
 

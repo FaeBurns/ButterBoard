@@ -70,7 +70,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             placeable.Pickup?.Invoke();
 
             // create duplicate used in display
-            GameObject displayDuplicate = Object.Instantiate(target);
+            GameObject displayDuplicate = Object.Instantiate(target, target.transform.position, target.transform.rotation);
 
             T displayPlaceable = displayDuplicate.GetComponent<T>();
 
@@ -80,14 +80,19 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // hide and disable actual object
             Context.PlacingObject.SetActive(false);
 
+            // clear parent
+            Context.PlacingObject.transform.SetParent(null);
+
             // set name of display object to aid debugging
             // notify the placeable that it is the display instance
             Context.DisplayPlaceable.name += "(Display)";
             Context.DisplayPlaceable.SetDisplay();
         }
 
-        public void TryCommitPlacement()
+        public void TryCommitPlacement(Vector3 targetPosition, Quaternion targetRotation)
         {
+            UpdatePosition(targetPosition, targetRotation);
+
             if (CommitPlacement())
             {
                 Context.State = PlacementState.FINALIZE;

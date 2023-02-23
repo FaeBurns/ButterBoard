@@ -8,7 +8,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public void BeginMovePlacement(GameObject target);
 
-        public void TryCommitPlacement();
+        public void TryCommitPlacement(Vector3 targetPosition, Quaternion targetRotation);
 
         public bool Update(Vector3 targetPosition, Quaternion targetRotation);
 
