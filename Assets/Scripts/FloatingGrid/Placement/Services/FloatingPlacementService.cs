@@ -1,37 +1,42 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
 {
     public class FloatingPlacementService : PlacementService<FloatingPlaceable>
     {
-
-        public override void BeginPrefabPlacement(GameObject prefab)
+        public FloatingPlacementService(LerpSettings lerpSettings, float displayZDistance) : base(lerpSettings, displayZDistance)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override void BeginMovePlacement(GameObject target)
-        {
-            throw new System.NotImplementedException();
         }
 
         protected override bool CommitPlacement()
         {
-            throw new System.NotImplementedException();
+            // check if placement is valid
+            List<BasePlaceable> allOverlapPlaceables = GetOverlaps<BasePlaceable>(Context.Placeable);
+            bool canPlace = allOverlapPlaceables.Count == 0;
+
+            // if cannot place
+            // exit early to allow for changes
+            if (!canPlace)
+                return false;
+
+            // clear display status
+            Context.DisplayPlaceable.ClearPlacementStatus();
+
+            return true;
         }
 
         protected override void UpdatePosition(Vector3 targetPosition, Quaternion targetRotation)
         {
-            throw new System.NotImplementedException();
-        }
+            SetPositionAndRotation(targetPosition, targetRotation);
 
-        protected override bool UpdateFinalize()
-        {
-            throw new System.NotImplementedException();
-        }
+            List<BasePlaceable> allOverlapPlaceables = GetOverlaps<BasePlaceable>(Context.Placeable);
 
-        public FloatingPlacementService(LerpSettings lerpSettings) : base(lerpSettings)
-        {
+            bool canPlace = allOverlapPlaceables.Count == 0;
+            string statusMessage = canPlace ? String.Empty : "Placement Invalid";
+
+            Context.DisplayPlaceable.DisplayPlacementStatus(statusMessage, canPlace);
         }
     }
 

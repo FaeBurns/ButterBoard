@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7714054801103247117}
   - component: {fileID: 8623385584509438886}
   - component: {fileID: 1835573822817473974}
+  - component: {fileID: 7917498931259165300}
   m_Layer: 0
   m_Name: Grid_Point
   m_TagString: Untagged
@@ -46,6 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36c170fb74b24299a3a20e6b8fb5346d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ConnectedPin>k__BackingField: {fileID: 0}
+  <HostingGrid>k__BackingField: {fileID: 0}
+  <Radius>k__BackingField: 0
+  <Blocked>k__BackingField: 0
 --- !u!58 &1835573822817473974
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -62,6 +67,21 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &7917498931259165300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59571282917886616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aaa3653ea1443bba329acdf0a187fa8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderers:
+  - {fileID: 7501401571937729360}
+  tintMode: 1
 --- !u!1 &8597039949805886356
 GameObject:
   m_ObjectHideFlags: 0

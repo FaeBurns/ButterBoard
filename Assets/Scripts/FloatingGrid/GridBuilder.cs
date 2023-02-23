@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ButterBoard.Lookup;
 using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -87,7 +88,9 @@ namespace ButterBoard.FloatingGrid
                     // scale by spacing to set distance between points
                     // add offsets to modify position if placing at center of parent
                     Vector3 position = new Vector3((x * spacing) + xOffset, (y * spacing) + yOffset, 0);
-                    GameObject newObject = Instantiate(pointPrefab, position, Quaternion.identity, gridHost.transform);
+
+                    GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(pointPrefab, gridHost.transform);
+                    newObject.transform.position = position;
                     GridPoint newGridPoint = newObject.GetComponent<GridPoint>();
 
                     allPoints.Add(newGridPoint);

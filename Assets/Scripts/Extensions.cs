@@ -17,6 +17,14 @@ namespace ButterBoard
             return distanceSquared < epsilon * epsilon;
         }
 
+        public static bool ApproximateDistance(this Vector2 vector, Vector2 target, float epsilon = float.Epsilon)
+        {
+            Vector2 difference = target - vector;
+            float distanceSquared = difference.sqrMagnitude;
+
+            return distanceSquared < epsilon * epsilon;
+        }
+
         public static Vector3 Rotate(this Vector3 vector, float angle)
         {
             return Quaternion.Euler(0, 0, angle) * vector;

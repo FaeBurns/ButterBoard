@@ -8,7 +8,7 @@ namespace ButterBoard.FloatingGrid
     public class GridPin : ReferenceResolvedBehaviour
     {
         [field: SerializeField]
-        public SpriteRenderer[] PinSprites { get; private set; } = Array.Empty<SpriteRenderer>();
+        public SpriteTintHelper PinSpriteTintHelpers { get; private set; } = null!;
 
         public GridPoint? ConnectedPoint { get; private set; }
 
@@ -37,18 +37,12 @@ namespace ButterBoard.FloatingGrid
                 _ => throw new ArgumentOutOfRangeException(nameof(issueType), issueType, null),
             };
 
-            foreach (SpriteRenderer spriteRenderer in PinSprites)
-            {
-                spriteRenderer.color = tintColor;
-            }
+            PinSpriteTintHelpers.SetTint(tintColor);
         }
 
         public void ClearIssue()
         {
-            foreach (SpriteRenderer spriteRenderer in PinSprites)
-            {
-                spriteRenderer.color = Color.white;
-            }
+            PinSpriteTintHelpers.RestoreColor();
         }
     }
 }

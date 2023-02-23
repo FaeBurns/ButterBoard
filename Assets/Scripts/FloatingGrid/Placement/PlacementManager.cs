@@ -15,6 +15,9 @@ namespace ButterBoard.FloatingGrid.Placement
         [SerializeField]
         private float pinCheckDistanceRadiusThreshold = 0.1f;
 
+        [SerializeField]
+        private float displayZDistance = 1;
+
         public bool Placing => _activeService != null;
 
         [field: SerializeField]
@@ -99,11 +102,11 @@ namespace ButterBoard.FloatingGrid.Placement
             switch (basePlaceable)
             {
                 case GridPlaceable:
-                    return new GridPlacementService(LerpSettings, pinCheckDistanceRadiusThreshold);
+                    return new GridPlacementService(LerpSettings, pinCheckDistanceRadiusThreshold, displayZDistance);
                 case FloatingPlaceable:
-                    return new FloatingPlacementService(LerpSettings);
+                    return new FloatingPlacementService(LerpSettings, displayZDistance);
                 case CablePlaceable:
-                    return new CablePlacementService(LerpSettings);
+                    return new CablePlacementService(LerpSettings, displayZDistance);
                 default:
                     throw new InvalidOperationException();
             }

@@ -1,15 +1,21 @@
-﻿namespace ButterBoard.FloatingGrid
+﻿using UnityEngine;
+
+namespace ButterBoard.FloatingGrid
 {
     public class FloatingPlaceable : BasePlaceable
     {
+        [field: SerializeField]
+        public SpriteTintHelper MainSpriteTintHelper { get; private set; }= null!;
+
         public override void DisplayPlacementStatus(string statusMessage, bool isOk)
         {
-            throw new System.NotImplementedException();
+            Color targetColor = isOk ? Color.green : Color.red;
+            MainSpriteTintHelper.SetTint(targetColor);
         }
 
         public override void ClearPlacementStatus()
         {
-            throw new System.NotImplementedException();
+            MainSpriteTintHelper.RestoreColor();
         }
     }
 }

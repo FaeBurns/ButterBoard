@@ -16,7 +16,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// </summary>
         private readonly Dictionary<GridPin, GridPin> _realToDisplayGridPinMapping = new Dictionary<GridPin, GridPin>();
 
-        public GridPlacementService(LerpSettings lerpSettings, float pinCheckDistanceRadiusThreshold) : base(lerpSettings)
+        public GridPlacementService(LerpSettings lerpSettings, float pinCheckDistanceRadiusThreshold, float displayZDistance) : base(lerpSettings, displayZDistance)
         {
             _pinCheckDistanceRadiusThreshold = pinCheckDistanceRadiusThreshold;
         }
@@ -172,40 +172,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                     displayPin.DisplayIssue(issue.IssueType);
                 }
             }
-        }
-
-        protected override bool UpdateFinalize()
-        {
-            // get current transform
-            Vector3 currentDisplayPosition = Context.DisplayObject.transform.position;
-            Quaternion currentDisplayRotation = Context.DisplayObject.transform.rotation;
-
-            // get target transform
-            Vector3 targetPosition = Context.PlacingObject.transform.position;
-            Quaternion targetRotation = Context.PlacingObject.transform.rotation;
-
-            // get lerp target
-            Vector3 lerpPosition = Vector3.Lerp(currentDisplayPosition, targetPosition, LerpSettings.TranslateLerp);
-            Quaternion lerpRotation = Quaternion.Lerp(currentDisplayRotation, targetRotation, LerpSettings.RotateLerp);
-
-            // set display object to use lerp data
-            Context.DisplayObject.transform.position = lerpPosition;
-            Context.DisplayObject.transform.rotation = lerpRotation;
-
-            // check approximate position and rotation
-            bool approximatePosition = currentDisplayPosition.ApproximateDistance(targetPosition, 0.01f);
-            bool approximateRotation = Quaternion.Dot(currentDisplayRotation, targetRotation).Approximately(1);
-
-            if (approximatePosition && approximateRotation)
-            {
-                Debug.Log($"current: {currentDisplayPosition} | lerp: {lerpPosition} | target {targetPosition}");
-
-                // don't need to bother updating position/rotation
-                // display object is deleted immediately after
-                return true;
-            }
-
-            return false;
         }
 
         private IReadOnlyList<GridHost> GetOverlappingGrids(GridPlaceable placeable)

@@ -9,10 +9,12 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         where T : BasePlaceable
     {
         protected readonly LerpSettings LerpSettings;
+        protected readonly float DisplayZDistance;
 
-        protected PlacementService(LerpSettings lerpSettings)
+        protected PlacementService(LerpSettings lerpSettings, float displayZDistance)
         {
             LerpSettings = lerpSettings;
+            DisplayZDistance = displayZDistance;
         }
 
         /// <summary>
@@ -150,7 +152,40 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// Updates this placement service while the context is in the <see cref="PlacementState.FINALIZE"/> state.
         /// </summary>
         /// <returns></returns>
-        protected abstract bool UpdateFinalize();
+        protected virtual bool UpdateFinalize()
+        {
+            // get current transform
+            Vector2 currentDisplayPosition = Context.DisplayObject.transform.position;
+            Quaternion currentDisplayRotation = Context.DisplayObject.transform.rotation;
+
+            // get target transform
+            Vector2 targetPosition = Context.PlacingObject.transform.position;
+            Quaternion targetRotation = Context.PlacingObject.transform.rotation;
+
+            // get lerp target
+            Vector3 lerpPosition = Vector2.Lerp(currentDisplayPosition, targetPosition, LerpSettings.TranslateLerp);
+            lerpPosition.z = DisplayZDistance;
+            Quaternion lerpRotation = Quaternion.Lerp(currentDisplayRotation, targetRotation, LerpSettings.RotateLerp);
+
+            // set display object to use lerp data
+            Context.DisplayObject.transform.position = lerpPosition;
+            Context.DisplayObject.transform.rotation = lerpRotation;
+
+            // check approximate position and rotation
+            bool approximatePosition = currentDisplayPosition.ApproximateDistance(targetPosition, 0.01f);
+            bool approximateRotation = Mathf.Abs(Quaternion.Dot(currentDisplayRotation, targetRotation)).Approximately(1);
+
+            if (approximatePosition && approximateRotation)
+            {
+                Debug.Log($"current: {currentDisplayPosition} | lerp: {lerpPosition} | target {targetPosition}");
+
+                // don't need to bother updating position/rotation
+                // display object is deleted immediately after
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Gets all objects with a <see cref="TComponent"/> component in overlap range of the target.
@@ -195,6 +230,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Context.PlacingObject.transform.SetPositionAndRotation(position, rotation);
 
             Vector3 displayPosition = Vector3.Lerp(Context.DisplayObject.transform.position, position, LerpSettings.TranslateLerp);
+            displayPosition.z = DisplayZDistance;
             Quaternion displayRotation = Quaternion.Lerp(Context.DisplayObject.transform.rotation, rotation, LerpSettings.RotateLerp);
 
             Context.DisplayObject.transform.SetPositionAndRotation(displayPosition, displayRotation);

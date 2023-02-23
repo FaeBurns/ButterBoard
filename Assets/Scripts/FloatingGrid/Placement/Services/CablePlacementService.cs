@@ -5,7 +5,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 {
     public class CablePlacementService : PlacementService<CablePlaceable>
     {
-
         public override void BeginPrefabPlacement(GameObject prefab)
         {
             throw new System.NotImplementedException();
@@ -31,7 +30,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             throw new System.NotImplementedException();
         }
 
-        public CablePlacementService(LerpSettings lerpSettings) : base(lerpSettings)
+        public CablePlacementService(LerpSettings lerpSettings, float displayZDistance) : base(lerpSettings, displayZDistance)
         {
         }
     }

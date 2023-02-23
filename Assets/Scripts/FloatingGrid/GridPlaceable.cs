@@ -20,7 +20,7 @@ namespace ButterBoard.FloatingGrid
         public Vector3 GridOffset { get; private set; } = Vector3.zero;
 
         [field: SerializeField]
-        public SpriteRenderer[] MainSprites { get; private set; }= null!;
+        public SpriteTintHelper MainSpriteTintHelper { get; private set; } = null!;
 
         [field: SerializeField]
         public GridPoint[] OverlappingPoints { get; set; } = Array.Empty<GridPoint>();
@@ -32,20 +32,13 @@ namespace ButterBoard.FloatingGrid
 
         public override void DisplayPlacementStatus(string statusMessage, bool isOk)
         {
-            Color displayColor = isOk ? Color.green : Color.red;
-
-            foreach (SpriteRenderer sprite in MainSprites)
-            {
-                sprite.color = displayColor;
-            }
+            Color targetColor = isOk ? Color.green : Color.red;
+            MainSpriteTintHelper.SetTint(targetColor);
         }
 
         public override void ClearPlacementStatus()
         {
-            foreach (SpriteRenderer sprite in MainSprites)
-            {
-                sprite.color = Color.white;
-            }
+            MainSpriteTintHelper.RestoreColor();
         }
 
         public void DisplayPinIssue(PinPlacementIssue issue)

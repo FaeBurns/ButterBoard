@@ -11,6 +11,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aca1ec18cb140f3809a013b91697bcb, type: 3}
   m_Name: SampleFloatingPlaceable
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   key: FloatingGrid/SampleFloatingPlaceable
-  storedObject: {fileID: 6240298647749843894, guid: c90867dbff94ff049a59cca37504dbf0, type: 3}
+  storedObject: {fileID: 9207276340654872059, guid: 51e4ebaa968c37c43bb173c695443a55, type: 3}
