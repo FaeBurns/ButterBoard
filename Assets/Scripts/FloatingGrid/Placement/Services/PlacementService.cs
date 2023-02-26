@@ -91,6 +91,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public void TryCommitPlacement(Vector3 targetPosition, Quaternion targetRotation)
         {
+            // force update - stops placeables sometimes not being placed at the right position
             UpdatePosition(targetPosition, targetRotation);
 
             if (CommitPlacement())
@@ -204,16 +205,36 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         }
 
         /// <summary>
-        /// Gets all objects with a component of type <see cref="TComponent"/> that overlaps with the specified area.
+        /// Gets all objects with a component of type <see cref="TComponent"/> that overlap with the specified area.
         /// </summary>
         /// <param name="position">The center position of the overlap area.</param>
         /// <param name="size">The size (extents * 2) of the overlap area.</param>
         /// <param name="rotation">The rotation of the overlap area.</param>
         /// <typeparam name="TComponent">The type of component to search for.</typeparam>
         /// <returns></returns>
-        protected List<TComponent> GetOverlaps<TComponent>(Vector2 position, Vector2 size, float rotation)
+        protected List<TComponent> GetOverlaps<TComponent>(Vector2 position, Vector2 size, float rotation) where TComponent : Component
         {
             Collider2D[] overlaps = Physics2D.OverlapBoxAll(position, size, rotation);
+            List<TComponent> result = new List<TComponent>();
+            foreach (Collider2D overlap in overlaps)
+            {
+                TComponent component = overlap.GetComponent<TComponent>();
+                if (component != null)
+                    result.Add(component);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all objects with a component of type <see cref="TComponent"/> that overlap in the specified area.
+        /// </summary>
+        /// <param name="position">The center of the area.</param>
+        /// <param name="radius">The radius of the area.</param>
+        /// <typeparam name="TComponent">The type of component to search for.</typeparam>
+        /// <returns></returns>
+        protected List<TComponent> GetOverlapsCircle<TComponent>(Vector2 position, float radius) where TComponent : Component
+        {
+            Collider2D[] overlaps = Physics2D.OverlapCircleAll(position, radius);
             List<TComponent> result = new List<TComponent>();
             foreach (Collider2D overlap in overlaps)
             {

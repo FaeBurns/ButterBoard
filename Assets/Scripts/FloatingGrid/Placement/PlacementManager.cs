@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
-using ButterBoard.Cables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -150,7 +149,7 @@ namespace ButterBoard.FloatingGrid.Placement
                 case FloatingPlaceable:
                     return new FloatingPlacementService(LerpSettings, displayZDistance);
                 case CablePlaceable:
-                    return new CablePlacementService(LerpSettings, displayZDistance);
+                    return new CablePlacementService(LerpSettings, pinCheckDistanceRadiusThreshold, displayZDistance);
                 default:
                     throw new InvalidOperationException();
             }

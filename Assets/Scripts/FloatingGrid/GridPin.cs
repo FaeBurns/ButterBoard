@@ -8,7 +8,7 @@ namespace ButterBoard.FloatingGrid
     public class GridPin : ReferenceResolvedBehaviour
     {
         [field: SerializeField]
-        public SpriteTintHelper PinSpriteTintHelpers { get; private set; } = null!;
+        public SpriteTintHelper PinSpriteTintHelper { get; private set; } = null!;
 
         public GridPoint? ConnectedPoint { get; private set; }
 
@@ -37,12 +37,12 @@ namespace ButterBoard.FloatingGrid
                 _ => throw new ArgumentOutOfRangeException(nameof(issueType), issueType, null),
             };
 
-            PinSpriteTintHelpers.SetTint(tintColor);
+            PinSpriteTintHelper.SetTint(tintColor);
         }
 
         public void ClearIssue()
         {
-            PinSpriteTintHelpers.RestoreColor();
+            PinSpriteTintHelper.RestoreColor();
         }
     }
 }

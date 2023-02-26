@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c13c5aa537456abfdad1d13f6d9ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PinSpriteTintHelpers>k__BackingField: {fileID: 8126710276919585958}
+  <PinSpriteTintHelper>k__BackingField: {fileID: 8126710276919585958}
 --- !u!114 &8126710276919585958
 MonoBehaviour:
   m_ObjectHideFlags: 0
