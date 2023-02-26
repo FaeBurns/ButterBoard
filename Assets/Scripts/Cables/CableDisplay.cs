@@ -15,6 +15,9 @@ namespace ButterBoard.Cables
         [BindComponent]
         private LineRenderer _lineRenderer = null!;
 
+        [SerializeField]
+        private float zOverride = -6;
+
         public void SetTargets(Transform transformA, Transform transformB)
         {
             _targetA = transformA;
@@ -33,9 +36,14 @@ namespace ButterBoard.Cables
         {
             _lineRenderer.SetPositions(new Vector3[2]
             {
-                _targetA.position,
-                _targetB.position,
+                ModifyPosition(_targetA.position),
+                ModifyPosition(_targetB.position),
             });
+        }
+
+        private Vector3 ModifyPosition(Vector3 position)
+        {
+            return new Vector3(position.x, position.y, zOverride);
         }
     }
 }
