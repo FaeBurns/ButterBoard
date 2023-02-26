@@ -163,12 +163,12 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         protected virtual bool UpdateFinalize()
         {
             // get current transform
-            Vector2 currentDisplayPosition = Context.CheckingObject.transform.position;
-            Quaternion currentDisplayRotation = Context.CheckingObject.transform.rotation;
+            Vector2 currentDisplayPosition = Context.PlacingObject.transform.position;
+            Quaternion currentDisplayRotation = Context.PlacingObject.transform.rotation;
 
             // get target transform
-            Vector2 targetPosition = Context.PlacingObject.transform.position;
-            Quaternion targetRotation = Context.PlacingObject.transform.rotation;
+            Vector2 targetPosition = Context.CheckingObject.transform.position;
+            Quaternion targetRotation = Context.CheckingObject.transform.rotation;
 
             // get lerp target
             Vector3 lerpPosition = Vector2.Lerp(currentDisplayPosition, targetPosition, LerpSettings.TranslateLerp);
@@ -176,8 +176,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Quaternion lerpRotation = Quaternion.Lerp(currentDisplayRotation, targetRotation, LerpSettings.RotateLerp);
 
             // set display object to use lerp data
-            Context.CheckingObject.transform.position = lerpPosition;
-            Context.CheckingObject.transform.rotation = lerpRotation;
+            Context.PlacingObject.transform.position = lerpPosition;
+            Context.PlacingObject.transform.rotation = lerpRotation;
 
             // check approximate position and rotation
             bool approximatePosition = currentDisplayPosition.ApproximateDistance(targetPosition, 0.01f);
@@ -185,6 +185,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             if (approximatePosition && approximateRotation)
             {
+                // snap position and rotation to that of checking object
+                Context.PlacingObject.transform.position = targetPosition;
+                Context.PlacingObject.transform.rotation = targetRotation;
+
                 Debug.Log($"current: {currentDisplayPosition} | lerp: {lerpPosition} | target {targetPosition}");
 
                 // don't need to bother updating position/rotation

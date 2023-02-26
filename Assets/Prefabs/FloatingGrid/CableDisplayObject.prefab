@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4997e7e00e4d4bc1b2a4874ffab4bd56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zOverride: -6
+  zOverride: -10
 --- !u!120 &4873295848417676306
 LineRenderer:
   m_ObjectHideFlags: 0

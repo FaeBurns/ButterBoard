@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
 {
     public class GridPlacementService : PlacementService<GridPlaceable>
     {
         private readonly float _pinCheckDistanceRadiusThreshold;
-
-        /// <summary>
-        /// Gets a mapping of <see cref="GridPin">GridPins</see> on <see cref="PlacementContext{T}.Placeable"/> to <see cref="GridPin">GridPins</see> on <see cref="PlacementContext{T}.CheckingPlaceable"/>.
-        /// </summary>
         private readonly Dictionary<GridPin, GridPin> _checkingToRealGridPinMapping = new Dictionary<GridPin, GridPin>();
+
+        private GridHost? _previousGridHost;
 
         public GridPlacementService(LerpSettings lerpSettings, float pinCheckDistanceRadiusThreshold, float displayZDistance) : base(lerpSettings, displayZDistance)
         {
@@ -37,7 +33,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             base.BeginMovePlacement(target);
 
             // disconnect all GridPins
-            foreach (GridPin gridPin in Context!.Placeable.Pins)
+            foreach (GridPin gridPin in Context.Placeable.Pins)
             {
                 if (gridPin.ConnectedPoint != null)
                     gridPin.ConnectedPoint.Free();
@@ -59,17 +55,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         protected override bool CommitPlacement()
         {
-            // get all grids the placeable is currently overlapping.
-            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.CheckingPlaceable);
+            GridHost? gridTarget = GetTargetGrid();
 
-            // if not overlapping grids - can check for floating placement
-            if (overlappingGrids.Count == 0)
-            {
+            if (gridTarget == null)
                 return false;
-            }
-
-            // get first grid
-            GridHost gridTarget = overlappingGrids[0];
 
             bool isValid = GetPinIssues(gridTarget, Context.CheckingPlaceable).Count == 0;
 
@@ -124,10 +113,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             // get all grids the placeable is currently overlapping.
-            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.Placeable);
+            GridHost? targetGrid = GetTargetGrid();
 
             // if there were no overlapping grids found
-            if (overlappingGrids.Count == 0)
+            if (targetGrid == null)
             {
                 // set position and rotation to the raw values and return
                 SetPositionAndRotation(targetPosition, targetRotation);
@@ -136,11 +125,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 Context.Placeable.DisplayPlacementStatus("Must be placed on a grid", false);
                 return;
             }
-
-            // if any grids were found
-            // get the first one
-            // TODO: see if there's a better way to decide which grid to use. Closest?
-            GridHost targetGrid = overlappingGrids[0];
 
             // snap position and rotation to grid
             // multiplying quaternions adds them together in the order they are shown
@@ -265,6 +249,26 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             return result;
+        }
+
+        private GridHost? GetTargetGrid()
+        {
+            // get all grids the placeable is currently overlapping.
+            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.CheckingPlaceable);
+
+            // if not overlapping grids - can check for floating placement
+            if (overlappingGrids.Count == 0)
+            {
+                return null;
+            }
+
+            // stick to last one selected
+            if (overlappingGrids.Contains(_previousGridHost))
+                return _previousGridHost;
+
+            // otherwise select first
+            _previousGridHost = overlappingGrids[0];
+            return overlappingGrids[0];
         }
     }
 }
