@@ -13,7 +13,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         protected override bool CommitPlacement()
         {
             // check if placement is valid
-            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.Placeable);
+            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingPlaceable);
             bool canPlace = allOverlapPlaceables.Count == 0;
 
             // if cannot place
@@ -22,7 +22,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 return false;
 
             // clear display status
-            Context.DisplayPlaceable.ClearPlacementStatus();
+            Context.Placeable.ClearPlacementStatus();
 
             return true;
         }
@@ -31,12 +31,12 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             SetPositionAndRotation(targetPosition, targetRotation);
 
-            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.Placeable);
+            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingPlaceable);
 
             bool canPlace = allOverlapPlaceables.Count == 0;
             string statusMessage = canPlace ? String.Empty : "Placement Invalid";
 
-            Context.DisplayPlaceable.DisplayPlacementStatus(statusMessage, canPlace);
+            Context.Placeable.DisplayPlacementStatus(statusMessage, canPlace);
         }
     }
 

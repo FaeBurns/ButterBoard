@@ -5,12 +5,12 @@ namespace ButterBoard.FloatingGrid.Placement
 {
     public class PlacementContext<T> where T : BasePlaceable
     {
-        public PlacementContext(GameObject placingObject, GameObject displayObject, T placeable, T displayPlaceable, PlacementType placementType)
+        public PlacementContext(GameObject placingObject, GameObject checkingObject, T placeable, T checkingPlaceable, PlacementType placementType)
         {
             PlacingObject = placingObject;
-            DisplayObject = displayObject;
+            CheckingObject = checkingObject;
             Placeable = placeable;
-            DisplayPlaceable = displayPlaceable;
+            CheckingPlaceable = checkingPlaceable;
             PlacementType = placementType;
             Size = placeable.BoundsCollider.bounds.size;
         }
@@ -23,7 +23,7 @@ namespace ButterBoard.FloatingGrid.Placement
         /// <summary>
         /// Gets the preview object being displayed.
         /// </summary>
-        public GameObject DisplayObject { get; }
+        public GameObject CheckingObject { get; }
 
         /// <summary>
         /// Gets the <see cref="T"/> placeable found on <see cref="PlacingObject"/>.
@@ -31,9 +31,9 @@ namespace ButterBoard.FloatingGrid.Placement
         public T Placeable { get; }
 
         /// <summary>
-        /// Gets the <see cref="T"/> placeable found on <see cref="DisplayObject"/>.
+        /// Gets the <see cref="T"/> placeable found on <see cref="CheckingObject"/>.
         /// </summary>
-        public T DisplayPlaceable { get; }
+        public T CheckingPlaceable { get; }
 
         /// <summary>
         /// Gets the type of placement occuring.

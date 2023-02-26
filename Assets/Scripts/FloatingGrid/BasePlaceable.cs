@@ -44,9 +44,9 @@ namespace ButterBoard.FloatingGrid
         /// <summary>
         /// Marks this object as the display instance.
         /// </summary>
-        public virtual void SetDisplay()
+        public virtual void SetDisplayStatus(bool display)
         {
-            BoundsCollider.enabled = false;
+            BoundsCollider.enabled = !display;
         }
     }
 }

@@ -42,14 +42,14 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         protected override bool CommitPlacement()
         {
             // get target grid point
-            GridPoint? targetPoint = GetGridPointAtPosition(Context.PlacingObject.transform.position);
+            GridPoint? targetPoint = GetGridPointAtPosition(Context.CheckingObject.transform.position);
 
             // cancel if not over grid point
             if (targetPoint == null)
                 return false;
 
-            // cancel if blocked or not open
-            if (targetPoint.Blocked || !targetPoint.Open)
+            // cancel if not open
+            if (!targetPoint.Open)
                 return false;
 
             // perform connection
@@ -82,7 +82,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 SetPositionAndRotation(targetPosition, targetRotation);
 
                 // display error
-                Context.DisplayPlaceable.DisplayPlacementStatus("Must be placed on a grid", false);
+                Context.Placeable.DisplayPlacementStatus("Must be placed on a grid", false);
                 return;
             }
 
@@ -90,16 +90,16 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Vector3 snappedPosition = PlacementHelpers.SnapPositionToGrid(targetPoint.HostingGrid, targetPosition, Vector3.zero);
             SetPositionAndRotation(snappedPosition, targetRotation);
 
-            // if targeted point is blocked or not open
-            if (targetPoint.Blocked || !targetPoint.Open)
+            // if targeted point is not open
+            if (!targetPoint.Open)
             {
                 // display error
-                Context.DisplayPlaceable.DisplayPlacementStatus("Grid point is in use", false);
+                Context.Placeable.DisplayPlacementStatus("Grid point is in use", false);
                 return;
             }
 
             // display okay
-            Context.DisplayPlaceable.DisplayPlacementStatus(String.Empty, true);
+            Context.Placeable.DisplayPlacementStatus(String.Empty, true);
         }
 
         protected override bool UpdateFinalize()
@@ -115,10 +115,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (_placementType == CablePlacementType.START)
             {
                 // destroy start display object
-                Object.Destroy(Context.DisplayObject);
+                Object.Destroy(Context.CheckingObject);
 
-                // enable placing object
-                Context.PlacingObject.SetActive(true);
+                // reset display status
+                Context.Placeable.SetDisplayStatus(false);
 
                 // begin placement of the cable end point
                 // IMPORTANT - calling base here

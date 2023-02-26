@@ -31,26 +31,27 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             // create real and display objects
             GameObject placingObject = Object.Instantiate(prefab);
-            GameObject displayDuplicate = Object.Instantiate(prefab);
+            GameObject checkingDuplicate = Object.Instantiate(prefab);
 
             // get placeable component on placing object
             T? placeable = placingObject.GetComponent<T>();
-            T displayPlaceable = displayDuplicate.GetComponent<T>();
+            T checkingPlaceable = checkingDuplicate.GetComponent<T>();
 
             // throw if not found
             if (placeable == null)
                 throw new ArgumentException($"Cannot begin placement of prefab {placingObject.name} as argument it does not have a {nameof(T)} component");
 
             // set context
-            Context = new PlacementContext<T>(placingObject, displayDuplicate, placeable, displayPlaceable, PlacementType.PLACE);
+            Context = new PlacementContext<T>(placingObject, checkingDuplicate, placeable, checkingPlaceable, PlacementType.PLACE);
 
-            // hide and disable actual object
-            Context.PlacingObject.SetActive(false);
+            // hide and disable checking object
+            Context.CheckingObject.SetActive(false);
 
             // set name of display object to aid debugging
-            // notify the placeable that it is the display instance
-            Context.DisplayPlaceable.name += "(Display)";
-            Context.DisplayPlaceable.SetDisplay();
+            Context.CheckingPlaceable.name += "(Checking)";
+
+            // notify the placeable that it is the checking version
+            Context.Placeable.SetDisplayStatus(true);
         }
 
         /// <summary>
@@ -70,23 +71,24 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             placeable.Pickup?.Invoke();
 
             // create duplicate used in display
-            GameObject displayDuplicate = Object.Instantiate(target, target.transform.position, target.transform.rotation);
+            GameObject checkingDuplicate = Object.Instantiate(target, target.transform.position, target.transform.rotation);
 
-            T displayPlaceable = displayDuplicate.GetComponent<T>();
+            T checkingPlaceable = checkingDuplicate.GetComponent<T>();
 
             // set context
-            Context = new PlacementContext<T>(target, displayDuplicate, placeable, displayPlaceable, PlacementType.MOVE);
+            Context = new PlacementContext<T>(target, checkingDuplicate, placeable, checkingPlaceable, PlacementType.MOVE);
 
-            // hide and disable actual object
-            Context.PlacingObject.SetActive(false);
+            // hide and disable checking object
+            Context.CheckingObject.SetActive(false);
 
             // clear parent
             Context.PlacingObject.transform.SetParent(null);
 
-            // set name of display object to aid debugging
-            // notify the placeable that it is the display instance
-            Context.DisplayPlaceable.name += "(Display)";
-            Context.DisplayPlaceable.SetDisplay();
+            // set name of checking object to aid debugging
+            Context.CheckingPlaceable.name += "(Checking)";
+
+            // notify the placeable that it is the checking version
+            Context.Placeable.SetDisplayStatus(true);
         }
 
         public void TryCommitPlacement(Vector3 targetPosition, Quaternion targetRotation)
@@ -133,7 +135,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Context.Placeable.Remove?.Invoke();
 
             Object.Destroy(Context.PlacingObject);
-            Object.Destroy(Context.DisplayObject);
+            Object.Destroy(Context.CheckingObject);
         }
 
         /// <summary>
@@ -141,9 +143,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// </summary>
         public virtual void CompletePlacement()
         {
-            Object.Destroy(Context.DisplayObject);
+            Object.Destroy(Context.CheckingObject);
 
-            Context.PlacingObject.SetActive(true);
+            Context.Placeable.SetDisplayStatus(false);
             Context.Placeable.Place?.Invoke();
         }
 
@@ -161,8 +163,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         protected virtual bool UpdateFinalize()
         {
             // get current transform
-            Vector2 currentDisplayPosition = Context.DisplayObject.transform.position;
-            Quaternion currentDisplayRotation = Context.DisplayObject.transform.rotation;
+            Vector2 currentDisplayPosition = Context.CheckingObject.transform.position;
+            Quaternion currentDisplayRotation = Context.CheckingObject.transform.rotation;
 
             // get target transform
             Vector2 targetPosition = Context.PlacingObject.transform.position;
@@ -174,8 +176,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Quaternion lerpRotation = Quaternion.Lerp(currentDisplayRotation, targetRotation, LerpSettings.RotateLerp);
 
             // set display object to use lerp data
-            Context.DisplayObject.transform.position = lerpPosition;
-            Context.DisplayObject.transform.rotation = lerpRotation;
+            Context.CheckingObject.transform.position = lerpPosition;
+            Context.CheckingObject.transform.rotation = lerpRotation;
 
             // check approximate position and rotation
             bool approximatePosition = currentDisplayPosition.ApproximateDistance(targetPosition, 0.01f);
@@ -253,13 +255,13 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// <param name="rotation"></param>
         protected void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
-            Context.PlacingObject.transform.SetPositionAndRotation(position, rotation);
+            Context.CheckingObject.transform.SetPositionAndRotation(position, rotation);
 
-            Vector3 displayPosition = Vector3.Lerp(Context.DisplayObject.transform.position, position, LerpSettings.TranslateLerp);
+            Vector3 displayPosition = Vector3.Lerp(Context.PlacingObject.transform.position, position, LerpSettings.TranslateLerp);
             displayPosition.z = DisplayZDistance;
-            Quaternion displayRotation = Quaternion.Lerp(Context.DisplayObject.transform.rotation, rotation, LerpSettings.RotateLerp);
+            Quaternion displayRotation = Quaternion.Lerp(Context.PlacingObject.transform.rotation, rotation, LerpSettings.RotateLerp);
 
-            Context.DisplayObject.transform.SetPositionAndRotation(displayPosition, displayRotation);
+            Context.PlacingObject.transform.SetPositionAndRotation(displayPosition, displayRotation);
         }
     }
 }

@@ -12,9 +12,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         private readonly float _pinCheckDistanceRadiusThreshold;
 
         /// <summary>
-        /// Gets a mapping of <see cref="GridPin">GridPins</see> on <see cref="PlacementContext{T}.Placeable"/> to <see cref="GridPin">GridPins</see> on <see cref="PlacementContext{T}.DisplayPlaceable"/>.
+        /// Gets a mapping of <see cref="GridPin">GridPins</see> on <see cref="PlacementContext{T}.Placeable"/> to <see cref="GridPin">GridPins</see> on <see cref="PlacementContext{T}.CheckingPlaceable"/>.
         /// </summary>
-        private readonly Dictionary<GridPin, GridPin> _realToDisplayGridPinMapping = new Dictionary<GridPin, GridPin>();
+        private readonly Dictionary<GridPin, GridPin> _checkingToRealGridPinMapping = new Dictionary<GridPin, GridPin>();
 
         public GridPlacementService(LerpSettings lerpSettings, float pinCheckDistanceRadiusThreshold, float displayZDistance) : base(lerpSettings, displayZDistance)
         {
@@ -25,9 +25,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             base.BeginPrefabPlacement(prefab);
 
-            for (int i = 0; i < Context.Placeable.Pins.Count; i++)
+            for (int i = 0; i < Context.CheckingPlaceable.Pins.Count; i++)
             {
-                _realToDisplayGridPinMapping.Add(Context.Placeable.Pins[i], Context.DisplayPlaceable.Pins[i]);
+                _checkingToRealGridPinMapping.Add(Context.CheckingPlaceable.Pins[i], Context.Placeable.Pins[i]);
             }
         }
 
@@ -47,7 +47,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             for (int i = 0; i < Context.Placeable.Pins.Count; i++)
             {
-                _realToDisplayGridPinMapping.Add(Context.Placeable.Pins[i], Context.DisplayPlaceable.Pins[i]);
+                _checkingToRealGridPinMapping.Add(Context.CheckingPlaceable.Pins[i], Context.Placeable.Pins[i]);
             }
 
             // unblock all points
@@ -60,7 +60,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         protected override bool CommitPlacement()
         {
             // get all grids the placeable is currently overlapping.
-            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.Placeable);
+            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.CheckingPlaceable);
 
             // if not overlapping grids - can check for floating placement
             if (overlappingGrids.Count == 0)
@@ -71,16 +71,16 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // get first grid
             GridHost gridTarget = overlappingGrids[0];
 
-            bool isValid = GetPinIssues(gridTarget, Context.Placeable).Count == 0;
+            bool isValid = GetPinIssues(gridTarget, Context.CheckingPlaceable).Count == 0;
 
             if (!isValid)
                 return false;
 
             // get list of all overlapping points
-            List<GridPoint> overlappingPoints = GetOverlaps<GridPoint>(Context.Placeable);
+            List<GridPoint> overlappingPoints = GetOverlaps<GridPoint>(Context.CheckingPlaceable);
 
             // get mapping of pins to points
-            Dictionary<GridPin,GridPoint> pinTargets = GetPointsUnderPins(gridTarget, Context.Placeable);
+            Dictionary<GridPin,GridPoint> pinTargets = GetPointsUnderPins(gridTarget, Context.CheckingPlaceable);
 
             // get set of all points targeted by pins
             HashSet<GridPoint> pinPoints = new HashSet<GridPoint>(pinTargets.Values);
@@ -98,15 +98,17 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             // connect all pins to points
-            foreach ((GridPin gridPin, GridPoint gridPoint) in pinTargets)
+            foreach ((GridPin checkingPin, GridPoint gridPoint) in pinTargets)
             {
-                gridPin.Connect(gridPoint);
-                gridPoint.Connect(gridPin);
+                GridPin targetPin = _checkingToRealGridPinMapping[checkingPin];
+
+                targetPin.Connect(gridPoint);
+                gridPoint.Connect(targetPin);
             }
 
             Context.Placeable.OverlappingPoints = overlappingPoints.ToArray();
 
-            Context.DisplayPlaceable.ClearPlacementStatus();
+            Context.Placeable.ClearPlacementStatus();
             Context.PlacingObject.transform.SetParent(gridTarget.transform);
 
             return true;
@@ -116,7 +118,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             // clear pin issues
             // probably don't need to do this every frame
-            foreach (GridPin pin in Context.DisplayPlaceable.Pins)
+            foreach (GridPin pin in Context.Placeable.Pins)
             {
                 pin.ClearIssue();
             }
@@ -131,7 +133,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 SetPositionAndRotation(targetPosition, targetRotation);
 
                 // notify user of error
-                Context.DisplayPlaceable.DisplayPlacementStatus("Must be placed on a grid", false);
+                Context.Placeable.DisplayPlacementStatus("Must be placed on a grid", false);
                 return;
             }
 
@@ -142,22 +144,22 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // snap position and rotation to grid
             // multiplying quaternions adds them together in the order they are shown
-            Vector3 snappedPosition = PlacementHelpers.SnapPositionToGrid(targetGrid, targetPosition, Context.Placeable.GridOffset);
+            Vector3 snappedPosition = PlacementHelpers.SnapPositionToGrid(targetGrid, targetPosition, Context.CheckingPlaceable.GridOffset);
             Quaternion snappedRotation = targetRotation * targetGrid.transform.rotation;
 
             SetPositionAndRotation(snappedPosition, snappedRotation);
 
-            IReadOnlyList<PinPlacementIssue> placementIssues = GetPinIssues(targetGrid, Context.Placeable);
+            IReadOnlyList<PinPlacementIssue> placementIssues = GetPinIssues(targetGrid, Context.CheckingPlaceable);
 
             bool placementValid = placementIssues.Count == 0;
 
-            Context.DisplayPlaceable.DisplayPlacementStatus(placementValid ? String.Empty : "Placement Invalid", placementValid);
+            Context.Placeable.DisplayPlacementStatus(placementValid ? String.Empty : "Placement Invalid", placementValid);
 
             if (!placementValid)
             {
                 foreach (PinPlacementIssue issue in placementIssues)
                 {
-                    GridPin displayPin = _realToDisplayGridPinMapping[issue.PinWithIssue];
+                    GridPin displayPin = _checkingToRealGridPinMapping[issue.PinWithIssue];
                     displayPin.DisplayIssue(issue.IssueType);
                 }
             }
