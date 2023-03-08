@@ -9,6 +9,8 @@ namespace ButterBoard.Cables
 {
     public class CableDisplay : MonoBehaviour
     {
+        private CablePlaceable _startPlaceable = null!;
+
         private Transform _targetA = null!;
         private Transform _targetB = null!;
 
@@ -18,10 +20,14 @@ namespace ButterBoard.Cables
         [SerializeField]
         private float zOverride = -6;
 
-        public void SetTargets(Transform transformA, Transform transformB)
+        public void Initialize(CablePlaceable start, CablePlaceable end)
         {
-            _targetA = transformA;
-            _targetB = transformB;
+            _startPlaceable = start;
+            _lineRenderer.startColor = _startPlaceable.CableColor;
+            _lineRenderer.endColor = _startPlaceable.CableColor;
+
+            _targetA = start.transform;
+            _targetB = end.transform;
 
             // force an update - stops 1 frame graphical errors
             Update();

@@ -142,7 +142,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 CableDisplay cableDisplay = cableDisplayObject.GetComponent<CableDisplay>();
 
                 // set cable targets
-                cableDisplay.SetTargets(_startPlaceable.transform, Context.PlacingObject.transform);
+                cableDisplay.Initialize(_startPlaceable, Context.Placeable);
 
                 // return false - execution of UpdatePosition will now continue
                 return false;
