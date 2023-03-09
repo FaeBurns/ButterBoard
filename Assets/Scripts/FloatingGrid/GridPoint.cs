@@ -1,6 +1,7 @@
 ﻿using System;
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
+using Coil;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -25,6 +26,9 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public bool Blocked { get; set; } = false;
 
+        [field: SerializeField]
+        public Wire Wire { get; private set; } = null!;
+
         public bool Open => ConnectedPin == null && !Blocked;
 
         private void Awake()
@@ -43,6 +47,11 @@ namespace ButterBoard.FloatingGrid
             _scalableSprite.transform.localScale = scale;
             Radius = gridHost.Spacing / 4f;
             _pointCollider.radius = Radius;
+        }
+
+        public void Wake(Wire wire)
+        {
+            Wire = wire;
         }
 
         public void Connect(GridPin target)

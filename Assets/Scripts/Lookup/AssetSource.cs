@@ -19,7 +19,7 @@ namespace ButterBoard.Lookup
 
             foreach (SearchableAssetSource assetSource in assetSources)
             {
-                _assetMapping.Add(assetSource.key, assetSource);
+                _assetMapping.Add(assetSource.key.ToLower(), assetSource);
             }
 
             _initialized = true;
@@ -27,19 +27,19 @@ namespace ButterBoard.Lookup
 
         public static void Add(string key, SearchableAssetSource assetSource)
         {
-            _assetMapping.Add(key, assetSource);
+            _assetMapping.Add(key.ToLower(), assetSource);
         }
 
         public static void Replace(string key, SearchableAssetSource assetSource)
         {
-            _assetMapping[key] = assetSource;
+            _assetMapping[key.ToLower()] = assetSource;
         }
 
         public static T Fetch<T>(string key)
             where T : Object
         {
             Verify();
-            return (T)Fetch(key);
+            return (T)Fetch(key.ToLower());
         }
 
         public static Object Fetch(string key)

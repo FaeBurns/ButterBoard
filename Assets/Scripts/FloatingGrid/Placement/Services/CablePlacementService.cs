@@ -35,6 +35,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             _prefab = null;
             _placementType = CablePlacementType.END;
 
+            // disconnect the two wires of the cable being moved
+            GameManager.Instance.ConnectionManager.Disconnect(Context.Placeable.Other.Pin.ConnectedPoint!.Wire, Context.Placeable.Pin.ConnectedPoint!.Wire);
+
             Context.Placeable.Pin.ConnectedPoint!.Free();
             Context.Placeable.Pin.Free();
         }
@@ -61,6 +64,14 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             {
                 _startPlaceable.Other = Context.Placeable;
                 Context.Placeable.Other = _startPlaceable;
+            }
+
+            // perform connection in Coil if this is the end side
+            // does not need to be full cable placement for connection to be required
+            if (_placementType == CablePlacementType.END)
+            {
+                // connect the two wires together
+                GameManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint!.Wire, Context.Placeable.Other.Pin.ConnectedPoint!.Wire);
             }
 
             // set parent to target point's grid

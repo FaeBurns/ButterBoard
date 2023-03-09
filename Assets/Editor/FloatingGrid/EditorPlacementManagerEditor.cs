@@ -33,7 +33,7 @@ namespace ButterBoard.Editor.FloatingGrid
 
             if (GUILayout.Button("Begin Test Placement (Floating)"))
             {
-                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/SampleFloatingPlaceable");
+                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/Breadboard");
                 manager.BeginPlace(prefab);
             }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Coil;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -14,7 +16,10 @@ namespace ButterBoard.FloatingGrid
                 if (gridPoint == null)
                     return;
 
-                Debug.Log($"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")}");
+                IReadOnlyCollection<Wire> localWires = GameManager.Instance.ConnectionManager.GetLocalConnections(gridPoint.Wire);
+                IReadOnlyCollection<Wire> globalWires = GameManager.Instance.ConnectionManager.GetGlobalConnections(gridPoint.Wire);
+
+                Debug.Log($"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections");
             }
         }
 

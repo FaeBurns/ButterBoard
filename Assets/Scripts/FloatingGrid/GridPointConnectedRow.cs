@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Coil;
+using Coil.Connections;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -11,6 +14,16 @@ namespace ButterBoard.FloatingGrid
         public void Initialize(List<GridPoint> gridPoints)
         {
             GridPoints = gridPoints;
+        }
+
+        private void Awake()
+        {
+            Wire wire = new Wire(new SynchronizedValueSource());
+
+            foreach (GridPoint gridPoint in GridPoints)
+            {
+                gridPoint.Wake(wire);
+            }
         }
     }
 }
