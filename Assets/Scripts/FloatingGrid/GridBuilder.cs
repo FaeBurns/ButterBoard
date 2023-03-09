@@ -73,29 +73,38 @@ namespace ButterBoard.FloatingGrid
             }
 
             List<GridPoint> allPoints = new List<GridPoint>();
+            List<GridPointConnectedRow> connectedRows = new List<GridPointConnectedRow>();
             Vector3 offset = new Vector3(xOffset, yOffset, 0);
 
-            gridHost.Initialize(width, height, spacing, offset, allPoints);
-
-            // go y-x instead of x-y so that it runs horizontally first
             // loop vertical
-            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
+                GridPointConnectedRow connectedRow = new GameObject("Row_" + x).AddComponent<GridPointConnectedRow>();
+                connectedRow.transform.position = new Vector3((x * spacing) + xOffset, 0, 0);
+                connectedRow.transform.SetParent(gridHost.transform);
+                List<GridPoint> rowPoints = new List<GridPoint>();
+
                 // loop horizontal
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
                     // spawn new point at position
                     // scale by spacing to set distance between points
                     // add offsets to modify position if placing at center of parent
                     Vector3 position = new Vector3((x * spacing) + xOffset, (y * spacing) + yOffset, 0);
 
-                    GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(pointPrefab, gridHost.transform);
+                    // instantiate using PrefabUtility to keep prefab link
+                    GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(pointPrefab, connectedRow.transform);
                     newObject.transform.position = position;
                     GridPoint newGridPoint = newObject.GetComponent<GridPoint>();
 
                     allPoints.Add(newGridPoint);
+                    rowPoints.Add(newGridPoint);
                 }
+
+                connectedRow.Initialize(rowPoints);
             }
+
+            gridHost.Initialize(width, height, spacing, offset, allPoints, connectedRows);
 
             foreach (GridPoint gridPoint in gridHost.GridPoints)
             {

@@ -5,13 +5,14 @@ namespace ButterBoard.FloatingGrid
 {
     public class GridHost : MonoBehaviour
     {
-        public void Initialize(int width, int height, float spacing, Vector3 offset, List<GridPoint> gridPoints)
+        public void Initialize(int width, int height, float spacing, Vector3 offset, List<GridPoint> gridPoints, List<GridPointConnectedRow> connectedRows)
         {
             Width = width;
             Height = height;
             Spacing = spacing;
             TopLeftOffsetFromCenter = offset;
             GridPoints = gridPoints;
+            ConnectedRows = connectedRows;
         }
 
         [field: SerializeField]
@@ -28,5 +29,8 @@ namespace ButterBoard.FloatingGrid
 
         [field: SerializeField]
         public List<GridPoint> GridPoints { get; private set; } = null!;
+
+        [field: SerializeField]
+        public List<GridPointConnectedRow> ConnectedRows { get; private set; } = null!;
     }
 }

@@ -101,6 +101,9 @@ namespace ButterBoard.FloatingGrid.Placement
             // complete placement and clear _activeService
             _activeService.CompletePlacement();
             _activeService = null;
+
+            // reset rotation
+            _rotationTarget = 0;
         }
 
         private void PickupUpdate()
