@@ -222,6 +222,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.02
   zoom: 5
+  zoomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 8
+      value: 8
+      inSlope: 1
+      outSlope: 1.0095348
+      tangentMode: 5
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 16
+      value: 32
+      inSlope: 5.263264
+      outSlope: 5.263264
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.27711678
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   zoomSpeed: 3
   minZoom: 1
   maxZoom: 8
@@ -289,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403cf9eec223431db03e59c82a0b170a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <TestPlacementAsset>k__BackingField: 
 --- !u!114 &1501067720
 MonoBehaviour:
   m_ObjectHideFlags: 0
