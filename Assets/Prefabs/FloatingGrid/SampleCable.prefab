@@ -72,6 +72,10 @@ MonoBehaviour:
       m_Calls: []
   <Other>k__BackingField: {fileID: 0}
   <Pin>k__BackingField: {fileID: 4991100793975798702}
+  <PlacementType>k__BackingField: 0
+  <CableColor>k__BackingField: {r: 0, g: 0.7058824, b: 0, a: 1}
+  <PoweredCableColor>k__BackingField: {r: 0, g: 1, b: 0, a: 1}
+  <LineDisplay>k__BackingField: {fileID: 0}
 --- !u!114 &5737909547268738849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4997e7e00e4d4bc1b2a4874ffab4bd56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zOverride: -6
 --- !u!120 &3491134748896690628
 LineRenderer:
   m_ObjectHideFlags: 0

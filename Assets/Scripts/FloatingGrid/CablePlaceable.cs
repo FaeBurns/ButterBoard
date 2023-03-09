@@ -22,6 +22,9 @@ namespace ButterBoard.FloatingGrid
         public Color CableColor { get; private set; }
 
         [field: SerializeField]
+        public Color PoweredCableColor { get; private set; }
+
+        [field: SerializeField]
         public CableDisplay LineDisplay { get; set; }
 
         public override void DisplayPlacementStatus(string statusMessage, bool isOk)
