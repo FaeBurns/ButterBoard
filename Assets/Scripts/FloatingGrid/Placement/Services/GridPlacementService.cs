@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
@@ -140,10 +141,20 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 return;
             }
 
-            // snap position and rotation to grid
-            // multiplying quaternions adds them together in the order they are shown
-            Vector3 snappedPosition = PlacementHelpers.SnapPositionToGrid(targetGrid, targetPosition, Context.CheckingPlaceable.GridOffset);
+            Vector3 snappedPosition;
+
+            // multiplying quaternions adds them together in the order of multiplication
             Quaternion snappedRotation = targetRotation * targetGrid.transform.rotation;
+
+            if (Context.Placeable.SnapsToGridSnapPoints && targetGrid.SnapPoints.Count > 0)
+            {
+                snappedPosition = PlacementHelpers.SnapPositionToGridSnapPoints(targetGrid, targetPosition);
+            }
+            else
+            {
+                // snap position and rotation to grid
+                snappedPosition = PlacementHelpers.SnapPositionToGrid(targetGrid, targetPosition, Context.CheckingPlaceable.GridOffset);
+            }
 
             SetPositionAndRotation(snappedPosition, snappedRotation);
 

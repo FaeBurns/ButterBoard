@@ -1,9 +1,8 @@
-﻿using System;
-using BeanCore.Unity.ReferenceResolver;
+﻿using BeanCore.Unity.ReferenceResolver;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace ButterBoard.FloatingGrid
+namespace ButterBoard.FloatingGrid.Placement.Placeables
 {
     public abstract class BasePlaceable : ReferenceResolvedBehaviour
     {

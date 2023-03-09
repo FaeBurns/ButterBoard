@@ -58,5 +58,24 @@ namespace ButterBoard.FloatingGrid
 
             return result;
         }
+
+        public static Vector3 SnapPositionToGridSnapPoints(GridHost targetGrid, Vector3 position)
+        {
+            float closestDistance = float.MaxValue;
+            Vector3 closestPosition = Vector3.zero;
+            foreach (GameObject snapPoint in targetGrid.SnapPoints)
+            {
+                Vector3 snapPointPosition = snapPoint.transform.position;
+
+                float distance = Vector3.Distance(snapPointPosition, position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestPosition = snapPointPosition;
+                }
+            }
+
+            return closestPosition;
+        }
     }
 }

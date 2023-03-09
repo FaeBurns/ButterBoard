@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ButterBoard.FloatingGrid
+namespace ButterBoard.FloatingGrid.Placement.Placeables
 {
     public class FloatingPlaceable : BasePlaceable
     {

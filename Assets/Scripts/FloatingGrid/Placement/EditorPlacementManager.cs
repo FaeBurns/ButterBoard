@@ -12,5 +12,15 @@ namespace ButterBoard.FloatingGrid.Placement
 
         [field: SerializeField]
         public string TestPlacementAsset { get; private set; } = String.Empty;
+
+        [field: SerializeField]
+        public CableColour CableColour { get; private set; } = CableColour.RED;
+    }
+
+    public enum CableColour
+    {
+        RED,
+        GREEN,
+        BLUE,
     }
 }

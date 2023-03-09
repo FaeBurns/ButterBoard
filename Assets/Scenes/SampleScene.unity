@@ -322,7 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403cf9eec223431db03e59c82a0b170a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <TestPlacementAsset>k__BackingField: FloatingGrid/Breadboard
+  <TestPlacementAsset>k__BackingField: FloatingGrid/Lamp
 --- !u!114 &1501067720
 MonoBehaviour:
   m_ObjectHideFlags: 0

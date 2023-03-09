@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3491134748896690628}
   - component: {fileID: 1743075344565418512}
   m_Layer: 0
-  m_Name: SampleCable
+  m_Name: CableBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,19 +51,7 @@ MonoBehaviour:
   <BoundsCollider>k__BackingField: {fileID: 1743075344565418512}
   <Place>k__BackingField:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5737909547268738849}
-        m_TargetAssemblyTypeName: ButterBoard.Cables.CableDisplay, ButterBoard
-        m_MethodName: Display
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   <Pickup>k__BackingField:
     m_PersistentCalls:
       m_Calls: []

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BeanCore.Unity.ReferenceResolver;
-using BeanCore.Unity.ReferenceResolver.Attributes;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace ButterBoard.FloatingGrid
+namespace ButterBoard.FloatingGrid.Placement.Placeables
 {
     [Serializable]
     public class GridPlaceable : BasePlaceable
@@ -25,7 +22,11 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public GridHost? HostingGrid { get; set; }
 
+        [field: SerializeField]
+        public bool SnapsToGridSnapPoints { get; set; }
+
         public IReadOnlyList<GridPin> Pins => pins;
+
 
         public override void DisplayPlacementStatus(string statusMessage, bool isOk)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;

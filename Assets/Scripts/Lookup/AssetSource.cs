@@ -45,13 +45,13 @@ namespace ButterBoard.Lookup
         public static Object Fetch(string key)
         {
             Verify();
-            return _assetMapping[key].Fetch();
+            return _assetMapping[key.ToLower()].Fetch();
         }
 
         public static SearchableAssetSource FetchSource(string key)
         {
             Verify();
-            return _assetMapping[key];
+            return _assetMapping[key.ToLower()];
         }
 
         private static void Verify()

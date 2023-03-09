@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid.Placement

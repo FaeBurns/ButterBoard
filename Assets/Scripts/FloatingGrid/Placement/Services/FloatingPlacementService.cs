@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

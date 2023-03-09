@@ -86,6 +86,7 @@ MonoBehaviour:
   <MainSpriteTintHelper>k__BackingField: {fileID: 8731793072211409686}
   <OverlappingPoints>k__BackingField: []
   <HostingGrid>k__BackingField: {fileID: 0}
+  <SnapsToGridSnapPoints>k__BackingField: 1
 --- !u!61 &9077913995179929035
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -32,5 +32,8 @@ namespace ButterBoard.FloatingGrid
 
         [field: SerializeField]
         public List<GridPointConnectedRow> ConnectedRows { get; private set; } = null!;
+
+        [field: SerializeField]
+        public List<GameObject> SnapPoints { get; private set; } = null!;
     }
 }

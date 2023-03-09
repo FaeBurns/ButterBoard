@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ButterBoard.Cables;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Lookup;
 using UnityEngine;
 using Object = UnityEngine.Object;

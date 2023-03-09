@@ -1,11 +1,10 @@
-﻿using ButterBoard.Cables;
-using ButterBoard.FloatingGrid.Placement;
+﻿#nullable disable
+
+using ButterBoard.Cables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
 
-#nullable disable
-
-namespace ButterBoard.FloatingGrid
+namespace ButterBoard.FloatingGrid.Placement.Placeables
 {
     public class CablePlaceable : BasePlaceable
     {

@@ -2,6 +2,7 @@
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.FloatingGrid;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
 

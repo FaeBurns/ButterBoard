@@ -39,7 +39,7 @@ namespace ButterBoard.Editor.FloatingGrid
 
             if (GUILayout.Button("Begin Test Placement (Cable)"))
             {
-                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/SampleCablePlaceable");
+                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/Cable" + editorManager.CableColour.ToString());
                 manager.BeginPlace(prefab);
             }
 
