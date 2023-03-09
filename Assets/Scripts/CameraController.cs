@@ -19,6 +19,9 @@ namespace ButterBoard
         private float zoom = 5f;
 
         [SerializeField]
+        private AnimationCurve zoomCurve = new AnimationCurve();
+
+        [SerializeField]
         private float zoomSpeed = 0.1f;
 
         [SerializeField]
@@ -71,8 +74,11 @@ namespace ButterBoard
             // clamp to allowed values
             zoom = Mathf.Clamp(zoom, minZoom, maxZoom);
 
+            // evaluate zoom along curve
+            float actualZoom = zoomCurve.Evaluate(zoom);
+
             // update in camera
-            _camera.orthographicSize = zoom;
+            _camera.orthographicSize = actualZoom;
         }
     }
 }

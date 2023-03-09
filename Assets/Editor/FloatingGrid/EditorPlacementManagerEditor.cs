@@ -43,6 +43,12 @@ namespace ButterBoard.Editor.FloatingGrid
                 manager.BeginPlace(prefab);
             }
 
+            if (GUILayout.Button("Begin Test Placement (Input)"))
+            {
+                GameObject prefab = AssetSource.Fetch<GameObject>(editorManager.TestPlacementAsset);
+                manager.BeginPlace(prefab);
+            }
+
             EditorGUI.EndDisabledGroup();
             EditorGUI.BeginDisabledGroup(!manager.Placing);
 
