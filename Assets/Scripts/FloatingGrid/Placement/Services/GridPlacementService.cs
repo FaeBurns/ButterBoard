@@ -56,7 +56,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         protected override bool CommitPlacement()
         {
-            GridHost? gridTarget = GetTargetGrid();
+            GridHost? gridTarget = GetTargetGrid(Context.Placeable.transform.position);
 
             if (gridTarget == null)
                 return false;
@@ -127,8 +127,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 pin.ClearIssue();
             }
 
-            // get all grids the placeable is currently overlapping.
-            GridHost? targetGrid = GetTargetGrid();
+            // get all grids that the placeable would be overlapping at the target position
+            GridHost? targetGrid = GetTargetGrid(targetPosition);
 
             // if there were no overlapping grids found
             if (targetGrid == null)
@@ -189,10 +189,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
         }
 
-        private IReadOnlyList<GridHost> GetOverlappingGrids(GridPlaceable placeable)
+        private IReadOnlyList<GridHost> GetOverlappingGrids(GridPlaceable placeable, Vector3 position)
         {
             // get all grid points that placeable overlaps with.
-            List<GridPoint> overlappingGridPoints = GetOverlaps<GridPoint>(placeable);
+            List<GridPoint> overlappingGridPoints = GetOverlaps<GridPoint>(position, Context.Size, placeable.transform.rotation.eulerAngles.z);
             HashSet<GridHost> result = new HashSet<GridHost>();
 
             foreach (GridPoint overlappingGridPoint in overlappingGridPoints)
@@ -291,10 +291,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             return result;
         }
 
-        private GridHost? GetTargetGrid()
+        private GridHost? GetTargetGrid(Vector3 position)
         {
             // get all grids the placeable is currently overlapping.
-            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.CheckingPlaceable);
+            IReadOnlyList<GridHost> overlappingGrids = GetOverlappingGrids(Context.CheckingPlaceable, position);
 
             // if not overlapping grids - can check for floating placement
             if (overlappingGrids.Count == 0)
