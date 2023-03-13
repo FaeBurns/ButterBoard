@@ -5,6 +5,7 @@ using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ButterBoard.Cables
 {
@@ -23,6 +24,8 @@ namespace ButterBoard.Cables
 
         public void Initialize(CablePlaceable start, CablePlaceable end)
         {
+            start.Remove.AddListener(OnCableRemoved);
+
             _startPlaceable = start;
             _lineRenderer.startColor = _startPlaceable.CableColor;
             _lineRenderer.endColor = _startPlaceable.CableColor;
@@ -51,6 +54,11 @@ namespace ButterBoard.Cables
         private Vector3 ModifyPosition(Vector3 position)
         {
             return new Vector3(position.x, position.y, zOverride);
+        }
+
+        private void OnCableRemoved()
+        {
+            Destroy(gameObject);
         }
     }
 }

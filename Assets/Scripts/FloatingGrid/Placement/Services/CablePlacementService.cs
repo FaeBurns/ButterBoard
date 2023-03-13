@@ -155,6 +155,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
                 // set cable targets
                 cableDisplay.Initialize(_startPlaceable, Context.Placeable);
+                _startPlaceable.LineDisplay = cableDisplay;
+                Context.Placeable.LineDisplay = cableDisplay;
 
                 // return false - execution of UpdatePosition will now continue
                 return false;
@@ -162,6 +164,19 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // otherwise placement has concluded
             return true;
+        }
+
+        public override void CancelPlacement()
+        {
+            // destroy display line
+            Object.Destroy(Context.Placeable.LineDisplay.gameObject);
+
+            // if this is a movement operation or the second entry is being placed
+            // remove the first
+            if (_placementType == CablePlacementType.END)
+                Object.Destroy(Context.Placeable.Other.gameObject);
+
+            base.CancelPlacement();
         }
 
         private GridPoint? GetGridPointAtPosition(Vector3 position)

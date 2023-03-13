@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 
 namespace ButterBoard.FloatingGrid.Placement
 {
-    public class PlacementManager : ReferenceResolvedBehaviour
+    public class PlacementManager : SingletonBehaviour<PlacementManager>
     {
         private IPlacementService? _activeService;
         private float _rotationTarget;

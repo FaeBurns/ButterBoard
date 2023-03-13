@@ -16,19 +16,19 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         /// Gets an event fired when this placeable is placed.
         /// </summary>
         [field: SerializeField]
-        public UnityEvent? Place { get; private set; }
+        public UnityEvent Place { get; private set; } = new UnityEvent();
 
         /// <summary>
         /// Gets an event fired when this placeable is picked up.
         /// </summary>
         [field: SerializeField]
-        public UnityEvent? Pickup { get; private set; }
+        public UnityEvent Pickup { get; private set; } = new UnityEvent();
 
         /// <summary>
         /// Gets an event fired when this placeable is about to be removed.
         /// </summary>
         [field: SerializeField]
-        public UnityEvent? Remove { get; private set; }
+        public UnityEvent Remove { get; private set; } = new UnityEvent();
 
         /// <summary>
         /// Allows this placeable to display information about why it can or cannot be placed.

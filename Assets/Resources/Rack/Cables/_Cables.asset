@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a23782cccb40a280493278ef5b06a3, type: 3}
+  m_Name: _Cables
+  m_EditorClassIdentifier: ButterBoard:ButterBoard.Rack:RackCategoryAsset
+  <DisplayName>k__BackingField: Cables
+  <CategoryEntries>k__BackingField:
+  - {fileID: 11400000, guid: b2784b26711c4fc4e81b3377f62c6bd8, type: 2}
+  - {fileID: 11400000, guid: 2a2d503ad4bfd8c4b8806728eab6a2fe, type: 2}
+  - {fileID: 11400000, guid: b9261ef0e8ec854448f5f072d3411f03, type: 2}

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72eeee0d35d4dc5897803b0d7e53d95, type: 3}
+  m_Name: Default Rack Order
+  m_EditorClassIdentifier: ButterBoard:ButterBoard.Rack:RackOrder
+  <Categories>k__BackingField:
+  - {fileID: 11400000, guid: 294d8f693bf8c2b45a7675de9b5b61c2, type: 2}
+  - {fileID: 11400000, guid: e183164566a1d0c44b07d321dfd85bac, type: 2}
+  - {fileID: 11400000, guid: 8209b1a9b17485a4aa7dbd4088b98e92, type: 2}

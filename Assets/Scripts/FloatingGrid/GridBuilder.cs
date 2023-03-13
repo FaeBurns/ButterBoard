@@ -42,7 +42,7 @@ namespace ButterBoard.FloatingGrid
         public GridHost Build(Transform? parent, int width, int height, float spacing, GridBuildOffsetType offsetType)
         {
             Debug.Log($"Building grid with width {width}, height {height}, spacing {spacing}, offsetType {offsetType}");
-            GameObject pointPrefab = AssetSource.Fetch<GameObject>(gridPointPrefabName);
+            GameObject pointPrefab = AssetSource.Fetch<GameObject>(gridPointPrefabName)!;
 
 
             GridHost gridHost = new GameObject("New Grid", typeof(GridHost)).GetComponent<GridHost>();
