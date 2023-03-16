@@ -4,6 +4,7 @@ using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
+using Coil;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +12,7 @@ namespace ButterBoard.Cables
 {
     public class CableDisplay : MonoBehaviour
     {
+        private bool _previousWireValue = false;
         private CablePlaceable _startPlaceable = null!;
 
         private Transform _targetA = null!;
@@ -27,8 +29,8 @@ namespace ButterBoard.Cables
             start.Remove.AddListener(OnCableRemoved);
 
             _startPlaceable = start;
-            _lineRenderer.startColor = _startPlaceable.CableColor;
-            _lineRenderer.endColor = _startPlaceable.CableColor;
+
+            SetColour(_startPlaceable.CableColor);
 
             _targetA = start.transform;
             _targetB = end.transform;
@@ -49,6 +51,18 @@ namespace ButterBoard.Cables
                 ModifyPosition(_targetA.position),
                 ModifyPosition(_targetB.position),
             });
+
+            // peek at value on wire
+            BoolValue watchingValue = _startPlaceable.Pin.ConnectedPoint!.Wire.Peek();
+
+            // if the value has changed
+            if (watchingValue.Value != _previousWireValue)
+            {
+                // set the wire colour
+                SetColour(watchingValue.Value ? _startPlaceable.PoweredCableColor : _startPlaceable.CableColor);
+
+                _previousWireValue = watchingValue.Value;
+            }
         }
 
         private Vector3 ModifyPosition(Vector3 position)
@@ -59,6 +73,12 @@ namespace ButterBoard.Cables
         private void OnCableRemoved()
         {
             Destroy(gameObject);
+        }
+
+        private void SetColour(Color color)
+        {
+            _lineRenderer.startColor = color;
+            _lineRenderer.endColor = color;
         }
     }
 }

@@ -15,5 +15,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         public void CancelPlacement();
 
         public void CompletePlacement();
+
+        public bool CanCancel();
     }
 }

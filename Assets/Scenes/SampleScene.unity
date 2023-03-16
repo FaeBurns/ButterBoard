@@ -1034,11 +1034,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1501067717}
-  - component: {fileID: 1501067719}
   - component: {fileID: 1501067718}
   - component: {fileID: 1501067720}
+  - component: {fileID: 1501067722}
+  - component: {fileID: 1501067721}
   m_Layer: 0
-  m_Name: PlacementService
+  m_Name: Interaction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1071,26 +1072,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d5efb9f95b4dfc842b11da7703b2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rackUIHost: {fileID: 1795308242}
   pinCheckDistanceRadiusThreshold: 0.1
   displayZDistance: -5
   <LerpSettings>k__BackingField:
     <TranslateLerp>k__BackingField: 0.1
     <RotateLerp>k__BackingField: 0.1
     <FinalizeScalarTime>k__BackingField: 0.25
---- !u!114 &1501067719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501067716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 403cf9eec223431db03e59c82a0b170a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <TestPlacementAsset>k__BackingField: FloatingGrid/Lamp
-  <CableColour>k__BackingField: 0
 --- !u!114 &1501067720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1101,6 +1089,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e134a1e7573c4e62905caf951fc0300b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1501067721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501067716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee5daf9ac244cdbad2c408c9b3eebab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ActiveMode>k__BackingField: 0
+--- !u!114 &1501067722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501067716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ceaa6999134c53812307cd2cf01f78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1561428112

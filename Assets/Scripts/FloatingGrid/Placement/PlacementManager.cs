@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BeanCore.Unity.ReferenceResolver;
-using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace ButterBoard.FloatingGrid.Placement
 {
-    public class PlacementManager : SingletonBehaviour<PlacementManager>
+    public class PlacementManager : SingletonBehaviour<PlacementManager>, IInteractionProvider
     {
         private IPlacementService? _activeService;
         private float _rotationTarget;
+
+        [FormerlySerializedAs("uiHost")]
+        [SerializeField]
+        private GameObject? rackUIHost;
 
         [SerializeField]
         private float pinCheckDistanceRadiusThreshold = 0.1f;
@@ -22,6 +25,8 @@ namespace ButterBoard.FloatingGrid.Placement
         private float displayZDistance = 1;
 
         public bool Placing => _activeService != null;
+
+        public bool CanCancel => Placing && _activeService!.CanCancel(); // _activeService will only be dereferenced if Placing is true
 
         [field: SerializeField]
         public LerpSettings LerpSettings { get; private set; } = null!;
@@ -51,8 +56,8 @@ namespace ButterBoard.FloatingGrid.Placement
         /// </summary>
         public void CancelPlace()
         {
-            // throw if currently placing
-            if (!Placing)
+            // throw if cancelling is not allowed
+            if (!CanCancel)
                 throw new InvalidOperationException();
 
             _activeService?.CancelPlacement();
@@ -72,7 +77,8 @@ namespace ButterBoard.FloatingGrid.Placement
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Debug.Log("Cancelling");
-                CancelPlace();
+                if (CanCancel)
+                    CancelPlace();
                 return;
             }
 
@@ -182,6 +188,32 @@ namespace ButterBoard.FloatingGrid.Placement
                     result.Add(component);
             }
             return result;
+        }
+
+        public void OnSwitchTo()
+        {
+            enabled = true;
+            if (rackUIHost != null)
+            {
+                rackUIHost.SetActive(true);
+            }
+        }
+
+        public void OnSwitchAway()
+        {
+            if (CanCancel)
+                CancelPlace();
+
+            enabled = false;
+            if (rackUIHost != null)
+            {
+                rackUIHost.SetActive(false);
+            }
+        }
+
+        public bool CanInteractionSafelySwitch()
+        {
+            return !Placing || CanCancel;
         }
     }
 }

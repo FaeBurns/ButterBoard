@@ -169,7 +169,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         public override void CancelPlacement()
         {
             // destroy display line
-            Object.Destroy(Context.Placeable.LineDisplay.gameObject);
+            if (Context.Placeable.LineDisplay != null)
+                Object.Destroy(Context.Placeable.LineDisplay.gameObject);
 
             // if this is a movement operation or the second entry is being placed
             // remove the first
