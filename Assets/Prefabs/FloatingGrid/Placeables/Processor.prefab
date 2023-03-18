@@ -808,6 +808,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_13_Error
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: ERROR
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Error
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!114 &1027172543111653317 stripped
@@ -880,6 +888,18 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_23_Aux_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: 'PIN_19
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: 'Pin 19
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -954,6 +974,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_09_Index_07
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &924610897012787207 stripped
@@ -1026,6 +1054,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_11_Aux_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1100,6 +1136,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_08_Index_06
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &2960357368475818965 stripped
@@ -1172,6 +1216,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_04_Index_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1246,6 +1298,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_02_Index_00
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!114 &5734355099167408233 stripped
@@ -1318,6 +1378,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_05_Index_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1392,6 +1460,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_10_Aux_00
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!114 &4718930243982619148 stripped
@@ -1464,6 +1540,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_06_Index_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1538,6 +1622,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_16_Data_02
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &5604902527563332046 stripped
@@ -1610,6 +1702,16 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_00_Power
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: POWER
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: 'Power
+
+'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1684,6 +1786,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_03_Index_01
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!114 &7594833039092262545 stripped
@@ -1756,6 +1866,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_22_Aux_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1830,6 +1948,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_17_Data_03
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!114 &7273290967072279760 stripped
@@ -1902,6 +2028,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_21_Data_07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -1976,6 +2110,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_15_Data_01
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!114 &6988044619657732209 stripped
@@ -2048,6 +2190,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_07_Index_05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -2122,6 +2272,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_19_Data_05
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &7776583425269385012 stripped
@@ -2194,6 +2352,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_14_Data_00
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -2268,6 +2434,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_01_Reset
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: RESET
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: 'Reset
+
+'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &7589112822100544004 stripped
@@ -2340,6 +2516,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_18_Data_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -2414,6 +2598,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_20_Data_06
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: PIN_16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Pin 16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &7463281569171842651 stripped
@@ -2486,6 +2678,14 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_12_Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: GROUND
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626462, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: Ground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}

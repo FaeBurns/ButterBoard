@@ -9,7 +9,6 @@ namespace ButterBoard.FloatingGrid.Placement
 {
     public class PlacementManager : SingletonBehaviour<PlacementManager>
     {
-        private IPlacementService? _activeService;
         private float _rotationTarget;
 
         [SerializeField]
@@ -18,9 +17,11 @@ namespace ButterBoard.FloatingGrid.Placement
         [SerializeField]
         private float displayZDistance = 1;
 
-        public bool Placing => _activeService != null;
+        public bool Placing => ActiveService != null;
 
-        public bool CanCancel => Placing && _activeService!.CanCancel(); // _activeService will only be dereferenced if Placing is true
+        public bool CanCancel => Placing && ActiveService!.CanCancel(); // _activeService will only be dereferenced if Placing is true
+
+        public IPlacementService? ActiveService { get; private set; }
 
         [field: SerializeField]
         public LerpSettings LerpSettings { get; private set; } = null!;
@@ -35,8 +36,8 @@ namespace ButterBoard.FloatingGrid.Placement
             BasePlaceable prefabPlaceable = prefab.GetComponent<BasePlaceable>();
 
             // get target service and begin prefab placement
-            _activeService = GetTargetService(prefabPlaceable);
-            _activeService.BeginPrefabPlacement(prefab);
+            ActiveService = GetTargetService(prefabPlaceable);
+            ActiveService.BeginPrefabPlacement(prefab);
 
             // set initial rotation offset
             _rotationTarget = prefabPlaceable.InitialRotationOffset;
@@ -52,8 +53,8 @@ namespace ButterBoard.FloatingGrid.Placement
             BasePlaceable placeable = target.GetComponent<BasePlaceable>();
 
             // get target service and begin move placement
-            _activeService = GetTargetService(placeable);
-            _activeService.BeginMovePlacement(target);
+            ActiveService = GetTargetService(placeable);
+            ActiveService.BeginMovePlacement(target);
 
             // set initial rotation
             _rotationTarget = placeable.PlacedRotation;
@@ -82,8 +83,8 @@ namespace ButterBoard.FloatingGrid.Placement
             if (!CanCancel)
                 throw new InvalidOperationException();
 
-            _activeService?.CancelPlacement();
-            _activeService = null;
+            ActiveService?.CancelPlacement();
+            ActiveService = null;
         }
 
         private void Update()
@@ -114,32 +115,32 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // modify rotation target when input occurs
             if (Input.GetKeyDown(KeyCode.Q))
-                _rotationTarget += _activeService!.GetPlaceable().RotationStep;
+                _rotationTarget += ActiveService!.GetPlaceable().RotationStep;
             else if (Input.GetKeyDown(KeyCode.E))
-                _rotationTarget -= _activeService!.GetPlaceable().RotationStep;
+                _rotationTarget -= ActiveService!.GetPlaceable().RotationStep;
 
             Quaternion rotation = Quaternion.Euler(0, 0, _rotationTarget);
 
             // run update
-            bool finished = _activeService!.Update(mouseWorldPosition, rotation);
+            bool finished = ActiveService!.Update(mouseWorldPosition, rotation);
 
             // if not finished check if it should try and commit placement
             if (!finished)
             {
                 if (Input.GetMouseButtonDown(0))
-                    _activeService.TryCommitPlacement(mouseWorldPosition, rotation);
+                    ActiveService.TryCommitPlacement(mouseWorldPosition, rotation);
 
                 return;
             }
 
             // complete placement
-            _activeService.CompletePlacement();
+            ActiveService.CompletePlacement();
 
             // set the final rotation
-            _activeService.GetPlaceable().PlacedRotation = _rotationTarget;
+            ActiveService.GetPlaceable().PlacedRotation = _rotationTarget;
 
             // clear active service
-            _activeService = null;
+            ActiveService = null;
 
             // reset rotation
             _rotationTarget = 0;

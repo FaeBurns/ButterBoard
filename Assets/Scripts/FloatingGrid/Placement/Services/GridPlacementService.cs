@@ -52,6 +52,12 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             {
                 point.Blocked = false;
             }
+
+            // show all PinIdentifierDisplays
+            foreach (PinIdentifierDisplay pinIdentifier in target.GetComponentsInChildren<PinIdentifierDisplay>(true))
+            {
+                pinIdentifier.gameObject.SetActive(true);
+            }
         }
 
         public override void Remove(BasePlaceable target)
@@ -131,6 +137,12 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             Context.Placeable.ClearPlacementStatus();
             Context.PlacingObject.transform.SetParent(gridTarget.transform);
+
+            // hide all PinIdentifierDisplays
+            foreach (PinIdentifierDisplay pinIdentifier in Context.Placeable.GetComponentsInChildren<PinIdentifierDisplay>())
+            {
+                pinIdentifier.gameObject.SetActive(false);
+            }
 
             return true;
         }

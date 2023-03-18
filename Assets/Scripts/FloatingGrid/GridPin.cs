@@ -11,6 +11,9 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public SpriteTintHelper PinSpriteTintHelper { get; private set; } = null!;
 
+        [field: SerializeField]
+        public PinIdentifierDisplay PinIdentifierDisplay { get; private set; } = null!;
+
         public GridPoint? ConnectedPoint { get; private set; }
 
         [BindComponent(Parent = true)]

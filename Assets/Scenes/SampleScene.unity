@@ -449,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d85249f2ff4050b7978fcf57599ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.02
+  speed: 4
   zoom: 9.5
   zoomCurve:
     serializedVersion: 2
@@ -1045,6 +1045,7 @@ GameObject:
   - component: {fileID: 1501067717}
   - component: {fileID: 1501067718}
   - component: {fileID: 1501067720}
+  - component: {fileID: 1501067721}
   m_Layer: 0
   m_Name: PlacementManager
   m_TagString: Untagged
@@ -1082,8 +1083,8 @@ MonoBehaviour:
   pinCheckDistanceRadiusThreshold: 0.1
   displayZDistance: -5
   <LerpSettings>k__BackingField:
-    <TranslateLerp>k__BackingField: 0.1
-    <RotateLerp>k__BackingField: 0.1
+    <TranslateLerp>k__BackingField: 17.5
+    <RotateLerp>k__BackingField: 17.5
     <FinalizeScalarTime>k__BackingField: 0.25
 --- !u!114 &1501067720
 MonoBehaviour:
@@ -1097,6 +1098,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e134a1e7573c4e62905caf951fc0300b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1501067721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501067716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 359e21b5128c4fc5af7626aaa5a0dd79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkRadius: 1
 --- !u!1 &1561428112
 GameObject:
   m_ObjectHideFlags: 0

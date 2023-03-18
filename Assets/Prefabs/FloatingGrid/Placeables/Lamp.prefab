@@ -48,6 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoundsCollider>k__BackingField: {fileID: 5085772282856096673}
+  <PlacedRotation>k__BackingField: 0
+  <InitialRotationOffset>k__BackingField: 0
+  <RotationStep>k__BackingField: 90
   <Place>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -63,6 +66,7 @@ MonoBehaviour:
   <MainSpriteTintHelper>k__BackingField: {fileID: 8679796805783482602}
   <OverlappingPoints>k__BackingField: []
   <HostingGrid>k__BackingField: {fileID: 0}
+  <SnapsToGridSnapPoints>k__BackingField: 0
 --- !u!61 &5085772282856096673
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -243,6 +247,10 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Grid_Pin
+      objectReference: {fileID: 0}
+    - target: {fileID: 3922183775817614710, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4961374136775666870, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_IsActive

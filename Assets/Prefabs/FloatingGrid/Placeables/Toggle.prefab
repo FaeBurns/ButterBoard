@@ -673,6 +673,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_00_Power
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: POWER
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &2825044830585444535 stripped
@@ -745,6 +749,10 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_03_Out_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: OUT_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -819,6 +827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pin_02_Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: GROUND
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
 --- !u!4 &4645350472057023590 stripped
@@ -891,6 +903,10 @@ PrefabInstance:
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
       value: Pin_01_Out_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_text
+      value: OUT_00
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}

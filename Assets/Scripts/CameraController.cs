@@ -58,6 +58,9 @@ namespace ButterBoard
             // normalize velocity but keep magnitude
             finalVelocity = finalVelocity.normalized * finalVelocity.magnitude;
 
+            // scale by frame time
+            finalVelocity *= Time.deltaTime;
+
             // add velocity to position
             // multiply by zoom to allow for more control while zoomed in
             transform.position += finalVelocity * (speed * zoom);

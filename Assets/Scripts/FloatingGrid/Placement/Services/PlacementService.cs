@@ -195,9 +195,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Quaternion targetRotation = Context.CheckingObject.transform.rotation;
 
             // get lerp target
-            Vector3 lerpPosition = Vector2.Lerp(currentDisplayPosition, targetPosition, lerpSettings.TranslateLerp);
+            Vector3 lerpPosition = Vector2.Lerp(currentDisplayPosition, targetPosition, lerpSettings.TranslateLerp * Time.deltaTime);
             lerpPosition.z = displayZDistance;
-            Quaternion lerpRotation = Quaternion.Lerp(currentDisplayRotation, targetRotation, lerpSettings.RotateLerp);
+            Quaternion lerpRotation = Quaternion.Lerp(currentDisplayRotation, targetRotation, lerpSettings.RotateLerp * Time.deltaTime);
 
             // set display object to use lerp data
             Context.PlacingObject.transform.position = lerpPosition;
@@ -285,9 +285,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             Context.CheckingObject.transform.SetPositionAndRotation(position, rotation);
 
-            Vector3 displayPosition = Vector3.Lerp(Context.PlacingObject.transform.position, position, lerpSettings.TranslateLerp);
+            Vector3 displayPosition = Vector3.Lerp(Context.PlacingObject.transform.position, position, lerpSettings.TranslateLerp * Time.deltaTime);
             displayPosition.z = displayZDistance;
-            Quaternion displayRotation = Quaternion.Lerp(Context.PlacingObject.transform.rotation, rotation, lerpSettings.RotateLerp);
+            Quaternion displayRotation = Quaternion.Lerp(Context.PlacingObject.transform.rotation, rotation, lerpSettings.RotateLerp * Time.deltaTime);
 
             Context.PlacingObject.transform.SetPositionAndRotation(displayPosition, displayRotation);
         }
