@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.02
-  zoom: 5
+  zoom: 9.5
   zoomCurve:
     serializedVersion: 2
     m_Curve:
@@ -481,12 +481,21 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0.27711678
       outWeight: 0
+    - serializedVersion: 3
+      time: 32
+      value: 128
+      inSlope: 6.019065
+      outSlope: 6.019065
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.24548364
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   zoomSpeed: 3
   minZoom: 9.5
-  maxZoom: 16
+  maxZoom: 20
 --- !u!1 &558731349
 GameObject:
   m_ObjectHideFlags: 0
