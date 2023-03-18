@@ -39,7 +39,7 @@ namespace ButterBoard.UI.Rack
         {
             // cancel any placement in progress
             if (PlacementManager.Instance.Placing)
-                PlacementManager.Instance.CancelPlace();
+                PlacementManager.Instance.Cancel();
 
             GameObject? fetchResult = AssetSource.Fetch<GameObject>(_currentEntryAsset.SpawnTargetSourceKey);
 

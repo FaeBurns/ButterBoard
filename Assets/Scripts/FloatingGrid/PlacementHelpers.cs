@@ -1,4 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -76,6 +80,36 @@ namespace ButterBoard.FloatingGrid
             }
 
             return closestPosition;
+        }
+
+        public static List<TComponent> GetOverlaps<TComponent>(Vector2 position, Vector2 size, float rotation)
+        {
+            // ReSharper disable once Unity.PreferNonAllocApi
+            Collider2D[] overlaps = Physics2D.OverlapBoxAll(position, size, rotation);
+            List<TComponent> result = new List<TComponent>();
+            foreach (Collider2D overlap in overlaps)
+            {
+                TComponent component = overlap.GetComponent<TComponent>();
+                if (component != null)
+                    result.Add(component);
+            }
+            return result;
+        }
+
+        public static BasePlaceable GetHighestPriority(IEnumerable<BasePlaceable> placeables)
+        {
+            return placeables.OrderByDescending(GetPriority).First();
+        }
+
+        private static int GetPriority(BasePlaceable placeable)
+        {
+            return placeable switch
+            {
+                FloatingPlaceable => 0,
+                GridPlaceable => 1,
+                CablePlaceable => 2,
+                _ => throw new ArgumentOutOfRangeException(nameof(placeable), placeable, null),
+            };
         }
     }
 }

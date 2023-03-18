@@ -166,18 +166,20 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             return true;
         }
 
-        public override void CancelPlacement()
+        public override void Remove(BasePlaceable target)
         {
+            CablePlaceable cablePlaceable = (CablePlaceable)target;
+
             // destroy display line
-            if (Context.Placeable.LineDisplay != null)
-                Object.Destroy(Context.Placeable.LineDisplay.gameObject);
+            if (cablePlaceable.LineDisplay != null)
+                Object.Destroy(cablePlaceable.LineDisplay.gameObject);
 
-            // if this is a movement operation or the second entry is being placed
-            // remove the first
-            if (_placementType == CablePlacementType.END)
-                Object.Destroy(Context.Placeable.Other.gameObject);
+            // if an other exists
+            // remove it too
+            if (cablePlaceable.Other != null)
+                Object.Destroy(cablePlaceable.Other.gameObject);
 
-            base.CancelPlacement();
+            base.Remove(target);
         }
 
         private GridPoint? GetGridPointAtPosition(Vector3 position)

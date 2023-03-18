@@ -54,7 +54,7 @@ namespace ButterBoard.Editor.FloatingGrid
 
             if (GUILayout.Button("Cancel Test Placement"))
             {
-                manager.CancelPlace();
+                manager.Cancel();
             }
 
             EditorGUI.EndDisabledGroup();

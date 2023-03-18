@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace ButterBoard.FloatingGrid.Placement
 {
@@ -14,7 +14,6 @@ namespace ButterBoard.FloatingGrid.Placement
         private IPlacementService? _activeService;
         private float _rotationTarget;
 
-        [FormerlySerializedAs("uiHost")]
         [SerializeField]
         private GameObject? rackUIHost;
 
@@ -37,7 +36,7 @@ namespace ButterBoard.FloatingGrid.Placement
             if (Placing)
                 throw new InvalidOperationException();
 
-            _activeService = GetTargetService(prefab);
+            _activeService = GetTargetService(prefab.GetComponent<BasePlaceable>());
             _activeService.BeginPrefabPlacement(prefab);
         }
 
@@ -47,14 +46,24 @@ namespace ButterBoard.FloatingGrid.Placement
             if (Placing)
                 throw new InvalidOperationException();
 
-            _activeService = GetTargetService(target);
+            _activeService = GetTargetService(target.GetComponent<BasePlaceable>());
             _activeService.BeginMovePlacement(target);
+        }
+
+        public void Remove(BasePlaceable target)
+        {
+            // don't need to throw while placing as this should be able to run concurrently
+            // a check to see if the one being removed is the one being placed would be nice
+            // but that's not possible with the current implementation
+
+            IPlacementService placementService = GetTargetService(target);
+            placementService.Remove(target);
         }
 
         /// <summary>
         /// Cancels placement and deletes the held object
         /// </summary>
-        public void CancelPlace()
+        public void Cancel()
         {
             // throw if cancelling is not allowed
             if (!CanCancel)
@@ -69,7 +78,7 @@ namespace ButterBoard.FloatingGrid.Placement
             // return if not placing
             if (!Placing)
             {
-                PickupUpdate();
+                SelectUpdate();
                 return;
             }
 
@@ -78,7 +87,7 @@ namespace ButterBoard.FloatingGrid.Placement
             {
                 Debug.Log("Cancelling");
                 if (CanCancel)
-                    CancelPlace();
+                    Cancel();
                 return;
             }
 
@@ -113,7 +122,7 @@ namespace ButterBoard.FloatingGrid.Placement
             _rotationTarget = 0;
         }
 
-        private void PickupUpdate()
+        private void SelectUpdate()
         {
             // if mouse button is not pressed
             // return
@@ -132,27 +141,27 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // get all placeables under cursor
             // size of zero still allows for collision checks
-            List<BasePlaceable> placeables = GetOverlaps<BasePlaceable>(mouseWorldPosition, Vector2.zero, 0f);
+            List<BasePlaceable> placeables = PlacementHelpers.GetOverlaps<BasePlaceable>(mouseWorldPosition, Vector2.zero, 0f);
 
             // exit early to avoid having to sort
             if (placeables.Count == 0)
                 return;
 
-            // order collection of found placeables by priority
-            IOrderedEnumerable<BasePlaceable> orderedPlaceables = placeables.OrderByDescending(GetPriority);
+            // get sorted by highest priority
+            BasePlaceable pickupTarget = PlacementHelpers.GetHighestPriority(placeables);
 
-            // get first target
-            BasePlaceable pickupTarget = orderedPlaceables.First();
+            if (Input.GetKey(KeyCode.R))
+                // remove clicked placeable
+                Remove(pickupTarget);
+            else
+                // begin movement
+                BeginMove(pickupTarget.gameObject);
 
-            // begin movement
-            BeginMove(pickupTarget.gameObject);
         }
 
-        private IPlacementService GetTargetService(GameObject target)
+        private IPlacementService GetTargetService(BasePlaceable target)
         {
-            BasePlaceable basePlaceable = target.GetComponent<BasePlaceable>();
-
-            switch (basePlaceable)
+            switch (target)
             {
                 case GridPlaceable:
                     return new GridPlacementService(LerpSettings, pinCheckDistanceRadiusThreshold, displayZDistance);
@@ -163,31 +172,6 @@ namespace ButterBoard.FloatingGrid.Placement
                 default:
                     throw new InvalidOperationException();
             }
-        }
-
-        private int GetPriority(BasePlaceable placeable)
-        {
-            return placeable switch
-            {
-                FloatingPlaceable => 0,
-                GridPlaceable => 1,
-                CablePlaceable => 2,
-                _ => throw new ArgumentOutOfRangeException(nameof(placeable), placeable, null),
-            };
-        }
-
-        private List<TComponent> GetOverlaps<TComponent>(Vector2 position, Vector2 size, float rotation)
-        {
-            // ReSharper disable once Unity.PreferNonAllocApi
-            Collider2D[] overlaps = Physics2D.OverlapBoxAll(position, size, rotation);
-            List<TComponent> result = new List<TComponent>();
-            foreach (Collider2D overlap in overlaps)
-            {
-                TComponent component = overlap.GetComponent<TComponent>();
-                if (component != null)
-                    result.Add(component);
-            }
-            return result;
         }
 
         public void OnSwitchTo()
@@ -202,7 +186,7 @@ namespace ButterBoard.FloatingGrid.Placement
         public void OnSwitchAway()
         {
             if (CanCancel)
-                CancelPlace();
+                Cancel();
 
             enabled = false;
             if (rackUIHost != null)

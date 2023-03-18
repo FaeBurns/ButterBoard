@@ -92,6 +92,18 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Context.Placeable.SetDisplayStatus(true);
         }
 
+        /// <summary>
+        /// Removes the placeable
+        /// </summary>
+        /// <param name="target">The placeable to remove.</param>
+        public virtual void Remove(BasePlaceable target)
+        {
+            // invoke remove event
+            target.Remove.Invoke();
+
+            Object.Destroy(target.gameObject);
+        }
+
         public void TryCommitPlacement(Vector3 targetPosition, Quaternion targetRotation)
         {
             // force update - stops placeables sometimes not being placed at the right position
@@ -132,10 +144,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// </summary>
         public virtual void CancelPlacement()
         {
-            // invoke remove event
-            Context.Placeable.Remove?.Invoke();
+            // perform removal on placing object
+            Remove(Context.Placeable);
 
-            Object.Destroy(Context.PlacingObject);
+            // destroy checking object
             Object.Destroy(Context.CheckingObject);
         }
 

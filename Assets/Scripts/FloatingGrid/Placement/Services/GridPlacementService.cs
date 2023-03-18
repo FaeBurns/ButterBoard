@@ -54,6 +54,23 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
         }
 
+        public override void Remove(BasePlaceable target)
+        {
+            GridPlaceable gridPlaceable = (GridPlaceable)target;
+
+            foreach (GridPoint overlappingPoint in gridPlaceable.OverlappingPoints)
+            {
+                overlappingPoint.Blocked = false;
+            }
+
+            foreach (GridPin pin in gridPlaceable.Pins)
+            {
+                pin.Free();
+            }
+
+            base.Remove(target);
+        }
+
         protected override bool CommitPlacement()
         {
             GridHost? gridTarget = GetTargetGrid(Context.Placeable.transform.position);

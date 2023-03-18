@@ -7,7 +7,7 @@ using UnityEngine;
 namespace ButterBoard
 {
     [RequireComponent(typeof(PlacementManager))]
-    public class InteractionModeSwitcher : MonoBehaviour
+    public class InteractionModeSwitcher : SingletonBehaviour<InteractionModeSwitcher>
     {
         private IInteractionProvider? _activeProvider;
 
@@ -33,12 +33,10 @@ namespace ButterBoard
                 switch (ActiveMode)
                 {
                     case InteractionMode.PLACE:
-                        if (TrySetMode(InteractionMode.INTERACT))
-                            ActiveMode = InteractionMode.INTERACT;
+                        TrySetMode(InteractionMode.INTERACT);
                         break;
                     case InteractionMode.INTERACT:
-                        if (TrySetMode(InteractionMode.PLACE))
-                            ActiveMode = InteractionMode.PLACE;
+                        TrySetMode(InteractionMode.PLACE);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -68,6 +66,9 @@ namespace ButterBoard
 
             // notify new provider of switch
             _activeProvider.OnSwitchTo();
+
+            // set the active mode
+            ActiveMode = mode;
 
             return true;
         }

@@ -44,7 +44,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 throw new ArgumentException($"Cannot begin movement of object {target.name} as argument {nameof(target)} does not have a {nameof(FloatingPlaceable)} component");
 
             // invoke pickup - should disable/disconnect ect. all components that are used during tick.
-            placeable.Pickup?.Invoke();
+            placeable.Pickup.Invoke();
 
             // use blank instead of duplicate to avoid slowdowns during duplication
             GameObject checkingObject = new GameObject();
