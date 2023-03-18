@@ -87,6 +87,22 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             Context.Placeable.DisplayPlacementStatus(statusMessage, canPlace);
         }
+
+        public override void Remove(BasePlaceable target)
+        {
+            // get all child placeables (includes self)
+            BasePlaceable[] childPlaceables = target.GetComponentsInChildren<BasePlaceable>();
+
+            foreach (BasePlaceable child in childPlaceables)
+            {
+                // check if child is self
+                if (child != target)
+                    // remove child if not
+                    PlacementManager.Instance.Remove(child);
+            }
+
+            base.Remove(target);
+        }
     }
 
 }

@@ -485,7 +485,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   zoomSpeed: 3
-  minZoom: 1
+  minZoom: 9.5
   maxZoom: 16
 --- !u!1 &558731349
 GameObject:
@@ -679,7 +679,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1466026239}
   m_HandleRect: {fileID: 1466026238}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1036,10 +1036,8 @@ GameObject:
   - component: {fileID: 1501067717}
   - component: {fileID: 1501067718}
   - component: {fileID: 1501067720}
-  - component: {fileID: 1501067722}
-  - component: {fileID: 1501067721}
   m_Layer: 0
-  m_Name: Interaction
+  m_Name: PlacementManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1072,7 +1070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57d5efb9f95b4dfc842b11da7703b2ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rackUIHost: {fileID: 1795308242}
   pinCheckDistanceRadiusThreshold: 0.1
   displayZDistance: -5
   <LerpSettings>k__BackingField:
@@ -1089,31 +1086,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e134a1e7573c4e62905caf951fc0300b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1501067721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501067716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee5daf9ac244cdbad2c408c9b3eebab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <ActiveMode>k__BackingField: 0
---- !u!114 &1501067722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1501067716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69ceaa6999134c53812307cd2cf01f78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1561428112

@@ -168,6 +168,11 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             return Context.PlacementType == PlacementType.PLACE;
         }
 
+        public BasePlaceable GetPlaceable()
+        {
+            return Context.Placeable;
+        }
+
         /// <summary>
         /// Updates this placement service while the context is in the <see cref="PlacementState.POSITION"/> state.
         /// </summary>

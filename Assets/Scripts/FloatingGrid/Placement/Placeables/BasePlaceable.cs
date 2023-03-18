@@ -12,6 +12,15 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         [field: SerializeField]
         public Collider2D BoundsCollider { get; private set; } = null!;
 
+        [field: SerializeField]
+        public float PlacedRotation { get; set; }
+
+        [field: SerializeField]
+        public float InitialRotationOffset { get; private set; }
+
+        [field: SerializeField]
+        public float RotationStep { get; private set; } = 90f;
+
         /// <summary>
         /// Gets an event fired when this placeable is placed.
         /// </summary>

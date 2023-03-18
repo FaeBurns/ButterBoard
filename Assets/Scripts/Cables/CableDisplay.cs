@@ -52,6 +52,10 @@ namespace ButterBoard.Cables
                 ModifyPosition(_targetB.position),
             });
 
+            // exit if start has no connected point
+            if (_startPlaceable.Pin.ConnectedPoint == null)
+                return;
+
             // peek at value on wire
             BoolValue watchingValue = _startPlaceable.Pin.ConnectedPoint!.Wire.Peek();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ButterBoard.Cables;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Lookup;
@@ -72,7 +73,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (_placementType == CablePlacementType.END)
             {
                 // connect the two wires together
-                GameManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint!.Wire, Context.Placeable.Other.Pin.ConnectedPoint!.Wire);
+                // but only if they are not the same wire
+                if (Context.Placeable.Pin.ConnectedPoint!.Wire != Context.Placeable.Other.Pin.ConnectedPoint!.Wire)
+                    GameManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint!.Wire, Context.Placeable.Other.Pin.ConnectedPoint!.Wire);
             }
 
             // set parent to target point's grid
@@ -176,8 +179,18 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // if an other exists
             // remove it too
+            // should only not occur if Remove is called during CancelPlacement
             if (cablePlaceable.Other != null)
+            {
+                // check that the wires are not the same and that there is a local connection from target to its other
+                if (cablePlaceable.Pin.ConnectedPoint!.Wire != cablePlaceable.Other.Pin.ConnectedPoint!.Wire &&
+                    GameManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint!.Wire).Contains(cablePlaceable.Other.Pin.ConnectedPoint!.Wire))
+                {
+                    GameManager.Instance.ConnectionManager.Disconnect(cablePlaceable.Other.Pin.ConnectedPoint!.Wire, cablePlaceable.Pin.ConnectedPoint!.Wire);
+                }
+
                 Object.Destroy(cablePlaceable.Other.gameObject);
+            }
 
             base.Remove(target);
         }

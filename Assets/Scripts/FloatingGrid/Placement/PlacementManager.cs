@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace ButterBoard.FloatingGrid.Placement
 {
-    public class PlacementManager : SingletonBehaviour<PlacementManager>, IInteractionProvider
+    public class PlacementManager : SingletonBehaviour<PlacementManager>
     {
         private IPlacementService? _activeService;
         private float _rotationTarget;
-
-        [SerializeField]
-        private GameObject? rackUIHost;
 
         [SerializeField]
         private float pinCheckDistanceRadiusThreshold = 0.1f;
@@ -36,8 +31,15 @@ namespace ButterBoard.FloatingGrid.Placement
             if (Placing)
                 throw new InvalidOperationException();
 
-            _activeService = GetTargetService(prefab.GetComponent<BasePlaceable>());
+            // get placeable
+            BasePlaceable prefabPlaceable = prefab.GetComponent<BasePlaceable>();
+
+            // get target service and begin prefab placement
+            _activeService = GetTargetService(prefabPlaceable);
             _activeService.BeginPrefabPlacement(prefab);
+
+            // set initial rotation offset
+            _rotationTarget = prefabPlaceable.InitialRotationOffset;
         }
 
         public void BeginMove(GameObject target)
@@ -46,8 +48,15 @@ namespace ButterBoard.FloatingGrid.Placement
             if (Placing)
                 throw new InvalidOperationException();
 
-            _activeService = GetTargetService(target.GetComponent<BasePlaceable>());
+            // get placeable
+            BasePlaceable placeable = target.GetComponent<BasePlaceable>();
+
+            // get target service and begin move placement
+            _activeService = GetTargetService(placeable);
             _activeService.BeginMovePlacement(target);
+
+            // set initial rotation
+            _rotationTarget = placeable.PlacedRotation;
         }
 
         public void Remove(BasePlaceable target)
@@ -55,6 +64,10 @@ namespace ButterBoard.FloatingGrid.Placement
             // don't need to throw while placing as this should be able to run concurrently
             // a check to see if the one being removed is the one being placed would be nice
             // but that's not possible with the current implementation
+            // kinda stinky that it has to create a service for this
+            // should probably be a static method but those can't be abstract/overriden
+            // or use something else - RemovalService?
+            // don't like that tho, would split things uncomfortably
 
             IPlacementService placementService = GetTargetService(target);
             placementService.Remove(target);
@@ -82,6 +95,11 @@ namespace ButterBoard.FloatingGrid.Placement
                 return;
             }
 
+            PlacingUpdate();
+        }
+
+        private void PlacingUpdate()
+        {
             // cancel placement if space is pressed
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -96,9 +114,9 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // modify rotation target when input occurs
             if (Input.GetKeyDown(KeyCode.Q))
-                _rotationTarget += 90;
+                _rotationTarget += _activeService!.GetPlaceable().RotationStep;
             else if (Input.GetKeyDown(KeyCode.E))
-                _rotationTarget -= 90;
+                _rotationTarget -= _activeService!.GetPlaceable().RotationStep;
 
             Quaternion rotation = Quaternion.Euler(0, 0, _rotationTarget);
 
@@ -114,8 +132,13 @@ namespace ButterBoard.FloatingGrid.Placement
                 return;
             }
 
-            // complete placement and clear _activeService
+            // complete placement
             _activeService.CompletePlacement();
+
+            // set the final rotation
+            _activeService.GetPlaceable().PlacedRotation = _rotationTarget;
+
+            // clear active service
             _activeService = null;
 
             // reset rotation
@@ -124,10 +147,13 @@ namespace ButterBoard.FloatingGrid.Placement
 
         private void SelectUpdate()
         {
-            // if mouse button is not pressed
-            // return
-            if (!Input.GetMouseButtonDown(0))
+            bool leftMouse = Input.GetMouseButtonDown(0);
+            bool rightMouse = Input.GetMouseButtonDown(1);
+
+            // if no mouse button is pressed then exit early
+            if (!(leftMouse || rightMouse))
                 return;
+
 
             // if mouse is over ui, exit
             if (EventSystem.current != null)
@@ -150,13 +176,14 @@ namespace ButterBoard.FloatingGrid.Placement
             // get sorted by highest priority
             BasePlaceable pickupTarget = PlacementHelpers.GetHighestPriority(placeables);
 
-            if (Input.GetKey(KeyCode.R))
-                // remove clicked placeable
-                Remove(pickupTarget);
-            else
+            // left mouse binds to pickup/movement
+            if (leftMouse)
                 // begin movement
                 BeginMove(pickupTarget.gameObject);
 
+            // right mouse binds to removal
+            else if (rightMouse)
+                Remove(pickupTarget);
         }
 
         private IPlacementService GetTargetService(BasePlaceable target)
@@ -172,32 +199,6 @@ namespace ButterBoard.FloatingGrid.Placement
                 default:
                     throw new InvalidOperationException();
             }
-        }
-
-        public void OnSwitchTo()
-        {
-            enabled = true;
-            if (rackUIHost != null)
-            {
-                rackUIHost.SetActive(true);
-            }
-        }
-
-        public void OnSwitchAway()
-        {
-            if (CanCancel)
-                Cancel();
-
-            enabled = false;
-            if (rackUIHost != null)
-            {
-                rackUIHost.SetActive(false);
-            }
-        }
-
-        public bool CanInteractionSafelySwitch()
-        {
-            return !Placing || CanCancel;
         }
     }
 }
