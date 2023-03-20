@@ -46,7 +46,7 @@ namespace ButterBoard.FloatingGrid
 
         public static Vector3 SnapPositionToLocalGridOfSize(Vector3 position, float size)
         {
-            return new Vector3(Mathf.Round(position.x) * size, Mathf.Round(position.y) * size, Mathf.Round(position.z) * size);
+            return new Vector3(Mathf.Round(position.x / size) * size, Mathf.Round(position.y /size) * size, Mathf.Round(position.z / size) * size);
         }
 
         public static Vector3 GetMouseWorldPosition()

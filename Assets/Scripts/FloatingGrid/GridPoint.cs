@@ -27,7 +27,7 @@ namespace ButterBoard.FloatingGrid
         public bool Blocked { get; set; } = false;
 
         [field: SerializeField]
-        public Wire Wire { get; private set; } = null!;
+        public Wire Wire { get; set; } = null!;
 
         public bool Open => ConnectedPin == null && !Blocked;
 
@@ -47,11 +47,6 @@ namespace ButterBoard.FloatingGrid
             _scalableSprite.transform.localScale = scale;
             Radius = gridHost.Spacing / 4f;
             _pointCollider.radius = Radius;
-        }
-
-        public void Wake(Wire wire)
-        {
-            Wire = wire;
         }
 
         public void Connect(GridPin target)

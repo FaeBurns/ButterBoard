@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aca1ec18cb140f3809a013b91697bcb, type: 3}
-  m_Name: Breadboard
+  m_Script: {fileID: 11500000, guid: 0408d1fa69aa46678336dee24f6e612b, type: 3}
+  m_Name: ConstantPower
   m_EditorClassIdentifier: 
-  key: FloatingGrid/Grids/Breadboard_30x5
-  storedObject: {fileID: 5497279337363256389, guid: fe30a1b07dbf48d45844aae57c9964be, type: 3}
+  <DisplayName>k__BackingField: Power Source
+  <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/ConstantPower
+  <Sprite>k__BackingField: {fileID: 0}
+  <Enabled>k__BackingField: 1

@@ -22,7 +22,7 @@ namespace ButterBoard.FloatingGrid
 
             foreach (GridPoint gridPoint in GridPoints)
             {
-                gridPoint.Wake(wire);
+                gridPoint.Wire = wire;
             }
         }
     }

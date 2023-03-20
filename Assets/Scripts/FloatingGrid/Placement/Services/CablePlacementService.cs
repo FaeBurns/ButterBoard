@@ -5,6 +5,7 @@ using ButterBoard.Cables;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Lookup;
 using UnityEngine;
+using ButterBoard.Simulation;
 using Object = UnityEngine.Object;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
@@ -38,9 +39,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             _placementType = CablePlacementType.END;
 
             // disconnect the two wires of the cable being moved
-            GameManager.Instance.ConnectionManager.Disconnect(Context.Placeable.Other.Pin.ConnectedPoint!.Wire, Context.Placeable.Pin.ConnectedPoint!.Wire);
+            SimulationManager.Instance.ConnectionManager.Disconnect(Context.Placeable.Other.Pin.ConnectedPoint.Wire, Context.Placeable.Pin.ConnectedPoint.Wire);
 
-            Context.Placeable.Pin.ConnectedPoint!.Free();
+            Context.Placeable.Pin.ConnectedPoint.Free();
             Context.Placeable.Pin.Free();
         }
 
@@ -74,8 +75,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             {
                 // connect the two wires together
                 // but only if they are not the same wire
-                if (Context.Placeable.Pin.ConnectedPoint!.Wire != Context.Placeable.Other.Pin.ConnectedPoint!.Wire)
-                    GameManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint!.Wire, Context.Placeable.Other.Pin.ConnectedPoint!.Wire);
+                if (Context.Placeable.Pin.ConnectedPoint.Wire != Context.Placeable.Other.Pin.ConnectedPoint.Wire)
+                    SimulationManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint.Wire, Context.Placeable.Other.Pin.ConnectedPoint.Wire);
             }
 
             // set parent to target point's grid
@@ -150,7 +151,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 _startPlaceable!.Other = Context.Placeable;
 
                 // invoke place on the first
-                _startPlaceable!.Place?.Invoke();
+                _startPlaceable!.Place.Invoke();
 
                 // create cable display
                 GameObject cableDisplayObject = (GameObject)Object.Instantiate(AssetSource.Fetch("Objects/CableDisplay"));
@@ -183,10 +184,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (cablePlaceable.Other != null)
             {
                 // check that the wires are not the same and that there is a local connection from target to its other
-                if (cablePlaceable.Pin.ConnectedPoint!.Wire != cablePlaceable.Other.Pin.ConnectedPoint!.Wire &&
-                    GameManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint!.Wire).Contains(cablePlaceable.Other.Pin.ConnectedPoint!.Wire))
+                if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.Other.Pin.ConnectedPoint.Wire &&
+                    SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.Other.Pin.ConnectedPoint.Wire))
                 {
-                    GameManager.Instance.ConnectionManager.Disconnect(cablePlaceable.Other.Pin.ConnectedPoint!.Wire, cablePlaceable.Pin.ConnectedPoint!.Wire);
+                    SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.Other.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
                 }
 
                 Object.Destroy(cablePlaceable.Other.gameObject);

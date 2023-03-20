@@ -14,6 +14,7 @@ namespace ButterBoard.Cables
     {
         private bool _previousWireValue = false;
         private CablePlaceable _startPlaceable = null!;
+        private CablePlaceable _endPlaceable = null!;
 
         private Transform _targetA = null!;
         private Transform _targetB = null!;
@@ -29,6 +30,7 @@ namespace ButterBoard.Cables
             start.Remove.AddListener(OnCableRemoved);
 
             _startPlaceable = start;
+            _endPlaceable = end;
 
             SetColour(_startPlaceable.CableColor);
 
@@ -52,20 +54,25 @@ namespace ButterBoard.Cables
                 ModifyPosition(_targetB.position),
             });
 
-            // exit if start has no connected point
-            if (_startPlaceable.Pin.ConnectedPoint == null)
+            // get placeable to check by checking if start is not connected
+            // if start is not connected then end must be used instead
+            CablePlaceable checkingPlaceable = _startPlaceable.Pin.ConnectedPoint != null ? _startPlaceable : _endPlaceable;
+
+            // if there is still nothing, return
+            if (checkingPlaceable.Pin.ConnectedPoint == null)
                 return;
 
             // peek at value on wire
-            BoolValue watchingValue = _startPlaceable.Pin.ConnectedPoint!.Wire.Peek();
+            bool watchingValue = checkingPlaceable.Pin.ConnectedPoint.Wire.Peek().Value;
+
 
             // if the value has changed
-            if (watchingValue.Value != _previousWireValue)
+            if (watchingValue != _previousWireValue)
             {
                 // set the wire colour
-                SetColour(watchingValue.Value ? _startPlaceable.PoweredCableColor : _startPlaceable.CableColor);
+                SetColour(watchingValue ? _startPlaceable.PoweredCableColor : _startPlaceable.CableColor);
 
-                _previousWireValue = watchingValue.Value;
+                _previousWireValue = watchingValue;
             }
         }
 

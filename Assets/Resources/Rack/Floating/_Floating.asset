@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38a23782cccb40a280493278ef5b06a3, type: 3}
-  m_Name: _Grids
+  m_Name: _Floating
   m_EditorClassIdentifier: ButterBoard:ButterBoard.Rack:RackCategoryAsset
-  <DisplayName>k__BackingField: Grids
+  <DisplayName>k__BackingField: Boards
   <CategoryEntries>k__BackingField:
   - {fileID: 11400000, guid: 3406db8513c249c4e9a7deb5c49dbef8, type: 2}
+  - {fileID: 11400000, guid: 1118cf33a2302f74ba8df9d94f58a359, type: 2}

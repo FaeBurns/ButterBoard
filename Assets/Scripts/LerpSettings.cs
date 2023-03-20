@@ -12,21 +12,16 @@ namespace ButterBoard
         [field: SerializeField]
         public float RotateLerp { get; private set; }
 
-        [field: SerializeField]
-        public float FinalizeScalarTime { get; private set; }
-
         public LerpSettings()
         {
             TranslateLerp = 0.9f;
             RotateLerp = 0.9f;
-            FinalizeScalarTime = 0.25f;
         }
 
-        public LerpSettings(float translateLerp, float rotateLerp, float finalizeScalarTime)
+        public LerpSettings(float translateLerp, float rotateLerp)
         {
             TranslateLerp = translateLerp;
             RotateLerp = rotateLerp;
-            FinalizeScalarTime = finalizeScalarTime;
         }
     }
 }

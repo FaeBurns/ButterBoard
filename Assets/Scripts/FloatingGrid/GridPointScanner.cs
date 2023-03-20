@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ButterBoard.Simulation;
 using Coil;
 using UnityEngine;
 
@@ -11,15 +12,24 @@ namespace ButterBoard.FloatingGrid
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                GridPoint? gridPoint = GetPoint();
+                try
+                {
+                    GridPoint? gridPoint = GetPoint();
 
-                if (gridPoint == null)
-                    return;
+                    if (gridPoint == null)
+                        return;
 
-                IReadOnlyCollection<Wire> localWires = GameManager.Instance.ConnectionManager.GetLocalConnections(gridPoint.Wire);
-                IReadOnlyCollection<Wire> globalWires = GameManager.Instance.ConnectionManager.GetGlobalConnections(gridPoint.Wire);
+                    IReadOnlyCollection<Wire> localWires = SimulationManager.Instance.ConnectionManager.GetLocalConnections(gridPoint.Wire);
+                    IReadOnlyCollection<Wire> globalWires = SimulationManager.Instance.ConnectionManager.GetGlobalConnections(gridPoint.Wire);
 
-                Debug.Log($"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections");
+                    string poweredStatus = (gridPoint.Wire.Peek().Value ? "Powered" : "Unpowered");
+
+                    Debug.Log($"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections | {poweredStatus}");
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e);
+                }
             }
         }
 

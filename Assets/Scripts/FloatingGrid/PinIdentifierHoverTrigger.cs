@@ -39,7 +39,7 @@ namespace ButterBoard.FloatingGrid
             foreach (GridPin pin in _previousPins)
             {
                 // only disable if not in pins
-                if (!pins.Contains(pin))
+                if (pin != null && !pins.Contains(pin))
                     pin.PinIdentifierDisplay.gameObject.SetActive(false);
             }
 

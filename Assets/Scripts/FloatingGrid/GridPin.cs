@@ -14,7 +14,7 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public PinIdentifierDisplay PinIdentifierDisplay { get; private set; } = null!;
 
-        public GridPoint? ConnectedPoint { get; private set; }
+        public GridPoint ConnectedPoint { get; private set; } = null!;
 
         [BindComponent(Parent = true)]
         public GridPlaceable Host { get; private set; } = null!;
@@ -26,7 +26,7 @@ namespace ButterBoard.FloatingGrid
 
         public void Free()
         {
-            ConnectedPoint = null;
+            ConnectedPoint = null!;
         }
 
         public void DisplayIssue(PinPlacementIssueType issueType)
