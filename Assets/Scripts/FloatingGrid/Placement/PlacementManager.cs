@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
+using ButterBoard.Lookup;
+using ButterBoard.UI.Rack;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -26,18 +28,28 @@ namespace ButterBoard.FloatingGrid.Placement
         [field: SerializeField]
         public LerpSettings LerpSettings { get; private set; } = null!;
 
-        public void BeginPlace(GameObject prefab)
+        public void BeginPlace(string assetSourceKey)
         {
             // throw if currently placing
             if (Placing)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Cannot begin placement while already placing.");
+
+            // fetch prefab to be spawned
+            GameObject? prefab = AssetSource.Fetch<GameObject>(assetSourceKey);
+
+            // check if prefab is invalid
+            if (prefab == null)
+            {
+                Debug.LogError($"Failed to find asset with key {{{assetSourceKey}}}");
+                return;
+            }
 
             // get placeable
             BasePlaceable prefabPlaceable = prefab.GetComponent<BasePlaceable>();
 
             // get target service and begin prefab placement
             ActiveService = GetTargetService(prefabPlaceable);
-            ActiveService.BeginPrefabPlacement(prefab);
+            ActiveService.BeginPrefabPlacement(prefab, assetSourceKey);
 
             // set initial rotation offset
             _rotationTarget = prefabPlaceable.InitialRotationOffset;
@@ -127,7 +139,14 @@ namespace ButterBoard.FloatingGrid.Placement
             // if not finished check if it should try and commit placement
             if (!finished)
             {
-                if (Input.GetMouseButtonDown(0))
+                // if left mouse is pressed and mouse is not over ui then try and complete placement
+                // THIS WILL GET CALLED THE SAME FRAME AS PLACEMENT STARTS IF SELECTED FROM THE RACK
+                // TODO: set execution order later. vewy sleepy rn :3
+                // Me from like an hour later - still very sleepy - know knows that this is false
+                // don't actually need the UI check either
+                // The issue was coming from PlacementServices calling MarkRemoval instead of MarkPlacement on PlacementLimitManager
+                // too eepy for this rn :pensive:
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
                     ActiveService.TryCommitPlacement(mouseWorldPosition, rotation);
 
                 return;
@@ -136,8 +155,11 @@ namespace ButterBoard.FloatingGrid.Placement
             // complete placement
             ActiveService.CompletePlacement();
 
+            // get the newly placed placeable
+            BasePlaceable placeable = ActiveService.GetPlaceable();
+
             // set the final rotation
-            ActiveService.GetPlaceable().PlacedRotation = _rotationTarget;
+            placeable.PlacedRotation = _rotationTarget;
 
             // clear active service
             ActiveService = null;

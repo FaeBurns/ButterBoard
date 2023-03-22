@@ -1,4 +1,5 @@
-﻿using BeanCore.Unity.ReferenceResolver;
+﻿using System;
+using BeanCore.Unity.ReferenceResolver;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +12,9 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         /// </summary>
         [field: SerializeField]
         public Collider2D BoundsCollider { get; private set; } = null!;
+
+        [field: SerializeField]
+        public string SourceAssetKey { get; set; } = String.Empty;
 
         [field: SerializeField]
         public float PlacedRotation { get; set; }
@@ -54,6 +58,7 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         /// </summary>
         public virtual void SetDisplayStatus(bool display)
         {
+            // stops being unable to place things
             BoundsCollider.enabled = !display;
         }
     }

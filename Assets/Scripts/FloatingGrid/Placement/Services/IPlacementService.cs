@@ -5,7 +5,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 {
     public interface IPlacementService
     {
-        public void BeginPrefabPlacement(GameObject prefab);
+        public void BeginPrefabPlacement(GameObject prefab, string assetSourceKey);
 
         public void BeginMovePlacement(GameObject target);
 

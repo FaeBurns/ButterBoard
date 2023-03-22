@@ -57,8 +57,6 @@ namespace ButterBoard.Simulation
 
         public void DoTick()
         {
-            Debug.Log("Tick");
-
             IsTickInProgress = true;
 
             // add all pending tickObjects
@@ -114,16 +112,6 @@ namespace ButterBoard.Simulation
         public void DeRegisterTickObject(ITickableObject tickableObject)
         {
             _queuedRemovals.Enqueue(tickableObject);
-        }
-
-        public bool ConnectedToGround(Wire wire)
-        {
-            foreach (Wire groundWire in GroundWires)
-            {
-                return ConnectionManager.HasGlobalConnectionTo(wire, groundWire);
-            }
-
-            return false;
         }
 
         private void OnValuePushed(object sender, EventArgs e)

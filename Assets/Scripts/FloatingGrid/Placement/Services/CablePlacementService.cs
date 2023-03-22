@@ -6,6 +6,7 @@ using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Lookup;
 using UnityEngine;
 using ButterBoard.Simulation;
+using ButterBoard.UI.Rack;
 using Object = UnityEngine.Object;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
@@ -22,9 +23,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             _pinCheckDistanceRadiusThreshold = pinCheckDistanceRadiusThreshold;
         }
 
-        public override void BeginPrefabPlacement(GameObject prefab)
+        public override void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
-            base.BeginPrefabPlacement(prefab);
+            base.BeginPrefabPlacement(prefab, assetSourceKey);
             _prefab = prefab;
             _placementType = CablePlacementType.START;
             _startPlaceable = Context.Placeable;
@@ -81,6 +82,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // set parent to target point's grid
             Context.PlacingObject.transform.SetParent(targetPoint.HostingGrid.transform);
+
+            // notify limiter of placement
+            if (Context.PlacementType == PlacementType.PLACE && _placementType == CablePlacementType.END)
+                PlacementLimitManager.MarkPlacement(Context.Placeable);
 
             // notify of success
             return true;
@@ -140,7 +145,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 // IMPORTANT - calling base here
                 // otherwise _startPlaceable gets set
                 // and icky stuff happens
-                base.BeginPrefabPlacement(_prefab!);
+                base.BeginPrefabPlacement(_prefab!, Context.Placeable.SourceAssetKey);
 
                 // force into end state
                 _placementType = CablePlacementType.END;
@@ -180,14 +185,18 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // if an other exists
             // remove it too
-            // should only not occur if Remove is called during CancelPlacement
+            // should only be false if Remove is called during CancelPlacement
             if (cablePlaceable.Other != null)
             {
-                // check that the wires are not the same and that there is a local connection from target to its other
-                if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.Other.Pin.ConnectedPoint.Wire &&
-                    SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.Other.Pin.ConnectedPoint.Wire))
+                // check if this placeable has a connected point - will be false if canceled during the second half of placement
+                if (cablePlaceable.Pin.ConnectedPoint != null)
                 {
-                    SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.Other.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
+                    // check that the wires are not the same and that there is a local connection from target to its other
+                    if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.Other.Pin.ConnectedPoint.Wire &&
+                        SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.Other.Pin.ConnectedPoint.Wire))
+                    {
+                        SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.Other.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
+                    }
                 }
 
                 Object.Destroy(cablePlaceable.Other.gameObject);

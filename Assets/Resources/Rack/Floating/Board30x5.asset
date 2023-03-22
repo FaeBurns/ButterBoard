@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0408d1fa69aa46678336dee24f6e612b, type: 3}
-  m_Name: 30x5Board
+  m_Name: Board30x5
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: 30 x 5
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/Breadboard_30x5

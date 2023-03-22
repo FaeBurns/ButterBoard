@@ -13,13 +13,9 @@ namespace ButterBoard.Simulation.FloatingObjects
         [SerializeField]
         private GridPoint powerPoint = null!;
 
-        [SerializeField]
-        private GridPoint groundPoint = null!;
-
         private void Awake()
         {
             powerPoint.Wire = new Wire(new SynchronizedValueSource());
-            groundPoint.Wire = new Wire(new SynchronizedValueSource());
         }
 
         public void DoTick()
@@ -40,7 +36,6 @@ namespace ButterBoard.Simulation.FloatingObjects
             if (_placed)
                 return;
 
-            SimulationManager.Instance.GroundWires.Add(groundPoint.Wire);
             SimulationManager.Instance.RegisterTickObject(this);
 
             _placed = true;
@@ -49,7 +44,6 @@ namespace ButterBoard.Simulation.FloatingObjects
         public void OnRemove()
         {
             SimulationManager.Instance.DeRegisterTickObject(this);
-            SimulationManager.Instance.GroundWires.Remove(groundPoint.Wire);
 
             _placed = false;
         }

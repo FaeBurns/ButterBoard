@@ -25,34 +25,30 @@ namespace ButterBoard.Editor.FloatingGrid
 
             EditorGUI.BeginDisabledGroup(manager.Placing);
 
-            if (GUILayout.Button("Begin Test Placement (Grid)"))
+            if (GUILayout.Button("Begin Placement (Processor)"))
             {
-                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/SampleGridPlaceable")!;
-                manager.BeginPlace(prefab);
+                manager.BeginPlace("FloatingGrid/Buildables/Processor_24");
             }
 
-            if (GUILayout.Button("Begin Test Placement (Floating)"))
+            if (GUILayout.Button("Begin Placement (Board)"))
             {
-                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/Breadboard")!;
-                manager.BeginPlace(prefab);
+                manager.BeginPlace("FloatingGrid/Floating/Breadboard_30x5");
             }
 
-            if (GUILayout.Button("Begin Test Placement (Cable)"))
+            if (GUILayout.Button("Begin Placement (Cable)"))
             {
-                GameObject prefab = AssetSource.Fetch<GameObject>("FloatingGrid/Cable" + editorManager.CableColour.ToString())!;
-                manager.BeginPlace(prefab);
+                manager.BeginPlace("FloatingGrid/Cable" + editorManager.CableColour.ToString());
             }
 
-            if (GUILayout.Button("Begin Test Placement (Input)"))
+            if (GUILayout.Button("Begin Placement (Input)"))
             {
-                GameObject prefab = AssetSource.Fetch<GameObject>(editorManager.TestPlacementAsset)!;
-                manager.BeginPlace(prefab);
+                manager.BeginPlace(editorManager.TestPlacementAsset);
             }
 
             EditorGUI.EndDisabledGroup();
             EditorGUI.BeginDisabledGroup(!manager.Placing);
 
-            if (GUILayout.Button("Cancel Test Placement"))
+            if (GUILayout.Button("Cancel Placement"))
             {
                 manager.Cancel();
             }

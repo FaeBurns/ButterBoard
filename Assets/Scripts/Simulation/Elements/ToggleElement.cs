@@ -1,6 +1,6 @@
-﻿namespace ButterBoard.Simulation.TickableObjects
+﻿namespace ButterBoard.Simulation.Elements
 {
-    public class Toggle : TickableBehaviourWithPins
+    public class ToggleElement : TickableBehaviourWithPins
     {
         private bool _actualToggleValue = false;
         private bool _waitingToggleValue = false;
@@ -14,8 +14,8 @@
         {
             _actualToggleValue = _waitingToggleValue;
 
-            // set pins 0 and 1 if they should be enabled
-            SetPins(0, 1, _actualToggleValue);
+            // set pin 0 if it should be enabled
+            SetPin(0, _actualToggleValue);
         }
     }
 }

@@ -41,15 +41,8 @@ namespace ButterBoard.UI.Rack
             if (PlacementManager.Instance.Placing)
                 PlacementManager.Instance.Cancel();
 
-            GameObject? fetchResult = AssetSource.Fetch<GameObject>(_currentEntryAsset.SpawnTargetSourceKey);
-
-            if (fetchResult == null)
-            {
-                Debug.LogError($"Failed to find asset with key {{{_currentEntryAsset.SpawnTargetSourceKey}}}");
-                return;
-            }
-
-            PlacementManager.Instance.BeginPlace(fetchResult);
+            if (PlacementLimitManager.CanPlace(_currentEntryAsset))
+                PlacementManager.Instance.BeginPlace(_currentEntryAsset.SpawnTargetSourceKey);
         }
     }
 }

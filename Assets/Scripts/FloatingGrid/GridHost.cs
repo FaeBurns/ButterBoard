@@ -25,6 +25,9 @@ namespace ButterBoard.FloatingGrid
         public float Spacing { get; private set; }
 
         [field: SerializeField]
+        public bool CablesOnly { get; private set; } = false;
+
+        [field: SerializeField]
         public Vector3 TopLeftOffsetFromCenter { get; private set; }
 
         [field: SerializeField]

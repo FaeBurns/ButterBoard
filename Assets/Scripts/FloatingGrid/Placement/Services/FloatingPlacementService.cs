@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement.Placeables;
+using ButterBoard.UI.Rack;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -12,7 +13,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
         }
 
-        public override void BeginPrefabPlacement(GameObject prefab)
+        public override void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
             // create real and display objects
             GameObject placingObject = Object.Instantiate(prefab);
@@ -23,6 +24,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // throw if not found
             if (placeable == null)
                 throw new ArgumentException($"Cannot begin placement of prefab {placingObject.name} as argument it does not have a {nameof(FloatingPlaceable)} component");
+
+            // set source key
+            placeable.SourceAssetKey = assetSourceKey;
 
             // use blank instead of duplicate to avoid slowdowns during duplication
             GameObject checkingObject = new GameObject();
@@ -72,6 +76,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // clear display status
             Context.Placeable.ClearPlacementStatus();
+
+            // notify limiter of placement
+            if (Context.PlacementType == PlacementType.PLACE)
+                PlacementLimitManager.MarkPlacement(Context.Placeable);
 
             return true;
         }

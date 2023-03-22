@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ButterBoard.FloatingGrid.Placement.Placeables;
+using ButterBoard.UI.Rack;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
@@ -18,9 +19,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             _pinCheckDistanceRadiusThreshold = pinCheckDistanceRadiusThreshold;
         }
 
-        public override void BeginPrefabPlacement(GameObject prefab)
+        public override void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
-            base.BeginPrefabPlacement(prefab);
+            base.BeginPrefabPlacement(prefab, assetSourceKey);
 
             for (int i = 0; i < Context.CheckingPlaceable.Pins.Count; i++)
             {
@@ -144,6 +145,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 pinIdentifier.gameObject.SetActive(false);
             }
 
+            // notify limiter of placement
+            if (Context.PlacementType == PlacementType.PLACE)
+                PlacementLimitManager.MarkPlacement(Context.Placeable);
+
             return true;
         }
 
@@ -226,7 +231,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             foreach (GridPoint overlappingGridPoint in overlappingGridPoints)
             {
-                result.Add(overlappingGridPoint.HostingGrid);
+                if (!overlappingGridPoint.HostingGrid.CablesOnly)
+                    result.Add(overlappingGridPoint.HostingGrid);
             }
 
             return result.ToList();

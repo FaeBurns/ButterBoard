@@ -1,9 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace ButterBoard.Simulation.TickableObjects
+namespace ButterBoard.Simulation.Elements
 {
-    public class Lamp : TickableBehaviour
+    public class LampElement : TickableBehaviour
     {
         private bool previousPowerState = false;
         private bool _hasPower = false;

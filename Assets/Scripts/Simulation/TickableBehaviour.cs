@@ -22,12 +22,9 @@ namespace ButterBoard.Simulation
         [SerializeField]
         protected GridPin powerPin = null!;
 
-        [SerializeField]
-        protected GridPin groundPin = null!;
-
         protected bool GetHasPower()
         {
-            return powerPin.ConnectedPoint.Wire.Peek().Value && SimulationManager.Instance.ConnectedToGround(groundPin.ConnectedPoint.Wire);
+            return powerPin.ConnectedPoint.Wire.Peek().Value;
         }
 
         public virtual void DoTick()

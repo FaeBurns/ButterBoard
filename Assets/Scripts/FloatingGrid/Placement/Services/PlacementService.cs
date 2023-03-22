@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement.Placeables;
+using ButterBoard.UI.Rack;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -28,7 +29,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// Begins a new placement from the object's prefab.
         /// </summary>
         /// <param name="prefab">The prefab of the object being placed. The <see cref="BasePlaceable"/> script must be on the root object.</param>
-        public virtual void BeginPrefabPlacement(GameObject prefab)
+        /// <param name="assetSourceKey"></param>
+        public virtual void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
             // create real and display objects
             GameObject placingObject = Object.Instantiate(prefab);
@@ -41,6 +43,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // throw if not found
             if (placeable == null)
                 throw new ArgumentException($"Cannot begin placement of prefab {placingObject.name} as argument it does not have a {nameof(T)} component");
+
+            // set source key
+            placeable.SourceAssetKey = assetSourceKey;
 
             // set context
             Context = new PlacementContext<T>(placingObject, checkingDuplicate, placeable, checkingPlaceable, PlacementType.PLACE);
@@ -100,6 +105,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             // invoke remove event
             target.Remove.Invoke();
+
+            // notify PlacementLimitManager of removal
+            PlacementLimitManager.MarkRemoval(target);
 
             Object.Destroy(target.gameObject);
         }

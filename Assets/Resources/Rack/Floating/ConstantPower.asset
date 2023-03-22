@@ -16,3 +16,4 @@ MonoBehaviour:
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/ConstantPower
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1
+  <MaxBuildCount>k__BackingField: 0

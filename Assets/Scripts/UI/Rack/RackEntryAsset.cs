@@ -16,6 +16,9 @@ namespace ButterBoard.UI.Rack
 
         [field: SerializeField]
         public bool Enabled { get; private set; } = true;
+
+        [field: SerializeField]
+        public int MaxBuildCount { get; private set; }
     }
 
 }
