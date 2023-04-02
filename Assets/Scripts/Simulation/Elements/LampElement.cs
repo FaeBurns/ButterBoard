@@ -2,7 +2,7 @@
 
 namespace ButterBoard.Simulation.Elements
 {
-    public class LampElement : TickableBehaviour
+    public class LampElement : TickableBehaviourWithPins
     {
         private bool previousPowerState = false;
         private bool _hasPower = false;
@@ -27,7 +27,7 @@ namespace ButterBoard.Simulation.Elements
             previousPowerState = _hasPower;
         }
 
-        protected override void Tick()
+        public override void DoTick()
         {
             _hasPower = GetHasPower();
         }

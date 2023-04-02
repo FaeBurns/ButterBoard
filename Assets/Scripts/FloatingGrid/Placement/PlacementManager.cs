@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using ButterBoard.Lookup;
-using ButterBoard.UI.Rack;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

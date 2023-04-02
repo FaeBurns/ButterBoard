@@ -1,5 +1,4 @@
-﻿using System;
-using BeanCore.Unity.ReferenceResolver;
+﻿using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using Coil;
 using UnityEngine;

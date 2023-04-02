@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BeanCore.Unity.ReferenceResolver;
+﻿using BeanCore.Unity.ReferenceResolver;
 using ButterBoard.FloatingGrid;
 using UnityEditor;
 using UnityEngine;

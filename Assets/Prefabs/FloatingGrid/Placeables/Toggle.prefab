@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 5241138728079284643}
   - component: {fileID: 3482539594821746882}
   - component: {fileID: 5093170598554762909}
-  - component: {fileID: 6333617354358136707}
   m_Layer: 0
   m_Name: Toggle
   m_TagString: Untagged
@@ -247,26 +246,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0aaf32d1bf446509d2dec71aa214abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerPin: {fileID: 3606374491204182393}
-  indexedPins:
-  - {fileID: 8955656550139570292}
-  indexedPinValues: 
---- !u!114 &6333617354358136707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549417979209441235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0aaf32d1bf446509d2dec71aa214abb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerPin: {fileID: 6147238205742568872}
-  indexedPins:
-  - {fileID: 3593368634523062293}
-  indexedPinValues: 
+  powerPin0: {fileID: 3606374491204182393}
+  powerPin1: {fileID: 6147238205742568872}
+  outputPin0: {fileID: 8955656550139570292}
+  outputPin1: {fileID: 3593368634523062293}
 --- !u!1 &2120764896302816461
 GameObject:
   m_ObjectHideFlags: 0

@@ -65,7 +65,6 @@ MonoBehaviour:
       m_Calls: []
   pins:
   - {fileID: 8959798448701703418}
-  - {fileID: 0}
   <GridOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <MainSpriteTintHelper>k__BackingField: {fileID: 8679796805783482602}
   <OverlappingPoints>k__BackingField: []
@@ -110,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerPin: {fileID: 8959798448701703418}
+  indexedPins: []
   tintHelper: {fileID: 8084535206737219343}
   unpoweredColor: {r: 1, g: 1, b: 1, a: 1}
   poweredColor: {r: 0, g: 1, b: 0, a: 1}
@@ -388,17 +388,29 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_margin.x
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_margin.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7240827473139626456, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: side
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.92387956
+      value: 0.38268346
       objectReference: {fileID: 0}
     - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.38268337
+      value: 0.9238795
       objectReference: {fileID: 0}
     - target: {fileID: 8126710276919585958, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: spriteRenderers.Array.size

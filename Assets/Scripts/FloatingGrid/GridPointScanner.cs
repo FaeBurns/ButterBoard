@@ -22,9 +22,10 @@ namespace ButterBoard.FloatingGrid
                     IReadOnlyCollection<Wire> localWires = SimulationManager.Instance.ConnectionManager.GetLocalConnections(gridPoint.Wire);
                     IReadOnlyCollection<Wire> globalWires = SimulationManager.Instance.ConnectionManager.GetGlobalConnections(gridPoint.Wire);
 
-                    string poweredStatus = (gridPoint.Wire.Peek().Value ? "Powered" : "Unpowered");
+                    string poweredStatus = (PowerManager.GetHasPower(gridPoint) ? "Powered" : "Unpowered");
+                    string powerSourceStatus = (PowerManager.GetProvidingPower(gridPoint) ? "Source" : "Not Source");
 
-                    Debug.Log($"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections | {poweredStatus}");
+                    Debug.Log($"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections | {poweredStatus} | {powerSourceStatus}");
                 }
                 catch (Exception e)
                 {

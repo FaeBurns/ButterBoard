@@ -1,51 +1,27 @@
-﻿using System;
-using ButterBoard.FloatingGrid;
+﻿using ButterBoard.FloatingGrid;
 using Coil;
-using Coil.Connections;
 using UnityEngine;
 
 namespace ButterBoard.Simulation.FloatingObjects
 {
-    public class ConstantPower : MonoBehaviour, ITickableObject
+    public class ConstantPower : TickableBehaviour, ITickableObject
     {
-        private bool _placed = false;
-
         [SerializeField]
         private GridPoint powerPoint = null!;
 
-        private void Awake()
+        protected override void Awake()
         {
-            powerPoint.Wire = new Wire(new SynchronizedValueSource());
+            powerPoint.Wire = new Wire();
+            base.Awake();
         }
 
-        public void DoTick()
+        public override void PushValues()
         {
-        }
+            // push power to point
+            PowerManager.Power(powerPoint);
 
-        public void PushValues()
-        {
-            powerPoint.Wire.Push(new BoolValue(true));
-        }
-
-        public void Cleanse()
-        {
-        }
-
-        public void OnPlaced()
-        {
-            if (_placed)
-                return;
-
-            SimulationManager.Instance.RegisterTickObject(this);
-
-            _placed = true;
-        }
-
-        public void OnRemove()
-        {
+            // deregister on first PushValues power is constant and should never need to be pushed again
             SimulationManager.Instance.DeRegisterTickObject(this);
-
-            _placed = false;
         }
     }
 }

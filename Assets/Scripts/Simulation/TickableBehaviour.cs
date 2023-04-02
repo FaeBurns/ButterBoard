@@ -1,6 +1,4 @@
-﻿using System;
-using ButterBoard.FloatingGrid;
-using ButterBoard.FloatingGrid.Placement.Placeables;
+﻿using ButterBoard.FloatingGrid.Placement.Placeables;
 using UnityEngine;
 
 namespace ButterBoard.Simulation
@@ -17,35 +15,26 @@ namespace ButterBoard.Simulation
             hostPlaceable.Place.AddListener(Register);
             hostPlaceable.Pickup.AddListener(DeRegister);
             hostPlaceable.Remove.AddListener(DeRegister);
+
+            hostPlaceable.Pickup.AddListener(OnPickup);
         }
 
-        [SerializeField]
-        protected GridPin powerPin = null!;
-
-        protected bool GetHasPower()
-        {
-            return powerPin.ConnectedPoint.Wire.Peek().Value;
-        }
-
-        public virtual void DoTick()
-        {
-            Tick();
-        }
+        public virtual void DoTick() { }
 
         public virtual void PushValues() { }
 
         public virtual void Cleanse() { }
 
-        protected abstract void Tick();
-
-        private void Register()
+        public void Register()
         {
             SimulationManager.Instance.RegisterTickObject(this);
         }
 
-        private void DeRegister()
+        public void DeRegister()
         {
             SimulationManager.Instance.DeRegisterTickObject(this);
         }
+
+        protected virtual void OnPickup() { }
     }
 }

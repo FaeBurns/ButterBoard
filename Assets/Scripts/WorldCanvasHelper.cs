@@ -1,6 +1,4 @@
-﻿using System;
-using BeanCore.Unity.ReferenceResolver.Attributes;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ButterBoard
 {

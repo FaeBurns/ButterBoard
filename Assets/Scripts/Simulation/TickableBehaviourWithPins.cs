@@ -1,85 +1,98 @@
 ﻿using System;
+using System.Collections.Generic;
 using ButterBoard.FloatingGrid;
-using Coil;
 using UnityEngine;
 
 namespace ButterBoard.Simulation
 {
     public abstract class TickableBehaviourWithPins : TickableBehaviour, ITickableObject
     {
+        private readonly Queue<PowerStatusChange> _powerQueue = new Queue<PowerStatusChange>();
+
+        [SerializeField]
+        protected GridPin powerPin = null!;
+
         [SerializeField]
         private GridPin[] indexedPins = Array.Empty<GridPin>();
 
-        [SerializeField]
-        private bool[] indexedPinValues = Array.Empty<bool>();
-
         public int IndexedPinCount => indexedPins.Length;
 
-        protected override void Awake()
+        protected bool GetHasPower()
         {
-            base.Awake();
-            indexedPinValues = new bool[indexedPins.Length];
+            // allow if powerPin is not set or power is set
+            // means that powerPin does not have to be set - TickableBehaviours that might not want a power pin are still allowed to work
+            return powerPin == null || PowerManager.GetHasPower(powerPin);
         }
 
         public override void DoTick()
         {
-            // update indexedPinValues with incoming data
-            for (int i = 0; i < indexedPinValues.Length; i++)
-            {
-                indexedPinValues[i] = indexedPins[i].ConnectedPoint.Wire.Peek().Value;
-            }
-
             // skip tick if no power is provided to the object
-            if (!powerPin.ConnectedPoint.Wire.Peek().Value)
+            if (!GetHasPower())
                 return;
-
-            base.DoTick();
         }
 
         public override void PushValues()
         {
-            for (int i = 0; i < indexedPins.Length; i++)
+            // loop through all in _powerQueue
+            while (_powerQueue.Count > 0)
             {
-                if (indexedPinValues[i])
-                    indexedPins[i].ConnectedPoint.Wire.Push(new BoolValue(true));
+                PowerStatusChange statusChange = _powerQueue.Dequeue();
+                GridPin changingPin = indexedPins[statusChange.TargetPinIndex];
+
+                // either power or de-power pin based on status change event
+                PowerManager.SetPowerState(changingPin, statusChange.NewPowerState);
             }
         }
 
         protected void SetPin(int pinIndex, bool value)
         {
-            indexedPinValues[pinIndex] = value;
+            // enqueue power change
+            _powerQueue.Enqueue(new PowerStatusChange(pinIndex, value));
         }
 
         protected void SetPins(int startPinIndex, int endPinIndex, bool value)
         {
-            for (int i = startPinIndex; i < indexedPinValues.Length; i++)
+            for (int i = startPinIndex; i < indexedPins.Length; i++)
             {
-                indexedPinValues[i] = value;
+                // enqueue power change
+                _powerQueue.Enqueue(new PowerStatusChange(i, value));
 
                 if (i == endPinIndex)
                     return;
             }
 
-            throw new InvalidOperationException();
+            throw new IndexOutOfRangeException();
         }
 
         protected bool GetPin(int pinIndex)
         {
-            return indexedPinValues[pinIndex];
+            return PowerManager.GetHasPower(indexedPins[pinIndex]);
         }
 
         protected bool[] GetPins(int startPinIndex, int endPinIndex)
         {
             bool[] resultArray = new bool[(endPinIndex - startPinIndex) + 1];
-            for (int i = startPinIndex; i < indexedPinValues.Length; i++)
+            for (int i = startPinIndex; i < indexedPins.Length; i++)
             {
-                resultArray[i] = indexedPinValues[i];
+                resultArray[i] = PowerManager.GetHasPower(indexedPins[i]);
 
                 if (i == endPinIndex)
                     return resultArray;
             }
 
-            throw new InvalidOperationException();
+            throw new IndexOutOfRangeException();
+        }
+    }
+
+    public class PowerStatusChange
+    {
+        public int TargetPinIndex { get; }
+        public bool NewPowerState { get; }
+
+        public PowerStatusChange(int targetPinIndex, bool newPowerState)
+        {
+            TargetPinIndex = targetPinIndex;
+            NewPowerState = newPowerState;
         }
     }
 }

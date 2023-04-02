@@ -1,21 +1,34 @@
-﻿namespace ButterBoard.Simulation.Elements
+﻿using ButterBoard.FloatingGrid;
+using UnityEngine;
+
+namespace ButterBoard.Simulation.Elements
 {
-    public class ToggleElement : TickableBehaviourWithPins
+    public class ToggleElement : TickableBehaviour
     {
-        private bool _actualToggleValue = false;
-        private bool _waitingToggleValue = false;
+        private bool _toggleValue = false;
+
+        [SerializeField]
+        private GridPin powerPin0 = null!;
+
+        [SerializeField]
+        private GridPin powerPin1 = null!;
+
+        [SerializeField]
+        private GridPin outputPin0 = null!;
+
+        [SerializeField]
+        private GridPin outputPin1 = null!;
 
         public void OnToggleClick()
         {
-            _waitingToggleValue = !_waitingToggleValue;
+            _toggleValue = !_toggleValue;
         }
 
-        protected override void Tick()
+        public override void PushValues()
         {
-            _actualToggleValue = _waitingToggleValue;
-
-            // set pin 0 if it should be enabled
-            SetPin(0, _actualToggleValue);
+            // cannot be optimized to only check if _toggleValue changes as input power could change at any time
+            PowerManager.SetPowerState(outputPin0, _toggleValue && PowerManager.GetHasPower(powerPin0));
+            PowerManager.SetPowerState(outputPin1, _toggleValue && PowerManager.GetHasPower(powerPin1));
         }
     }
 }

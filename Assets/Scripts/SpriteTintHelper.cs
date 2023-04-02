@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BeanCore.Unity.ReferenceResolver;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace ButterBoard
 {

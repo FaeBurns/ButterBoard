@@ -259,7 +259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTickProgress: 0
-  tickInterval: 60
+  tickInterval: 1
   burstTickCount: 1
 --- !u!1 &332288686
 GameObject:

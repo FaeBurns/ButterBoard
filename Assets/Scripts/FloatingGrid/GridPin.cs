@@ -2,6 +2,7 @@
 using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using ButterBoard.FloatingGrid.Placement.Placeables;
+using ButterBoard.Simulation;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -26,6 +27,13 @@ namespace ButterBoard.FloatingGrid
 
         public void Free()
         {
+            // if ConnectedPoint is providing power, it will be doing so from this pin
+            // therefore it needs to be un-powered
+            if (PowerManager.GetProvidingPower(ConnectedPoint))
+            {
+                PowerManager.UnPower(ConnectedPoint);
+            }
+
             ConnectedPoint = null!;
         }
 

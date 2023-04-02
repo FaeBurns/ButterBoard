@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Coil;
+﻿using System.Collections.Generic;
 using Coil.Connections;
 using UnityEngine;
 
@@ -12,10 +10,6 @@ namespace ButterBoard.Simulation
     /// </summary>
     public class SimulationManager : SingletonBehaviour<SimulationManager>
     {
-        private bool _resettingWires = false;
-
-        private readonly Queue<SynchronizedValueSource> _modifiedWires = new Queue<SynchronizedValueSource>();
-
         private readonly Queue<ITickableObject> _queuedAdditions = new Queue<ITickableObject>();
         private readonly Queue<ITickableObject> _queuedRemovals = new Queue<ITickableObject>();
         private readonly List<ITickableObject> _tickObjects = new List<ITickableObject>();
@@ -33,14 +27,10 @@ namespace ButterBoard.Simulation
 
         public bool IsTickInProgress { get; private set; }
 
+        /// <summary>
+        /// The <see cref="ConnectionManager"/> instance used to manage connecting and disconnecting wires.
+        /// </summary>
         public ConnectionManager ConnectionManager { get; } = new ConnectionManager();
-
-        public List<Wire> GroundWires { get; } = new List<Wire>();
-
-        public SimulationManager()
-        {
-            Coil.ValuePushedNotifier.ValuePushed += OnValuePushed;
-        }
 
         private void Update()
         {
@@ -78,17 +68,6 @@ namespace ButterBoard.Simulation
                 tickObject.DoTick();
             }
 
-            _resettingWires = true;
-
-            // clear all values pushed during execution of previous tick
-            while (_modifiedWires.Count > 0)
-            {
-                SynchronizedValueSource valueSource = _modifiedWires.Dequeue();
-                valueSource.Reset();
-            }
-
-            _resettingWires = false;
-
             // push all modified values
             foreach (ITickableObject tickObject in _tickObjects)
             {
@@ -112,13 +91,6 @@ namespace ButterBoard.Simulation
         public void DeRegisterTickObject(ITickableObject tickableObject)
         {
             _queuedRemovals.Enqueue(tickableObject);
-        }
-
-        private void OnValuePushed(object sender, EventArgs e)
-        {
-            // record if wires are not being reset
-            if (!_resettingWires)
-                _modifiedWires.Enqueue((SynchronizedValueSource)sender);
         }
     }
 }

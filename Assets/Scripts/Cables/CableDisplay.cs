@@ -1,18 +1,14 @@
-﻿using System;
-using BeanCore.Unity.ReferenceResolver;
+﻿using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
-using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement.Placeables;
-using ButterBoard.FloatingGrid.Placement.Services;
-using Coil;
+using ButterBoard.Simulation;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace ButterBoard.Cables
 {
     public class CableDisplay : MonoBehaviour
     {
-        private bool _previousWireValue = false;
+        private bool _previousWireValue;
         private CablePlaceable _startPlaceable = null!;
         private CablePlaceable _endPlaceable = null!;
 
@@ -48,7 +44,7 @@ namespace ButterBoard.Cables
 
         private void Update()
         {
-            _lineRenderer.SetPositions(new Vector3[2]
+            _lineRenderer.SetPositions(new []
             {
                 ModifyPosition(_targetA.position),
                 ModifyPosition(_targetB.position),
@@ -63,8 +59,7 @@ namespace ButterBoard.Cables
                 return;
 
             // peek at value on wire
-            bool watchingValue = checkingPlaceable.Pin.ConnectedPoint.Wire.Peek().Value;
-
+            bool watchingValue = PowerManager.GetHasPower(checkingPlaceable.Pin);
 
             // if the value has changed
             if (watchingValue != _previousWireValue)

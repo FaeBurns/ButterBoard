@@ -1,5 +1,4 @@
 ﻿using ButterBoard.FloatingGrid.Placement;
-using ButterBoard.Lookup;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

@@ -1,7 +1,5 @@
 ﻿using BeanCore.Unity.ReferenceResolver;
-using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement;
-using ButterBoard.Lookup;
 using UnityEditor;
 using UnityEngine;
 
