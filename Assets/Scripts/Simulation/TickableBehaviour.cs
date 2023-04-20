@@ -19,11 +19,7 @@ namespace ButterBoard.Simulation
             hostPlaceable.Pickup.AddListener(OnPickup);
         }
 
-        public virtual void DoTick() { }
-
-        public virtual void PushValues() { }
-
-        public virtual void Cleanse() { }
+        public abstract void DoTick();
 
         public void Register()
         {

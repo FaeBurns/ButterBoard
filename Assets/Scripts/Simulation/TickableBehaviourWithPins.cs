@@ -7,15 +7,22 @@ namespace ButterBoard.Simulation
 {
     public abstract class TickableBehaviourWithPins : TickableBehaviour, ITickableObject
     {
-        private readonly Queue<PowerStatusChange> _powerQueue = new Queue<PowerStatusChange>();
+        private bool[] indexedPinOutputValues = null!;
 
         [SerializeField]
         protected GridPin powerPin = null!;
 
         [SerializeField]
-        private GridPin[] indexedPins = Array.Empty<GridPin>();
+        protected GridPin[] indexedPins = Array.Empty<GridPin>();
 
-        public int IndexedPinCount => indexedPins.Length;
+        protected int IndexedPinCount => indexedPins.Length;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            indexedPinOutputValues = new bool [indexedPins.Length];
+        }
 
         protected bool GetHasPower()
         {
@@ -24,38 +31,21 @@ namespace ButterBoard.Simulation
             return powerPin == null || PowerManager.GetHasPower(powerPin);
         }
 
-        public override void DoTick()
-        {
-            // skip tick if no power is provided to the object
-            if (!GetHasPower())
-                return;
-        }
-
-        public override void PushValues()
-        {
-            // loop through all in _powerQueue
-            while (_powerQueue.Count > 0)
-            {
-                PowerStatusChange statusChange = _powerQueue.Dequeue();
-                GridPin changingPin = indexedPins[statusChange.TargetPinIndex];
-
-                // either power or de-power pin based on status change event
-                PowerManager.SetPowerState(changingPin, statusChange.NewPowerState);
-            }
-        }
-
-        protected void SetPin(int pinIndex, bool value)
+        protected void SetIndexedPinValue(int pinIndex, bool value)
         {
             // enqueue power change
-            _powerQueue.Enqueue(new PowerStatusChange(pinIndex, value));
+            PowerManager.SetPowerState(indexedPins[pinIndex], value);
         }
 
-        protected void SetPins(int startPinIndex, int endPinIndex, bool value)
+        protected void SetIndexedPinValues(int startPinIndex, int endPinIndex, bool[] values)
         {
+            if (values.Length != (endPinIndex - startPinIndex) + 1)
+                throw new ArgumentException("length of values input must match length of pin range", nameof(values));
+
             for (int i = startPinIndex; i < indexedPins.Length; i++)
             {
                 // enqueue power change
-                _powerQueue.Enqueue(new PowerStatusChange(i, value));
+                PowerManager.SetPowerState(indexedPins[i], values[i]);
 
                 if (i == endPinIndex)
                     return;
@@ -64,12 +54,12 @@ namespace ButterBoard.Simulation
             throw new IndexOutOfRangeException();
         }
 
-        protected bool GetPin(int pinIndex)
+        protected bool GetIndexedPinValue(int pinIndex)
         {
             return PowerManager.GetHasPower(indexedPins[pinIndex]);
         }
 
-        protected bool[] GetPins(int startPinIndex, int endPinIndex)
+        protected bool[] GetIndexedPinValues(int startPinIndex, int endPinIndex)
         {
             bool[] resultArray = new bool[(endPinIndex - startPinIndex) + 1];
             for (int i = startPinIndex; i < indexedPins.Length; i++)
@@ -81,18 +71,6 @@ namespace ButterBoard.Simulation
             }
 
             throw new IndexOutOfRangeException();
-        }
-    }
-
-    public class PowerStatusChange
-    {
-        public int TargetPinIndex { get; }
-        public bool NewPowerState { get; }
-
-        public PowerStatusChange(int targetPinIndex, bool newPowerState)
-        {
-            TargetPinIndex = targetPinIndex;
-            NewPowerState = newPowerState;
         }
     }
 }

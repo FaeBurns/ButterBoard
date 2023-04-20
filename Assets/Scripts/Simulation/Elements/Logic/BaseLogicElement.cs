@@ -6,8 +6,6 @@ namespace ButterBoard.Simulation.Elements.Logic
 {
     public abstract class BaseLogicElement : TickableBehaviour
     {
-        private bool _inputStatus = false;
-
         [SerializeField]
         public GridPin[] inputPins = Array.Empty<GridPin>();
 
@@ -23,12 +21,7 @@ namespace ButterBoard.Simulation.Elements.Logic
                 logicInput[i] = PowerManager.GetHasPower(inputPins[i]);
             }
 
-            _inputStatus = GetLogicValue(logicInput);
-        }
-
-        public override void PushValues()
-        {
-            PowerManager.SetPowerState(outputPin, _inputStatus);
+            PowerManager.SetPowerState(outputPin, GetLogicValue(logicInput));
         }
 
         protected abstract bool GetLogicValue(bool[] inputValues);

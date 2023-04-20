@@ -1,6 +1,7 @@
 ﻿using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace ButterBoard
 {
@@ -37,6 +38,10 @@ namespace ButterBoard
 
         private void UpdatePosition()
         {
+            // don't move camera if a ui element is selected
+            if (EventSystem.current.currentSelectedGameObject != null)
+                return;
+
             // Instant Acceleration
             // Smooth stop
 

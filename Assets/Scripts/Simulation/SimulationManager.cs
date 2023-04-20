@@ -68,17 +68,8 @@ namespace ButterBoard.Simulation
                 tickObject.DoTick();
             }
 
-            // push all modified values
-            foreach (ITickableObject tickObject in _tickObjects)
-            {
-                tickObject.PushValues();
-            }
-
-            // finalize tick
-            foreach (ITickableObject tickObject in _tickObjects)
-            {
-                tickObject.Cleanse();
-            }
+            // apply changes made to power simulation
+            PowerManager.ApplyChanges();
 
             IsTickInProgress = false;
         }

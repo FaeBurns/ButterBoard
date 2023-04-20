@@ -15,7 +15,7 @@ namespace ButterBoard.Simulation.FloatingObjects
             base.Awake();
         }
 
-        public override void PushValues()
+        public override void DoTick()
         {
             // push power to point
             PowerManager.Power(powerPoint);

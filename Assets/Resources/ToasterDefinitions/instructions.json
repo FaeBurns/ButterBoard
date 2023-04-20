@@ -1,0 +1,272 @@
+﻿{
+  "$schema" : "definitions_schema.json",
+  "namespace": "Toaster.Instructions",
+  "type-postfix": "Instruction",
+  "definitions": [
+    {
+      "name": "mov",
+      "instruction-type": "Move.Move",
+      "parameters": [
+        "REGISTER",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "msr",
+      "instruction-type": "Move.MoveShiftRight",
+      "parameters": [
+        "REGISTER",
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "msl",
+      "instruction-type": "Move.MoveShiftLeft",
+      "parameters": [
+        "REGISTER",
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "ior",
+      "instruction-type": "Move.Or",
+      "parameters": [
+        "REGISTER",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "and",
+      "instruction-type": "Move.And",
+      "parameters": [
+        "REGISTER",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "xor",
+      "instruction-type": "Move.Xor",
+      "parameters": [
+        "REGISTER",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "not",
+      "instruction-type": "Move.Not",
+      "parameters": [
+        "REGISTER"
+      ]
+    },
+
+
+    {
+      "name": "add",
+      "instruction-type": "Math.Add",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "add",
+      "instruction-type": "Math.Add",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "sub",
+      "instruction-type": "Math.Subtract",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "sub",
+      "instruction-type": "Math.Subtract",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "mul",
+      "instruction-type": "Math.Multiply",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "mul",
+      "instruction-type": "Math.Multiply",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "div",
+      "instruction-type": "Math.Divide",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "div",
+      "instruction-type": "Math.Divide",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+
+    {
+      "name": "teq",
+      "instruction-type": "Test.TestAreEqual",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "tne",
+      "instruction-type": "Test.TestNotEqual",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "tgt",
+      "instruction-type": "Test.TestGreaterThan",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "tlt",
+      "instruction-type": "Test.TestLessThan",
+      "parameters": [
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+
+    {
+      "name": "beq",
+      "instruction-type": "Branch.BranchAreEqual",
+      "parameters": [
+        "REGISTER_CONSTANT_LABEL",
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "bne",
+      "instruction-type": "Branch.BranchNotEqual",
+      "parameters": [
+        "REGISTER_CONSTANT_LABEL",
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "bgt",
+      "instruction-type": "Branch.BranchGreaterThan",
+      "parameters": [
+        "REGISTER_CONSTANT_LABEL",
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "blt",
+      "instruction-type": "Branch.BranchLessThan",
+      "parameters": [
+        "REGISTER_CONSTANT_LABEL",
+        "REGISTER_CONSTANT",
+        "REGISTER_CONSTANT"
+      ]
+    },
+
+
+    {
+      "name": "jmp",
+      "instruction-type": "Jump.Jump",
+      "parameters": [
+        "REGISTER_CONSTANT_LABEL"
+      ]
+    },
+    {
+      "name": "jsr",
+      "instruction-type": "Jump.JumpSetReturn",
+      "parameters": [
+        "REGISTER_CONSTANT_LABEL"
+      ]
+    },
+    {
+      "name": "ret",
+      "instruction-type": "Jump.Return",
+      "parameters": []
+    },
+    {
+      "name": "ret",
+      "instruction-type": "Jump.Return",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "rit",
+      "instruction-type": "Jump.ReturnIfTrue",
+      "parameters": []
+    },
+    {
+      "name": "rit",
+      "instruction-type": "Jump.ReturnIfTrue",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },{
+      "name": "rif",
+      "instruction-type": "Jump.ReturnIfFalse",
+      "parameters": []
+    },
+    {
+      "name": "rif",
+      "instruction-type": "Jump.ReturnIfFalse",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
+
+
+    {
+      "name": "stp",
+      "instruction-type": "Pin.SetPins",
+      "parameters": [
+        "PIN_ALL",
+        "REGISTER_CONSTANT"
+      ]
+    },
+    {
+      "name": "clr",
+      "instruction-type": "Pin.ClearPins",
+      "parameters": [
+        "PIN_ALL"
+      ]
+    },
+    {
+      "name": "ldp",
+      "instruction-type": "Pin.GetPins",
+      "parameters": [
+        "REGISTER",
+        "PIN_ALL"
+      ]
+    }
+  ]
+}

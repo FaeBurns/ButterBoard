@@ -1,0 +1,5 @@
+Background: #121212
+Light Background: #1E1E1E
+Foreground: #F2E7FE
+Coloured Foreground: #BB86FC
+Coloured Foreground Shadow: #9742FF

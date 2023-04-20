@@ -6,6 +6,8 @@ namespace ButterBoard.Simulation.Elements
     public class ToggleElement : TickableBehaviour
     {
         private bool _toggleValue = false;
+        private bool _hasPower0;
+        private bool _hasPower1;
 
         [SerializeField]
         private GridPin powerPin0 = null!;
@@ -24,9 +26,8 @@ namespace ButterBoard.Simulation.Elements
             _toggleValue = !_toggleValue;
         }
 
-        public override void PushValues()
+        public override void DoTick()
         {
-            // cannot be optimized to only check if _toggleValue changes as input power could change at any time
             PowerManager.SetPowerState(outputPin0, _toggleValue && PowerManager.GetHasPower(powerPin0));
             PowerManager.SetPowerState(outputPin1, _toggleValue && PowerManager.GetHasPower(powerPin1));
         }

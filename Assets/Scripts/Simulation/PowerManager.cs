@@ -11,6 +11,23 @@ namespace ButterBoard.Simulation
     {
         private static readonly HashSet<GridPoint> _poweredPoints = new HashSet<GridPoint>();
         private static readonly Dictionary<Wire, int> _poweredWireCounts = new Dictionary<Wire, int>();
+        private static readonly Queue<PowerOperation> _queuedPowerOperations = new Queue<PowerOperation>();
+
+        /// <summary>
+        /// Applies changes made during Power and UnPower operations.
+        /// </summary>
+        public static void ApplyChanges()
+        {
+            while (_queuedPowerOperations.Count > 0)
+            {
+                PowerOperation operation = _queuedPowerOperations.Dequeue();
+
+                if (operation.State)
+                    PowerInternal(operation.Point);
+                else
+                    UnPowerInternal(operation.Point);
+            }
+        }
 
         /// <summary>
         /// Powers a <see cref="GridPin">GridPin's</see> connected <see cref="GridPoint"/>.
@@ -27,6 +44,15 @@ namespace ButterBoard.Simulation
         /// <param name="point">The point to power.</param>
         public static void Power(GridPoint point)
         {
+            SetPowerState(point, true);
+        }
+
+        /// <summary>
+        /// Applies changes made to a <see cref="GridPoint">GridPoint's</see> power status.
+        /// </summary>
+        /// <param name="point">The point to apply changes to.</param>
+        private static void PowerInternal(GridPoint point)
+        {
             // exit if already powered
             if (_poweredPoints.Contains(point))
                 return;
@@ -35,14 +61,14 @@ namespace ButterBoard.Simulation
             _poweredPoints.Add(point);
 
             // power point's wire
-            Power(point.Wire);
+            PowerInternal(point.Wire);
         }
 
         /// <summary>
         /// Marks a wire as having another incoming power source.
         /// </summary>
         /// <param name="wire">The wire to mark.</param>
-        private static void Power(Wire wire)
+        private static void PowerInternal(Wire wire)
         {
             // if wire not recorded, record and power wire
             if (!_poweredWireCounts.ContainsKey(wire))
@@ -70,12 +96,17 @@ namespace ButterBoard.Simulation
         /// <param name="point">The point to un-power.</param>
         public static void UnPower(GridPoint point)
         {
+            SetPowerState(point, false);
+        }
+
+        private static void UnPowerInternal(GridPoint point)
+        {
             // only un-power if point is already powered
             if (_poweredPoints.Contains(point))
             {
                 _poweredPoints.Remove(point);
 
-                UnPower(point.Wire);
+                UnPowerInternal(point.Wire);
             }
         }
 
@@ -83,7 +114,7 @@ namespace ButterBoard.Simulation
         /// Marks a wire as having one less power source.
         /// </summary>
         /// <param name="wire">The wire to mark as unpowered.</param>
-        private static void UnPower(Wire wire)
+        private static void UnPowerInternal(Wire wire)
         {
             if (_poweredWireCounts.TryGetValue(wire, out int powerCount))
             {
@@ -130,7 +161,7 @@ namespace ButterBoard.Simulation
         /// </summary>
         /// <param name="wire">The wire to check.</param>
         /// <returns></returns>
-        public static bool GetHasPower(Wire wire)
+        private static bool GetHasPower(Wire wire)
         {
             return wire.Peek();
         }
@@ -172,10 +203,19 @@ namespace ButterBoard.Simulation
         /// <param name="state">A value indicating whether <paramref name="point"/> should be powered or not.</param>
         public static void SetPowerState(GridPoint point, bool state)
         {
-            if (state)
-                Power(point);
-            else
-                UnPower(point);
+            _queuedPowerOperations.Enqueue(new PowerOperation(point, state));
+        }
+    }
+
+    public class PowerOperation
+    {
+        public GridPoint Point { get; }
+        public bool State { get; }
+
+        public PowerOperation(GridPoint point, bool state)
+        {
+            Point = point;
+            State = state;
         }
     }
 }
