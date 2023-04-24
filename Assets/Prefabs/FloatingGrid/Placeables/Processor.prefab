@@ -131,10 +131,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5659691648844374b98aa308e4817e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerPin: {fileID: 0}
-  indexedPins: []
-  resetPin: {fileID: 0}
-  errorPin: {fileID: 0}
+  powerPin: {fileID: 6155020133730529067}
+  indexedPins:
+  - {fileID: 5734355099167408233}
+  - {fileID: 7594833039092262545}
+  - {fileID: 3979446638620537546}
+  - {fileID: 4933049941565523278}
+  - {fileID: 6514485062657736554}
+  - {fileID: 9219393203863916819}
+  - {fileID: 4336320374039781915}
+  - {fileID: 1867896008990470601}
+  - {fileID: 4718930243982619148}
+  - {fileID: 2941996425064145700}
+  - {fileID: 9044967952529870310}
+  - {fileID: 6988044619657732209}
+  - {fileID: 6408732321150779392}
+  - {fileID: 7273290967072279760}
+  - {fileID: 8817278039710824643}
+  - {fileID: 9138648464530833146}
+  - {fileID: 8262449708604923797}
+  - {fileID: 7072376271566784068}
+  - {fileID: 7433789447772960117}
+  - {fileID: 322510063015649729}
+  resetPin: {fileID: 8964706254571336650}
+  errorPin: {fileID: 1027172543111653317}
   <ExecutionConfig>k__BackingField:
     NamedRegisters: []
     StackRegisterCount: 4

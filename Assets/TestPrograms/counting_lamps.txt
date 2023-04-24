@@ -1,0 +1,9 @@
+:loop
+stp .p12:5 $acc
+add 1
+mov $r0 $r0 ; no sleep instruction oops
+mov $r0 $r0
+blt loop $acc 32
+
+mov $acc 0
+jmp loop

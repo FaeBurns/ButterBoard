@@ -63,7 +63,7 @@ namespace ButterBoard.Simulation.Elements
             {
                 // kinda really stinky here
                 // if there is no power just set all output pins to false
-                SetIndexedPinValues(0, IndexedPinCount, new bool[IndexedPinCount]);
+                SetIndexedPinValues(0, IndexedPinCount - 1, new bool[IndexedPinCount]);
             }
 
             // exit early if no interpreter is set.
@@ -87,7 +87,7 @@ namespace ButterBoard.Simulation.Elements
             }
 
             // send values from all indexed pins to interpreter's PinController
-            _activeInterpreter.PinController.SetInputPins(GetIndexedPinValues(0, IndexedPinCount));
+            _activeInterpreter.PinController.SetInputPins(GetIndexedPinValues(0, IndexedPinCount - 1));
 
             // perform interpreter step
             // catch and raise any errors that are encountered
@@ -120,7 +120,7 @@ namespace ButterBoard.Simulation.Elements
             }
 
             bool[] outputPinValues = _activeInterpreter.PinController.GetOutputPins();
-            SetIndexedPinValues(0, IndexedPinCount, outputPinValues);
+            SetIndexedPinValues(0, IndexedPinCount - 1, outputPinValues);
         }
 
         /// <summary>
