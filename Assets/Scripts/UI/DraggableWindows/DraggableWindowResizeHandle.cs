@@ -1,11 +1,10 @@
-﻿using GluonGui.WorkspaceWindow.Views.WorkspaceExplorer.Configuration;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ButterBoard.UI.Drag
+namespace ButterBoard.UI.DraggableWindows
 {
     /// <summary>
-    /// A component that handles the resizing of a <see cref="DraggableWindow"/>. Must have a transparent image component to receive drag events. Assumed to be placed in the bottom right corner
+    /// A component that handles the resizing of a <see cref="DraggableWindowInfo"/>. Must have a transparent image component to receive drag events. Assumed to be placed in the bottom right corner
     /// </summary>
     public class DraggableWindowResizeHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {

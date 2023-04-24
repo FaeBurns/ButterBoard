@@ -40,6 +40,11 @@ namespace ButterBoard.Simulation.Elements
         public string UnvalidatedProgramText { get; set; } = String.Empty;
 
         /// <summary>
+        /// Gets the program text of the last valid compiled program. Set on a valid result from <see cref="TrySetProgram"/>.
+        /// </summary>
+        public string ValidProgramText { get; private set; } = String.Empty;
+
+        /// <summary>
         /// Event fired when a runtime error is encountered. Can occur multiple times in one tick if multiple errors occur.
         /// </summary>
         public event EventHandler<ErrorMessageEventArgs>? RuntimeError;
@@ -125,6 +130,9 @@ namespace ButterBoard.Simulation.Elements
         /// <returns>A collection of all errors found during parsing.</returns>
         public ErrorCollection TrySetProgram(string programText)
         {
+            // record program text
+            UnvalidatedProgramText = programText;
+
             // tokenize program
             Parser parser = new Parser();
             TokenProgram tokenProgram = parser.Tokenize(programText);
@@ -146,6 +154,9 @@ namespace ButterBoard.Simulation.Elements
 
             // set active interpreter
             _activeInterpreter = new Interpreter(ExecutionConfig, tokenProgram);
+
+            // set valid program text
+            ValidProgramText = programText;
 
             // return empty collection if no errors were found
             return new ErrorCollection();

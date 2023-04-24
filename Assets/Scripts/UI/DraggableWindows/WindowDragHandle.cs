@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace ButterBoard.UI.Drag
+namespace ButterBoard.UI.DraggableWindows
 {
     /// <summary>
-    /// A component that handles the drag movement of a <see cref="DraggableWindow"/>. Must have a transparent image component to receive drag events.
+    /// A component that handles the drag movement of a <see cref="Window"/>. Must have a transparent image component to receive drag events.
     /// </summary>
-    public class DraggableWindowDragHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class WindowDragHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         private Vector2 _startMouseScreenPosition;
         private Vector2 _startWindowScreenPosition;

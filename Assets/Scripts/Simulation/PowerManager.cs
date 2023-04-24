@@ -23,9 +23,9 @@ namespace ButterBoard.Simulation
                 PowerOperation operation = _queuedPowerOperations.Dequeue();
 
                 if (operation.State)
-                    PowerInternal(operation.Point);
+                    PowerImmediate(operation.Point);
                 else
-                    UnPowerInternal(operation.Point);
+                    UnPowerImmediate(operation.Point);
             }
         }
 
@@ -51,7 +51,7 @@ namespace ButterBoard.Simulation
         /// Applies changes made to a <see cref="GridPoint">GridPoint's</see> power status.
         /// </summary>
         /// <param name="point">The point to apply changes to.</param>
-        private static void PowerInternal(GridPoint point)
+        private static void PowerImmediate(GridPoint point)
         {
             // exit if already powered
             if (_poweredPoints.Contains(point))
@@ -61,14 +61,14 @@ namespace ButterBoard.Simulation
             _poweredPoints.Add(point);
 
             // power point's wire
-            PowerInternal(point.Wire);
+            PowerImmediate(point.Wire);
         }
 
         /// <summary>
         /// Marks a wire as having another incoming power source.
         /// </summary>
         /// <param name="wire">The wire to mark.</param>
-        private static void PowerInternal(Wire wire)
+        private static void PowerImmediate(Wire wire)
         {
             // if wire not recorded, record and power wire
             if (!_poweredWireCounts.ContainsKey(wire))
@@ -99,14 +99,14 @@ namespace ButterBoard.Simulation
             SetPowerState(point, false);
         }
 
-        private static void UnPowerInternal(GridPoint point)
+        private static void UnPowerImmediate(GridPoint point)
         {
             // only un-power if point is already powered
             if (_poweredPoints.Contains(point))
             {
                 _poweredPoints.Remove(point);
 
-                UnPowerInternal(point.Wire);
+                UnPowerImmediate(point.Wire);
             }
         }
 
@@ -114,7 +114,7 @@ namespace ButterBoard.Simulation
         /// Marks a wire as having one less power source.
         /// </summary>
         /// <param name="wire">The wire to mark as unpowered.</param>
-        private static void UnPowerInternal(Wire wire)
+        private static void UnPowerImmediate(Wire wire)
         {
             if (_poweredWireCounts.TryGetValue(wire, out int powerCount))
             {

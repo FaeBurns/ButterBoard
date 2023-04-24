@@ -1,14 +1,13 @@
 ﻿using System;
 using ButterBoard.Simulation.Elements;
-using ButterBoard.UI.Drag;
+using ButterBoard.UI.DraggableWindows;
 using UnityEngine;
 
 namespace ButterBoard.UI.Processor
 {
     public class ProcessorElementInterface : MonoBehaviour
     {
-        private uint editorWindowHandle;
-        private uint statusWindowHandle;
+        private ProcessorEditorWindow? _editorWindow;
 
         [SerializeField]
         public ProcessorElement processor = null!;
@@ -17,30 +16,22 @@ namespace ButterBoard.UI.Processor
         {
             Console.WriteLine("opening processor editor");
 
-            // if window is already open
-            if (editorWindowHandle != 0)
+            // check to see if window is already open
+            // if so then bring to front and return
+            if (_editorWindow != null)
             {
-                DraggableWindow openWindow = DraggableWindowManager.Instance.TryGetWindowByHandle(editorWindowHandle)!;
-                openWindow.SetTopmost();
+                _editorWindow.BringToFront();
                 return;
             }
 
-            DraggableWindow window = DraggableWindowManager.Instance.CreateWindow("ProcessorEditor");
-            window.Closed += OnEditorWindowClosed;
-            editorWindowHandle = window.Handle;
-
-            ProcessorEditorWindow editorWindow = window.GetComponent<ProcessorEditorWindow>();
-            editorWindow.SetProcessor(processor);
+            // otherwise create a new window
+            _editorWindow = ProcessorEditorWindow.CreateWindow();
+            _editorWindow.SetProcessor(processor);
         }
 
         public void OpenErrorDisplay()
         {
             Console.WriteLine("opening processor error display");
-        }
-
-        private void OnEditorWindowClosed(object sender, EventArgs e)
-        {
-            editorWindowHandle = 0;
         }
     }
 }

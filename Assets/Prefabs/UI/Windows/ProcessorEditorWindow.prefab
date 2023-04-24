@@ -918,15 +918,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 522926510380155157, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_Name
-      value: ProcessorErrorWindow
+      value: ProcessorEditorWindow
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_RootOrder
@@ -934,19 +934,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 522926510380155242, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_SizeDelta.x

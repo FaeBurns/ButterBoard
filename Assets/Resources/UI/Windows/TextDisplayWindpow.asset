@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aca1ec18cb140f3809a013b91697bcb, type: 3}
-  m_Name: ProcessorEditorWindow
+  m_Name: TextDisplayWindpow
   m_EditorClassIdentifier: 
-  key: UI/Windows/ProcessorEditor
-  storedObject: {fileID: 8634528076278364085, guid: bbec75a253cd92648b678f4cea94bbe1, type: 3}
+  key: UI/Windows/TextDisplay
+  storedObject: {fileID: 3728968914740585171, guid: 7531f1e0737e4194db6eeb8510075727, type: 3}

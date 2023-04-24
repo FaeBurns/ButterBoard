@@ -15,6 +15,7 @@ namespace ButterBoard.UI.Processor
     {
         private readonly ExecutionConfig _validationConfig;
         private readonly List<TextTransform> _transforms = new List<TextTransform>();
+        private readonly List<Tooltip> _tooltips = new List<Tooltip>();
         private readonly Parser _parser;
         private readonly TokenProgram _tokenProgram;
         private readonly TokenProgram _tokenProgramWithoutComments;
@@ -113,6 +114,8 @@ namespace ButterBoard.UI.Processor
                     false,
                     true);
                 _transforms.Add(transform);
+
+                _tooltips.Add(new Tooltip(error));
             }
         }
 
@@ -245,18 +248,28 @@ namespace ButterBoard.UI.Processor
             builder.AppendLine();
         }
 
-        public TooltipArea[] GetTooltips()
+        public IEnumerable<Tooltip> GetTooltips()
         {
-            return Array.Empty<TooltipArea>();
+            return _tooltips;
         }
     }
 
     /// <summary>
     /// A container for information about a tooltip in a text editor.
     /// </summary>
-    public class TooltipArea
+    public class Tooltip
     {
-        public TooltipArea(int line, int startColumn, int length, string message)
+        public Tooltip(Error error)
+        {
+            Line = error.Position.Line;
+            StartColumn = error.Position.StartColumn;
+            Length = error.Position.Length;
+
+            // don't use the error's ToString as that causes extra information to end up in the message
+            Message = error.Message;
+        }
+
+        public Tooltip(int line, int startColumn, int length, string message)
         {
             Line = line;
             StartColumn = startColumn;
