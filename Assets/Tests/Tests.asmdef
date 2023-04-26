@@ -12,7 +12,8 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "nunit.framework.dll",
-        "BeanCore.Unity.dll"
+        "BeanCore.Unity.dll",
+        "Toaster.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [

@@ -29,7 +29,7 @@ namespace ButterBoard.UI.Processor
 
             // don't need to save this parser as it should not have any errors not present in the version with comments
             Parser noCommentParser = new Parser();
-            _tokenProgramWithoutComments = _parser.Tokenize(program, false);
+            _tokenProgramWithoutComments = noCommentParser.Tokenize(program, false);
         }
 
         public void Parse()
@@ -165,7 +165,7 @@ namespace ButterBoard.UI.Processor
             // if there are any transforms left
             // compile the line
             if (lineTransforms.Count > 0)
-                CompileLine(_tokenProgram.FullProgramLines[currentLine], result, lineTransforms);
+                CompileLine(_tokenProgram.FullProgramLines[currentLine], result, lineTransforms, true);
 
             compileStopwatch.Stop();
             Debug.Log($"Text Highlight Compile took {compileStopwatch.Elapsed.TotalMilliseconds} milliseconds");
@@ -173,7 +173,7 @@ namespace ButterBoard.UI.Processor
             return result.ToString();
         }
 
-        private void CompileLine(string line, StringBuilder builder, Queue<TextTransform> transforms)
+        private void CompileLine(string line, StringBuilder builder, Queue<TextTransform> transforms, bool finalLine = false)
         {
             if (transforms.Count == 0)
             {
@@ -181,26 +181,22 @@ namespace ButterBoard.UI.Processor
                 return;
             }
 
-            int previousTransformStartColumn = 0;
+            int previousTransformEndColumn = 0;
 
             FinalizingTransformCollection waitingFinalizers = new FinalizingTransformCollection();
 
             while (transforms.Count > 0)
             {
                 TextTransform transform = transforms.Dequeue();
-
-                // catch up text to beginning of current transform
-                int catchupLength = transform.StartColumn - previousTransformStartColumn;
-                if (catchupLength > 0)
-                    builder.Append(line.Substring(previousTransformStartColumn, catchupLength));
-
                 int currentColumn = transform.StartColumn;
 
-                // add current transform to finalizer collection at its end position
-                waitingFinalizers.Add(currentColumn + transform.Length, transform);
+                // catch up text to beginning of current transform
+                int catchupLength = transform.StartColumn - previousTransformEndColumn;
+                if (catchupLength > 0)
+                    builder.Append(line.Substring(previousTransformEndColumn, catchupLength));
 
                 // loop through all transforms waiting to finish
-                foreach (TextTransform finalizingTransform in waitingFinalizers.GetTransformsInColumnRange(previousTransformStartColumn, currentColumn - previousTransformStartColumn))
+                foreach (TextTransform finalizingTransform in waitingFinalizers.GetTransformsInColumnRange(previousTransformEndColumn, (currentColumn - previousTransformEndColumn) + 1))
                 {
                     // add the tag postfix
                     finalizingTransform.BuildTagsPostfix(builder);
@@ -210,12 +206,14 @@ namespace ButterBoard.UI.Processor
                 // prefix must come after to avoid cases that would close tags immediately
                 transform.BuildTagsPrefix(builder);
 
-                previousTransformStartColumn = currentColumn;
+                // add current transform to finalizer collection at its end position
+                waitingFinalizers.Add(currentColumn + transform.Length, transform);
+
+                previousTransformEndColumn = currentColumn;
             }
 
-            int previousTransformEndColumn = previousTransformStartColumn;
-
-            for (int i = previousTransformStartColumn; i < waitingFinalizers.LastFinalizerColumn + 1; i++)
+            // start at next column instead of continuing the same one
+            for (int i = previousTransformEndColumn + 1; i < waitingFinalizers.LastFinalizerColumn + 1; i++)
             {
                 // if there are no transforms waiting to be finished on this column, continue to the next iteration
                 if (!waitingFinalizers.HasTransformsInColumn(i))
@@ -244,8 +242,9 @@ namespace ButterBoard.UI.Processor
                 builder.Append(line.Substring(previousTransformEndColumn, line.Length - previousTransformEndColumn));
 
 
-            // add a newline
-            builder.AppendLine();
+            // add a newline, but only if this is not the last line
+            if (!finalLine)
+                builder.AppendLine();
         }
 
         public IEnumerable<Tooltip> GetTooltips()
@@ -285,22 +284,22 @@ namespace ButterBoard.UI.Processor
 
     public class FinalizingTransformCollection
     {
-        private readonly Dictionary<int, List<TextTransform>> _transforms;
+        private readonly Dictionary<int, Stack<TextTransform>> _transforms;
 
         public int LastFinalizerColumn { get; private set; } = 0;
 
         public FinalizingTransformCollection()
         {
-            _transforms = new Dictionary<int, List<TextTransform>>();
+            _transforms = new Dictionary<int, Stack<TextTransform>>();
         }
 
         public void Add(int column, TextTransform transform)
         {
             // if key is not found, add to
             if (!_transforms.ContainsKey(column))
-                _transforms.Add(column, new List<TextTransform>(1));
+                _transforms.Add(column, new Stack<TextTransform>(1));
 
-            _transforms[column].Add(transform);
+            _transforms[column].Push(transform);
 
             int finalizerPosition = transform.StartColumn + transform.Length;
             if (finalizerPosition > LastFinalizerColumn)
