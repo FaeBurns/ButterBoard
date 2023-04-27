@@ -9,6 +9,7 @@ using TMPro;
 using Toaster;
 using Toaster.Parsing;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
@@ -21,10 +22,22 @@ namespace ButterBoard.UI.Processor
         private ProcessorElement _processorElement = null!;
 
         [SerializeField]
+        private RectTransform hiddenTextTransform = null!;
+
+        [SerializeField]
+        private RectTransform programDisplayFieldTransform = null!;
+
+        [SerializeField]
+        private RectTransform lineDisplayFieldTransform = null!;
+
+        [SerializeField]
         private TMP_InputField programInputField = null!;
 
         [SerializeField]
         private TextMeshProUGUI programDisplayField = null!;
+
+        [SerializeField]
+        private TextMeshProUGUI lineDisplayField = null!;
 
         private void Awake()
         {
@@ -33,6 +46,8 @@ namespace ButterBoard.UI.Processor
 
         private void Update()
         {
+            CreateLineText();
+
             Vector3 mousePosition = Input.mousePosition;
 
             // should probably check if mouse is inside window rect first
@@ -45,7 +60,7 @@ namespace ButterBoard.UI.Processor
             if (intersectingLine == -1)
                 return;
 
-            int intersectingCharacter = TMP_TextUtilities.FindNearestCharacterOnLine(programInputField.textComponent, mousePosition, intersectingLine, null!, true);
+            int intersectingCharacter = TMP_TextUtilities.FindIntersectingCharacter(programInputField.textComponent, mousePosition, null!, true);
             if (intersectingCharacter == -1)
                 return;
 
@@ -101,6 +116,8 @@ namespace ButterBoard.UI.Processor
             // reset and record tooltips
             _tooltipCollection.ClearTooltips();
             _tooltipCollection.AddTooltips(highlighter.GetTooltips());
+
+            CreateLineText();
         }
 
         public void TryPushProgramToProcessor()
@@ -112,6 +129,65 @@ namespace ButterBoard.UI.Processor
                 // would be ideal if showing this stopped editor window from being interactable
                 TextDisplayWindow.CreateWindow(compilationErrors.ToString(), "Error compiling program!");
             }
+
+            UpdateWriteState();
+        }
+
+        public void StopExecution()
+        {
+            _processorElement.Stop();
+            UpdateWriteState();
+        }
+
+        public void OnScroll(float value)
+        {
+            lineDisplayFieldTransform.offsetMin = hiddenTextTransform.offsetMin;
+            lineDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
+
+            programDisplayFieldTransform.offsetMin = hiddenTextTransform.offsetMin;
+            programDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
+        }
+
+        private void CreateLineText()
+        {
+            // get amount of lines in program
+            int lineCount = programInputField.text.Split(new string[2]{"\n", "\r\n"}, StringSplitOptions.None).Length;
+
+            // get colour tags for highlighted and non-highlighted lines
+            string lineNumberColorTag = "<color=#" + ColorUtility.ToHtmlStringRGB(TextHighlightSettings.Instance.lineNumberColor) + ">";
+            string currentLineNumberColorTag = "<color=#" + ColorUtility.ToHtmlStringRGB(TextHighlightSettings.Instance.currentLineNumberColor) + ">";
+
+            // get index of currently executing line
+            int highlightedLine = 0;
+            if (_processorElement.IsActive)
+                highlightedLine = _processorElement.ActiveInterpreter!.CurrentLineIndex;
+
+            StringBuilder lineNumberBuilder = new StringBuilder();
+            for (int i = 0; i < lineCount; i++)
+            {
+                // select color tag to use from current line index and i
+                lineNumberBuilder.Append(i == highlightedLine ? currentLineNumberColorTag : lineNumberColorTag);
+
+                // add spacing or current line indicator
+                lineNumberBuilder.Append(i == highlightedLine ? ">" : " ");
+
+                // add number
+                lineNumberBuilder.Append(i + 1);
+
+                // close off color tag and end line
+                lineNumberBuilder.AppendLine("</color>");
+            }
+
+            // set line display text
+            lineDisplayField.SetText(lineNumberBuilder.ToString());
+        }
+
+        /// <summary>
+        /// Updates the input text field to allow or disallow edits based on whether the program is running or not.
+        /// </summary>
+        private void UpdateWriteState()
+        {
+            programInputField.readOnly = _processorElement.IsActive;
         }
     }
 }

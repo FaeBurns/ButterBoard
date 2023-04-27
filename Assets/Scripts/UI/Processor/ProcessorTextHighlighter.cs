@@ -251,6 +251,32 @@ namespace ButterBoard.UI.Processor
         {
             return _tooltips;
         }
+
+        /// <summary>
+        /// Compiles the text for the line number field.
+        /// </summary>
+        /// <param name="currentLine">The line to display the current line indicator on, -1 if the indicator should not be displayed.</param>
+        /// <returns>The compiled text.</returns>
+        public string CompileLineNumberText(int currentLine = -1)
+        {
+            string lineNumberColorTag = "<color=#" + ColorUtility.ToHtmlStringRGB(TextHighlightSettings.Instance.lineNumberColor) + ">";
+            string currentLineNumberColorTag = "<color=#" + ColorUtility.ToHtmlStringRGB(TextHighlightSettings.Instance.lineNumberColor) + ">";
+
+            StringBuilder lineNumberBuilder = new StringBuilder();
+            for (int i = 0; i < _tokenProgram.FullProgramLines.Length; i++)
+            {
+                // select color tag to use from current line index and i
+                lineNumberBuilder.Append(i == currentLine ? currentLineNumberColorTag : lineNumberColorTag);
+
+                // add number
+                lineNumberBuilder.Append(i + 1);
+
+                // close off color tag and end line
+                lineNumberBuilder.AppendLine("</color>");
+            }
+
+            return lineNumberBuilder.ToString();
+        }
     }
 
     /// <summary>

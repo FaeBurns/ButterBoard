@@ -12,7 +12,6 @@ namespace ButterBoard.Simulation.Elements
     public class ProcessorElement : TickableBehaviourWithPins
     {
         private bool _previousResetValue;
-        private bool _hasErrored;
 
         private Interpreter? _activeInterpreter;
         private TokenProgram? _activeValidTokenProgram;
@@ -45,17 +44,27 @@ namespace ButterBoard.Simulation.Elements
         public string ValidProgramText { get; private set; } = String.Empty;
 
         /// <summary>
-        /// Event fired when a runtime error is encountered. Can occur multiple times in one tick if multiple errors occur.
+        /// Gets a collection of all errors that have occured since the program was last compiled.
         /// </summary>
-        public event EventHandler<ErrorMessageEventArgs>? RuntimeError;
+        public ErrorCollection ErrorCollection { get; } = new ErrorCollection();
+
+        /// <summary>
+        /// Gets a value indicating whether an error has occured.
+        /// </summary>
+        public bool HasErrored => ErrorCollection.HasErrors;
+
+        /// <summary>
+        /// Gets a value indicating whether there is an interpreter active. Does not check to see if any errors have occured
+        /// </summary>
+        public bool IsActive => ActiveInterpreter != null;
 
         public override void DoTick()
         {
             // check for error before power check (base.DoTick)
-            if (_hasErrored)
+            if (HasErrored)
             {
                 // only show error if there is power though
-                PowerManager.SetPowerState(errorPin, _hasErrored && GetHasPower());
+                PowerManager.SetPowerState(errorPin, HasErrored && GetHasPower());
             }
 
             // exit early if there is no power
@@ -64,6 +73,8 @@ namespace ButterBoard.Simulation.Elements
                 // kinda really stinky here
                 // if there is no power just set all output pins to false
                 SetIndexedPinValues(0, IndexedPinCount - 1, new bool[IndexedPinCount]);
+
+                return;
             }
 
             // exit early if no interpreter is set.
@@ -85,6 +96,11 @@ namespace ButterBoard.Simulation.Elements
                 // skip the rest of this tick
                 return;
             }
+            // reset is no longer powered but previous value tracker reports powered
+            else if (_previousResetValue && !resetPinValue)
+            {
+                _previousResetValue = false;
+            }
 
             // send values from all indexed pins to interpreter's PinController
             _activeInterpreter.PinController.SetInputPins(GetIndexedPinValues(0, IndexedPinCount - 1));
@@ -97,9 +113,11 @@ namespace ButterBoard.Simulation.Elements
             }
             catch (Exception e)
             {
-                RuntimeError?.Invoke(this, new ErrorMessageEventArgs($"Exception occured during interpreter step. Exception message: {e.Message}", null));
-
-                _hasErrored = true;
+                ErrorCollection.RaiseError(
+                    $"Exception occured during interpreter step on line. Exception message: {e.Message}",
+                    _activeInterpreter.CurrentLineIndex,
+                    0,
+                    _activeValidTokenProgram!.FullProgramLines[_activeInterpreter.CurrentLineIndex].Length - 1);
 
                 return;
             }
@@ -110,10 +128,8 @@ namespace ButterBoard.Simulation.Elements
                 // notify listeners of all errors
                 foreach (Error error in _activeInterpreter.InstructionErrorCollection.Errors)
                 {
-                    RuntimeError?.Invoke(this, new ErrorMessageEventArgs(error.Message, error));
+                    ErrorCollection.Raise(error);
                 }
-
-                _hasErrored = true;
 
                 // don't allow output pins to get set
                 return;
@@ -158,6 +174,9 @@ namespace ButterBoard.Simulation.Elements
             // set valid program text
             ValidProgramText = programText;
 
+            // clear execution error collection
+            ErrorCollection.Clear();
+
             // return empty collection if no errors were found
             return new ErrorCollection();
         }
@@ -174,90 +193,19 @@ namespace ButterBoard.Simulation.Elements
             // un-power error pin if powered
             PowerManager.UnPower(errorPin);
 
+            // clear all current errors
+            ErrorCollection.Clear();
+
             // create a new interpreter from the known valid program
             _activeInterpreter = new Interpreter(ExecutionConfig, _activeValidTokenProgram);
         }
-    }
-
-    /// <summary>
-    /// A class responsible for keeping record of all errors sent out by a <see cref="ProcessorElement"/>. Can be emptied via <see cref="Reset"/>.
-    /// </summary>
-    public class ProcessorErrorRecorder
-    {
-        private readonly List<string> _errors = new List<string>();
 
         /// <summary>
-        /// Gets the recorded errors.
+        /// Stops the currently running program.
         /// </summary>
-        public IEnumerable<string> Errors => _errors;
-
-        /// <summary>
-        /// Gets the amount of errors on record.
-        /// </summary>
-        public int ErrorCount => _errors.Count;
-
-        public ProcessorErrorRecorder(ProcessorElement processor)
+        public void Stop()
         {
-            processor.RuntimeError += OnRuntimeError;
-        }
-
-        private void OnRuntimeError(object sender, ErrorMessageEventArgs e)
-        {
-            // if no error was supplied
-            // add to record and exit
-            if (e.Error == null)
-            {
-                _errors.Add(e.Message);
-                return;
-            }
-
-            // otherwise add message from error
-            _errors.Add(e.Error.ToString());
-        }
-
-        /// <summary>
-        /// Clears the record of errors.
-        /// </summary>
-        public void Reset()
-        {
-            _errors.Clear();
-        }
-
-        /// <summary>
-        /// Gets a complete string containing all errors.
-        /// </summary>
-        /// <returns>The errors as a single string separated by newlines.</returns>
-        public string GetCompleteErrorString()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (string error in _errors)
-            {
-                stringBuilder.AppendLine(error);
-            }
-
-            return stringBuilder.ToString();
-        }
-    }
-
-    /// <summary>
-    /// <see cref="EventArgs"/> for use with <see cref="ProcessorElement.RuntimeError">ProcessorElement.RuntimeError</see>.
-    /// </summary>
-    public class ErrorMessageEventArgs : EventArgs
-    {
-        /// <summary>
-        /// Gets the error message.
-        /// </summary>
-        public string Message { get; }
-
-        /// <summary>
-        /// Gets the error contained in the message, if there is one.
-        /// </summary>
-        public Error? Error { get; }
-
-        public ErrorMessageEventArgs(string message, Error? error)
-        {
-            Message = message;
-            Error = error;
+            _activeInterpreter = null;
         }
     }
 }

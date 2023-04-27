@@ -1,23 +1,19 @@
 ﻿using System;
 using ButterBoard.Simulation.Elements;
+using ButterBoard.UI.DraggableWindows;
 using TMPro;
 using UnityEngine;
 
 namespace ButterBoard.UI.Processor
 {
-    public class ProcessorStatusWindow : MonoBehaviour
+    public class ProcessorStatusWindow : CreatableWindow<ProcessorStatusWindow>
     {
         [SerializeField]
         private TextMeshProUGUI errorTextBlock = null!;
 
-        public void Initialize(ProcessorErrorRecorder errorRecorder, ProcessorElement processorElement)
-        {
-
-        }
-
         private void Update()
         {
-            
+
         }
     }
 }

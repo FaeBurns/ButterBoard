@@ -15,6 +15,8 @@ namespace ButterBoard.UI.Processor
         public Color labelColor = Color.yellow;
         public Color pinColor = Color.blue;
         public Color constantColor = Color.green;
-        public float indentUnits = 15;
+
+        public Color lineNumberColor = Color.white;
+        public Color currentLineNumberColor = Color.yellow;
     }
 }
