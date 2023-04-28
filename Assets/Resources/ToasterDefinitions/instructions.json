@@ -243,6 +243,13 @@
         "REGISTER_CONSTANT"
       ]
     },
+    {
+      "name": "slp",
+      "instruction-type": "Jump.Sleep",
+      "parameters": [
+        "REGISTER_CONSTANT"
+      ]
+    },
 
 
     {

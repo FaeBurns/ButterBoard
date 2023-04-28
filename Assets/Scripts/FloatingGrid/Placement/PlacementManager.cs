@@ -52,6 +52,9 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // set initial rotation offset
             _rotationTarget = prefabPlaceable.InitialRotationOffset;
+
+            // deselect any selected UI - stops issues with keyboard not working on rack select
+            EventSystem.current.SetSelectedGameObject(null!);
         }
 
         public void BeginMove(GameObject target)
@@ -69,6 +72,9 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // set initial rotation
             _rotationTarget = placeable.PlacedRotation;
+
+            // deselect any selected UI - stops issues with keyboard not working on rack select
+            EventSystem.current.SetSelectedGameObject(null!);
         }
 
         public void Remove(BasePlaceable target)

@@ -206,6 +206,10 @@ namespace ButterBoard.Simulation.Elements
         public void Stop()
         {
             _activeInterpreter = null;
+
+            // clear all pins and unset error
+            SetIndexedPinValues(0, IndexedPinCount - 1, new bool[IndexedPinCount]);
+            PowerManager.UnPower(errorPin);
         }
     }
 }
