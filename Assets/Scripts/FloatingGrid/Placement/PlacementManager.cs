@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.FloatingGrid.Placement.Services;
 using ButterBoard.Lookup;
+using ButterBoard.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -55,6 +56,9 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // deselect any selected UI - stops issues with keyboard not working on rack select
             EventSystem.current.SetSelectedGameObject(null!);
+
+            // disable world canvas interaction
+            WorldCanvasHelper.ExecuteOnAll(h => h.DisableInteraction());
         }
 
         public void BeginMove(GameObject target)
@@ -75,6 +79,9 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // deselect any selected UI - stops issues with keyboard not working on rack select
             EventSystem.current.SetSelectedGameObject(null!);
+
+            // disable world canvas interaction
+            WorldCanvasHelper.ExecuteOnAll(h => h.DisableInteraction());
         }
 
         public void Remove(BasePlaceable target)
@@ -102,6 +109,9 @@ namespace ButterBoard.FloatingGrid.Placement
 
             ActiveService?.CancelPlacement();
             ActiveService = null;
+
+            // re-enable world canvas interaction
+            WorldCanvasHelper.ExecuteOnAll(h => h.EnableInteraction());
         }
 
         private void Update()
@@ -146,8 +156,8 @@ namespace ButterBoard.FloatingGrid.Placement
             {
                 // if left mouse is pressed and mouse is not over ui then try and complete placement
                 // THIS WILL GET CALLED THE SAME FRAME AS PLACEMENT STARTS IF SELECTED FROM THE RACK
-                // TODO: set execution order later. vewy sleepy rn :3
-                // Me from like an hour later - still very sleepy - know knows that this is false
+                // TODO: set execution order later. very sleepy rn :3
+                // Me from like an hour later - still quite tired - know knows that this is false
                 // don't actually need the UI check either
                 // The issue was coming from PlacementServices calling MarkRemoval instead of MarkPlacement on PlacementLimitManager
                 // too eepy for this rn :pensive:
@@ -171,6 +181,8 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // reset rotation
             _rotationTarget = 0;
+
+            WorldCanvasHelper.ExecuteOnAll(h => h.EnableInteraction());
         }
 
         private void SelectUpdate()

@@ -9,7 +9,7 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
     public class CablePlaceable : BasePlaceable
     {
         [field: SerializeField]
-        public CablePlaceable Other { get; set; }
+        public CablePlaceable OtherCable { get; set; }
 
         [field: SerializeField]
         public GridPin Pin { get; private set; }

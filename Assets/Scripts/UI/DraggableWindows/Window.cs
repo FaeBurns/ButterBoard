@@ -23,7 +23,9 @@ namespace ButterBoard.UI.DraggableWindows
         /// Gets the <see cref="WindowControlBar"/> for this window.
         /// </summary>
         [BindComponent(Child = true)]
-        public WindowControlBar ControlBar { get; private set; } = null!;
+        // protected due to issues with ReferenceResolver
+        // thought I had fixed this but might be in a newer version of BeanCore.Unity than is being used here
+        public WindowControlBar ControlBar { get; protected set; } = null!;
 
         /// <summary>
         /// Opens the <see cref="Window"/>.

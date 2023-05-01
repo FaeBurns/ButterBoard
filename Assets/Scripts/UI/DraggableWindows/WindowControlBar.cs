@@ -33,7 +33,7 @@ namespace ButterBoard.UI.DraggableWindows
         {
             ReferenceResolver.ResolveReferences(this);
 
-            movementHandle.TargetTransform = HostWindow.GetComponent<RectTransform>();
+            movementHandle.WindowTransform = HostWindow.GetComponent<RectTransform>();
         }
 
         public void OnCloseButtonClick()

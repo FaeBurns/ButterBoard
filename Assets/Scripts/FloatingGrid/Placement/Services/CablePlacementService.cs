@@ -40,7 +40,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             _placementType = CablePlacementType.END;
 
             // disconnect the two wires of the cable being moved
-            SimulationManager.Instance.ConnectionManager.Disconnect(Context.Placeable.Other.Pin.ConnectedPoint.Wire, Context.Placeable.Pin.ConnectedPoint.Wire);
+            if (Context.Placeable.Pin.ConnectedPoint.Wire != Context.Placeable.OtherCable.Pin.ConnectedPoint.Wire)
+                SimulationManager.Instance.ConnectionManager.Disconnect(Context.Placeable.OtherCable.Pin.ConnectedPoint.Wire, Context.Placeable.Pin.ConnectedPoint.Wire);
 
             Context.Placeable.Pin.ConnectedPoint.Free();
             Context.Placeable.Pin.Free();
@@ -66,8 +67,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // perform connection of cable placeables if currently valid
             if (_placementType == CablePlacementType.END && _startPlaceable != null)
             {
-                _startPlaceable.Other = Context.Placeable;
-                Context.Placeable.Other = _startPlaceable;
+                _startPlaceable.OtherCable = Context.Placeable;
+                Context.Placeable.OtherCable = _startPlaceable;
             }
 
             // perform connection in Coil if this is the end side
@@ -76,8 +77,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             {
                 // connect the two wires together
                 // but only if they are not the same wire
-                if (Context.Placeable.Pin.ConnectedPoint.Wire != Context.Placeable.Other.Pin.ConnectedPoint.Wire)
-                    SimulationManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint.Wire, Context.Placeable.Other.Pin.ConnectedPoint.Wire);
+                if (Context.Placeable.Pin.ConnectedPoint.Wire != Context.Placeable.OtherCable.Pin.ConnectedPoint.Wire)
+                    SimulationManager.Instance.ConnectionManager.Connect(Context.Placeable.Pin.ConnectedPoint.Wire, Context.Placeable.OtherCable.Pin.ConnectedPoint.Wire);
             }
 
             // set parent to target point's grid
@@ -152,8 +153,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 Context.Placeable.PlacementType = _placementType;
 
                 // connect placeables
-                Context.Placeable.Other = _startPlaceable!;
-                _startPlaceable!.Other = Context.Placeable;
+                Context.Placeable.OtherCable = _startPlaceable!;
+                _startPlaceable!.OtherCable = Context.Placeable;
 
                 // invoke place on the first
                 _startPlaceable!.Place.Invoke();
@@ -186,20 +187,20 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // if an other exists
             // remove it too
             // should only be false if Remove is called during CancelPlacement
-            if (cablePlaceable.Other != null)
+            if (cablePlaceable.OtherCable != null)
             {
                 // check if this placeable has a connected point - will be false if canceled during the second half of placement
                 if (cablePlaceable.Pin.ConnectedPoint != null)
                 {
                     // check that the wires are not the same and that there is a local connection from target to its other
-                    if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.Other.Pin.ConnectedPoint.Wire &&
-                        SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.Other.Pin.ConnectedPoint.Wire))
+                    if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire &&
+                        SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire))
                     {
-                        SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.Other.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
+                        SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
                     }
                 }
 
-                Object.Destroy(cablePlaceable.Other.gameObject);
+                Object.Destroy(cablePlaceable.OtherCable.gameObject);
             }
 
             base.Remove(target);

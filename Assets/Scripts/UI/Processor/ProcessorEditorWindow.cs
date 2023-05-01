@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using ButterBoard.Simulation.Elements;
 using ButterBoard.UI.DraggableWindows;
-using ButterBoard.UI.Windows;
 using TMPro;
 using Toaster;
-using Toaster.Parsing;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
-using Debug = UnityEngine.Debug;
 
 namespace ButterBoard.UI.Processor
 {
@@ -36,8 +31,12 @@ namespace ButterBoard.UI.Processor
         [SerializeField]
         private TextMeshProUGUI programDisplayField = null!;
 
+        [FormerlySerializedAs("lineDisplayField")]
         [SerializeField]
-        private TextMeshProUGUI lineDisplayField = null!;
+        private TextMeshProUGUI lineNumberDisplayField = null!;
+
+        [SerializeField]
+        private TextMeshProUGUI statusDisplayField = null!;
 
         private void Awake()
         {
@@ -46,7 +45,7 @@ namespace ButterBoard.UI.Processor
 
         private void Update()
         {
-            CreateLineText();
+            CreateLineNumberText();
 
             Vector3 mousePosition = Input.mousePosition;
 
@@ -97,6 +96,8 @@ namespace ButterBoard.UI.Processor
         {
             _processorElement = processorElement;
             programInputField.text = _processorElement.UnvalidatedProgramText;
+
+            SetStatusDisplay(processorElement.IsActive ? "Processor Running" : "Processor Stopped");
         }
 
         public void OnInputChanged(string text)
@@ -117,26 +118,37 @@ namespace ButterBoard.UI.Processor
             _tooltipCollection.ClearTooltips();
             _tooltipCollection.AddTooltips(highlighter.GetTooltips());
 
-            CreateLineText();
+            CreateLineNumberText();
         }
 
         public void TryPushProgramToProcessor()
         {
+            // do nothing if input is empty text
+            if (programInputField.text == "")
+                return;
+
             ErrorCollection compilationErrors = _processorElement.TrySetProgram(programInputField.text);
 
             if (compilationErrors.HasErrors)
             {
                 // would be ideal if showing this stopped editor window from being interactable
-                TextDisplayWindow.CreateWindow(compilationErrors.ToString(), "Error compiling program!");
+                // disabling for now to test using status text instead
+                // TextDisplayWindow.CreateWindow(compilationErrors.ToString(), "Error compiling program!");
+
+                UpdateWriteState();
+                SetStatusDisplay($"{compilationErrors.Errors.Count} {(compilationErrors.Errors.Count > 1 ? "Errors" : "Error")} found during compilation.");
+                return;
             }
 
             UpdateWriteState();
+            SetStatusDisplay("Program compiled successfully.");
         }
 
         public void StopExecution()
         {
             _processorElement.Stop();
             UpdateWriteState();
+            SetStatusDisplay("Processor Stopped.");
         }
 
         public void OnScroll(float value)
@@ -148,7 +160,7 @@ namespace ButterBoard.UI.Processor
             programDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
         }
 
-        private void CreateLineText()
+        private void CreateLineNumberText()
         {
             // get amount of lines in program
             int lineCount = programInputField.text.Split(new string[2]{"\n", "\r\n"}, StringSplitOptions.None).Length;
@@ -179,7 +191,7 @@ namespace ButterBoard.UI.Processor
             }
 
             // set line display text
-            lineDisplayField.SetText(lineNumberBuilder.ToString());
+            lineNumberDisplayField.SetText(lineNumberBuilder.ToString());
         }
 
         /// <summary>
@@ -188,6 +200,15 @@ namespace ButterBoard.UI.Processor
         private void UpdateWriteState()
         {
             programInputField.readOnly = _processorElement.IsActive;
+        }
+
+        /// <summary>
+        /// Updates the status display with the provided message.
+        /// </summary>
+        /// <param name="message"></param>
+        private void SetStatusDisplay(string message)
+        {
+            statusDisplayField.SetText(message);
         }
     }
 }

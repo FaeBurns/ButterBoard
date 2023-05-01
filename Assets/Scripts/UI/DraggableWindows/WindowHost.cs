@@ -13,6 +13,9 @@ namespace ButterBoard.UI.DraggableWindows
         [BindComponent(Parent = true)]
         public Canvas HostCanvas { get; private set; } = null!;
 
+        [field: SerializeField]
+        public RectTransform ViewportRectTransform { get; private set; } = null!;
+
         private void Awake()
         {
             ReferenceResolver.ResolveReferences(this);

@@ -33,5 +33,13 @@ namespace ButterBoard.UI.Processor
         {
             Console.WriteLine("opening processor error display");
         }
+
+        private void OnDestroy()
+        {
+            if (_editorWindow == null)
+                return;
+
+            _editorWindow.Close();
+        }
     }
 }

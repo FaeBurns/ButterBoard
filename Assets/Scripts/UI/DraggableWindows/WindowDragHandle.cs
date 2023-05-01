@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace ButterBoard.UI.DraggableWindows
 {
@@ -12,7 +13,8 @@ namespace ButterBoard.UI.DraggableWindows
         private Vector2 _startWindowScreenPosition;
 
         [field: SerializeField]
-        public RectTransform TargetTransform { get; set; } = null!;
+        [field: FormerlySerializedAs("TargetTransform")]
+        public RectTransform WindowTransform { get; set; } = null!;
 
         /// <summary>
         /// Gets a value indicating whether this window is in the process of being dragged.
@@ -23,7 +25,7 @@ namespace ButterBoard.UI.DraggableWindows
         {
             IsDragging = true;
             _startMouseScreenPosition = Input.mousePosition;
-            _startWindowScreenPosition = TargetTransform.anchoredPosition;
+            _startWindowScreenPosition = WindowTransform.anchoredPosition;
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -32,15 +34,24 @@ namespace ButterBoard.UI.DraggableWindows
             if (!eventData.dragging)
                 return;
 
-            // eventData.position seems to lag behind a little
-            TargetTransform.anchoredPosition = GetDesiredWindowPosition(Input.mousePosition);
+            UpdatePosition();
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             IsDragging = false;
+
+            UpdatePosition();
+
             _startMouseScreenPosition = Vector2.zero;
             _startWindowScreenPosition = Vector2.zero;
+        }
+
+        private void UpdatePosition()
+        {
+            // eventData.position seems to lag behind a little
+            Vector2 desiredWindowPosition = GetDesiredWindowPosition(Input.mousePosition);
+            WindowTransform.anchoredPosition = LimitWindowPositionToViewportRange(desiredWindowPosition);
         }
 
         /// <summary>
@@ -55,6 +66,22 @@ namespace ButterBoard.UI.DraggableWindows
 
             Vector2 mouseDelta = currentMouseScreenPosition - _startMouseScreenPosition;
             return _startWindowScreenPosition + mouseDelta;
+        }
+
+        private Vector2 LimitWindowPositionToViewportRange(Vector2 currentCalculatedPosition)
+        {
+            Vector2 windowSize = WindowTransform.sizeDelta;
+            Vector2 viewportSize = WindowHost.Instance.ViewportRectTransform.rect.size;
+
+            // limit to fit inside top and left borders
+            Vector2 windowTopLeft = new Vector2(Mathf.Max(currentCalculatedPosition.x, 0), Mathf.Min(currentCalculatedPosition.y, 0));
+
+            // limit to fit inside bottom and right borders
+            windowTopLeft = new Vector2(Mathf.Min(windowTopLeft.x, viewportSize.x - windowSize.x), Mathf.Max(windowTopLeft.y, -viewportSize.y + windowSize.y));
+
+            Debug.Log($"CCP: {currentCalculatedPosition} | TL: {windowTopLeft} | VS: {viewportSize}");
+
+            return windowTopLeft;
         }
     }
 }

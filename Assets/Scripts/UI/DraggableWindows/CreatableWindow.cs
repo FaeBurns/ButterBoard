@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using BeanCore.Unity.ReferenceResolver;
 using ButterBoard.Lookup;
 using UnityEngine;
 
@@ -35,8 +36,9 @@ namespace ButterBoard.UI.DraggableWindows
             canvasPlacementPosition = new Vector2(canvasPlacementPosition.x, -canvasPlacementPosition.y); // negate y - otherwise shows above canvas
             windowTransform.anchoredPosition = canvasPlacementPosition;
 
-            // get the window and call open
+            // get the window, resolve references, and call open
             T result = windowObject.GetComponent<T>();
+            ReferenceResolver.ResolveReferences(result);
             result.Open();
 
             // return the result window class

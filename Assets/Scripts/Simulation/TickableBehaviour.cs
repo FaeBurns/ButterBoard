@@ -17,6 +17,7 @@ namespace ButterBoard.Simulation
             hostPlaceable.Remove.AddListener(DeRegister);
 
             hostPlaceable.Pickup.AddListener(OnPickup);
+            hostPlaceable.Remove.AddListener(OnRemove);
         }
 
         public abstract void DoTick();
@@ -32,5 +33,6 @@ namespace ButterBoard.Simulation
         }
 
         protected virtual void OnPickup() { }
+        protected virtual void OnRemove() { }
     }
 }
