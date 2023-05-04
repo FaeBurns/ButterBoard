@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using BeanCore.Unity.ReferenceResolver;
+using BeanCore.Unity.ReferenceResolver.Attributes;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace ButterBoard.UI.DraggableWindows
 {
     /// <summary>
     /// A component that handles the drag movement of a <see cref="Window"/>. Must have a transparent image component to receive drag events.
     /// </summary>
-    public class WindowDragHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
+    public class WindowDragHandle : ReferenceResolvedBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
     {
         private Vector2 _startMouseScreenPosition;
         private Vector2 _startWindowScreenPosition;
@@ -18,6 +21,9 @@ namespace ButterBoard.UI.DraggableWindows
         [field: SerializeField]
         public RectTransform WindowTransform { get; set; } = null!;
 
+        [AutoReference]
+        private CanvasScaler _canvasScaler = null!;
+
         /// <summary>
         /// Gets a value indicating whether this window is in the process of being dragged.
         /// </summary>
@@ -26,7 +32,7 @@ namespace ButterBoard.UI.DraggableWindows
         public void OnBeginDrag(PointerEventData eventData)
         {
             IsDragging = true;
-            _startMouseScreenPosition = Input.mousePosition;
+            _startMouseScreenPosition = ScaleScreenPosition(eventData.pressPosition);
             _startWindowScreenPosition = WindowTransform.anchoredPosition;
         }
 
@@ -36,23 +42,23 @@ namespace ButterBoard.UI.DraggableWindows
             if (!eventData.dragging)
                 return;
 
-            UpdatePosition();
+            UpdatePosition(eventData);
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             IsDragging = false;
 
-            UpdatePosition();
+            UpdatePosition(eventData);
 
             _startMouseScreenPosition = Vector2.zero;
             _startWindowScreenPosition = Vector2.zero;
         }
 
-        private void UpdatePosition()
+        private void UpdatePosition(PointerEventData eventData)
         {
-            // eventData.position seems to lag behind a little
-            Vector2 desiredWindowPosition = GetDesiredWindowPosition(Input.mousePosition);
+            // ScaleScreenPosition used to stop issues when CanvasScaler is in use
+            Vector2 desiredWindowPosition = GetDesiredWindowPosition(ScaleScreenPosition(eventData.position));
             WindowTransform.anchoredPosition = LimitWindowPositionToViewportRange(desiredWindowPosition);
         }
 
@@ -89,6 +95,18 @@ namespace ButterBoard.UI.DraggableWindows
         public void OnPointerDown(PointerEventData eventData)
         {
             controlBar.OnControlBarClicked();
+        }
+
+        /// <summary>
+        /// Scales the given screen position by the <see cref="CanvasScaler">CanvasScaler's</see> scale amount.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        private Vector2 ScaleScreenPosition(Vector2 position)
+        {
+            RectTransform scalerTransform = (RectTransform)_canvasScaler.transform;
+            Vector3 scalerScale = scalerTransform.localScale;
+            return new Vector2(position.x / scalerScale.x, position.y / scalerScale.y);
         }
     }
 }

@@ -1,5 +1,6 @@
 Background: #121212
 Light Background: #1E1E1E
+Lighter Background: #4A4A4A
 Foreground: #F2E7FE
 Coloured Foreground: #BB86FC
 Coloured Foreground Shadow: #9742FF

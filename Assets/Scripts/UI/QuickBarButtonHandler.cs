@@ -6,6 +6,7 @@ namespace ButterBoard.UI
     public class QuickBarButtonHandler : MonoBehaviour
     {
         private SimulationManagerWindow? _simulationManagerWindow;
+        private ExitDialogWindow? _exitDialogWindow;
 
         public void OpenSimulationManagerWindow()
         {
@@ -20,7 +21,13 @@ namespace ButterBoard.UI
 
         public void ExitButton()
         {
-            
+            if (_exitDialogWindow != null)
+            {
+                _exitDialogWindow.BringToFront();
+                return;
+            }
+
+            _exitDialogWindow = ExitDialogWindow.CreateWindow();
         }
     }
 }
