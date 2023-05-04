@@ -28,6 +28,11 @@ namespace ButterBoard.Simulation
         public bool IsTickInProgress { get; private set; }
 
         /// <summary>
+        /// Gets the amount of ticks that have occured since startup.
+        /// </summary>
+        public int TickCount { get; private set; }
+
+        /// <summary>
         /// The <see cref="ConnectionManager"/> instance used to manage connecting and disconnecting wires.
         /// </summary>
         public ConnectionManager ConnectionManager { get; } = new ConnectionManager();

@@ -7,13 +7,15 @@ namespace ButterBoard.UI.DraggableWindows
     /// <summary>
     /// A component that handles the drag movement of a <see cref="Window"/>. Must have a transparent image component to receive drag events.
     /// </summary>
-    public class WindowDragHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class WindowDragHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
     {
         private Vector2 _startMouseScreenPosition;
         private Vector2 _startWindowScreenPosition;
 
+        [SerializeField]
+        private WindowControlBar controlBar = null!;
+
         [field: SerializeField]
-        [field: FormerlySerializedAs("TargetTransform")]
         public RectTransform WindowTransform { get; set; } = null!;
 
         /// <summary>
@@ -82,6 +84,11 @@ namespace ButterBoard.UI.DraggableWindows
             Debug.Log($"CCP: {currentCalculatedPosition} | TL: {windowTopLeft} | VS: {viewportSize}");
 
             return windowTopLeft;
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            controlBar.OnControlBarClicked();
         }
     }
 }

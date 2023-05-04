@@ -32,16 +32,16 @@ namespace ButterBoard
 
         private void LateUpdate()
         {
+            // don't move or zoom camera if a ui element is selected
+            if (EventSystem.current.currentSelectedGameObject != null)
+                return;
+
             UpdatePosition();
             UpdateZoom();
         }
 
         private void UpdatePosition()
         {
-            // don't move camera if a ui element is selected
-            if (EventSystem.current.currentSelectedGameObject != null)
-                return;
-
             // Instant Acceleration
             // Smooth stop
 

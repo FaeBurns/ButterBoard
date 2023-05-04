@@ -45,7 +45,7 @@ namespace ButterBoard.UI.DraggableWindows
             ShowWithoutNotify();
 
             // notify of open
-            OnOpen();
+            Opened?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace ButterBoard.UI.DraggableWindows
                 return;
 
             // notify of close
-            OnClose();
+            Closed?.Invoke(this, EventArgs.Empty);
 
             Destroy(gameObject);
             IsOpen = false;
@@ -71,7 +71,7 @@ namespace ButterBoard.UI.DraggableWindows
         {
             ShowWithoutNotify();
 
-            OnShow();
+            Shown?.Invoke(this, EventArgs.Empty);
         }
 
         private void ShowWithoutNotify()
@@ -88,7 +88,7 @@ namespace ButterBoard.UI.DraggableWindows
             IsVisible = false;
             gameObject.SetActive(false);
 
-            OnHide();
+            Hidden?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -111,9 +111,9 @@ namespace ButterBoard.UI.DraggableWindows
             ControlBar.Title = title;
         }
 
-        protected virtual void OnOpen() { }
-        protected virtual void OnClose() { }
-        protected virtual void OnShow() { }
-        protected virtual void OnHide() { }
+        public event EventHandler? Opened;
+        public event EventHandler? Closed;
+        public event EventHandler? Shown;
+        public event EventHandler? Hidden;
     }
 }

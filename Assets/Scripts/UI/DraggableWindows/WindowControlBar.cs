@@ -40,5 +40,10 @@ namespace ButterBoard.UI.DraggableWindows
         {
             HostWindow.Close();
         }
+
+        public void OnControlBarClicked()
+        {
+            HostWindow.BringToFront();
+        }
     }
 }
