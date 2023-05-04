@@ -4,10 +4,14 @@ using System.Reflection;
 using BeanCore.Unity.ReferenceResolver;
 using ButterBoard.Lookup;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ButterBoard.UI.DraggableWindows
 {
-
+    /// <summary>
+    /// A base class for all windows that can be opened via a static method. Child classes require the <see cref="WindowKeyAttribute"/> in order to define the prefab to spawn.
+    /// </summary>
+    /// <typeparam name="T">The type of the window to open.</typeparam>
     public class CreatableWindow<T> : Window
         where T : CreatableWindow<T>
     {
@@ -30,7 +34,8 @@ namespace ButterBoard.UI.DraggableWindows
             RectTransform windowTransform = windowObject.GetComponent<RectTransform>();
 
             // set the position of the window and ensure it's the topmost window
-            Vector2 canvasCenter = (WindowHost.Instance.HostCanvas.renderingDisplaySize / 2);
+            Vector2 canvasScale = WindowHost.Instance.HostCanvas.transform.localScale;
+            Vector2 canvasCenter = (WindowHost.Instance.HostCanvas.renderingDisplaySize / 2) / canvasScale;
             Vector2 windowOffset = windowTransform.sizeDelta / 2;
             Vector2 canvasPlacementPosition = canvasCenter - windowOffset;
             canvasPlacementPosition = new Vector2(canvasPlacementPosition.x, -canvasPlacementPosition.y); // negate y - otherwise shows above canvas

@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace ButterBoard.UI.Windows
 {
-    public class ExitDialogueWindow : CreatableWindow<ExitDialogueWindow>
+    [WindowKey("UI/Windows/ExitDialog")]
+    public class ExitDialogWindow : CreatableWindow<ExitDialogWindow>
     {
         public void ButtonClose()
         {
