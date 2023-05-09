@@ -87,8 +87,6 @@ namespace ButterBoard.UI.DraggableWindows
             // limit to fit inside bottom and right borders
             windowTopLeft = new Vector2(Mathf.Min(windowTopLeft.x, viewportSize.x - windowSize.x), Mathf.Max(windowTopLeft.y, -viewportSize.y + windowSize.y));
 
-            Debug.Log($"CCP: {currentCalculatedPosition} | TL: {windowTopLeft} | VS: {viewportSize}");
-
             return windowTopLeft;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using ButterBoard.UI.Tooltips;
 using Toaster;
 using Toaster.Execution;
 using Toaster.Parsing;
@@ -277,35 +278,6 @@ namespace ButterBoard.UI.Processor
 
             return lineNumberBuilder.ToString();
         }
-    }
-
-    /// <summary>
-    /// A container for information about a tooltip in a text editor.
-    /// </summary>
-    public class Tooltip
-    {
-        public Tooltip(Error error)
-        {
-            Line = error.Position.Line;
-            StartColumn = error.Position.StartColumn;
-            Length = error.Position.Length;
-
-            // don't use the error's ToString as that causes extra information to end up in the message
-            Message = error.Message;
-        }
-
-        public Tooltip(int line, int startColumn, int length, string message)
-        {
-            Line = line;
-            StartColumn = startColumn;
-            Length = length;
-            Message = message;
-        }
-
-        public int Line { get; }
-        public int StartColumn { get; }
-        public int Length { get; }
-        public string Message { get; }
     }
 
     public class FinalizingTransformCollection
