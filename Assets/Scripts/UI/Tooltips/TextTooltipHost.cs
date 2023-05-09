@@ -8,6 +8,6 @@ namespace ButterBoard.UI.Tooltips
         public TooltipCollection TooltipCollection { get; } = new TooltipCollection();
 
         [field: SerializeField]
-        public TextMeshProUGUI TextComponent { get; private set; }
+        public TextMeshProUGUI TextComponent { get; private set; } = null!;
     }
 }

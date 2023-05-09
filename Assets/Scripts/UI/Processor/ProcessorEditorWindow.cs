@@ -14,7 +14,6 @@ namespace ButterBoard.UI.Processor
     [WindowKey("UI/Windows/ProcessorEditor")]
     public class ProcessorEditorWindow : CreatableWindow<ProcessorEditorWindow>
     {
-        private readonly TooltipCollection _tooltipCollection = new TooltipCollection();
         private ProcessorElement _processorElement = null!;
 
         [SerializeField]
