@@ -14,6 +14,9 @@ namespace ButterBoard.UI.Tooltips
     /// </summary>
     public class TooltipManager : SingletonBehaviour<TooltipManager>
     {
+        private TooltipMode _mode = TooltipMode.HOVER;
+        private bool _isOverriden;
+        
         private Vector2 _initialMousePosition = Vector2.zero;
         private List<Tooltip> _previousTooltips = new List<Tooltip>();
 
@@ -54,6 +57,18 @@ namespace ButterBoard.UI.Tooltips
         }
 
         /// <summary>
+        /// Disables normal tooltip generation and sets the current tooltip.
+        /// </summary>
+        /// <param name="tooltip">The tooltip to display.</param>
+        /// <param name="mode">The mode used to describe how the tooltip is handled.</param>
+        public void SetTooltipOverride(string tooltip, TooltipMode mode = TooltipMode.HOVER)
+        {
+            SetActiveTooltip(tooltip);
+            _isOverriden = true;
+            _mode = mode;
+        }
+
+        /// <summary>
         /// Clears the currently displaying tooltip if there is one.
         /// </summary>
         public void ClearActiveTooltip()
@@ -61,6 +76,9 @@ namespace ButterBoard.UI.Tooltips
             // exit if already clear
             if (!IsDisplaying)
                 return;
+
+            _isOverriden = false;
+            _mode = TooltipMode.HOVER;
 
             tooltipObject.SetActive(false);
             tooltipTextField.SetText(String.Empty);
@@ -73,35 +91,47 @@ namespace ButterBoard.UI.Tooltips
 
         private void Update()
         {
+            // is tooltip set manually by something else
+            if (_isOverriden)
+            {
+                // if tooltip mode requires mouse to be pressed, check if mouse is up and clear and exit if true
+                if (_mode == TooltipMode.HELD && !Input.GetMouseButton(0))
+                {
+                    ClearActiveTooltip();
+                    return;
+                }
+                
+                UpdateTooltipPosition();
+                return;
+            }
+
+            // if tooltip mode requires mouse to be pressed, check if mouse is up and clear and exit if true
+            if (_mode == TooltipMode.HELD && !Input.GetMouseButton(0))
+            {
+                ClearActiveTooltip();
+                _previousTooltips.Clear();
+                return;
+            }
+            
             // get tooltip host under cursor
             TextTooltipHost? tooltipHost = CheckForTooltips();
 
             // if nothing was found
             if (tooltipHost == null)
             {
-                // clear all displaying tooltips
-                _previousTooltips = new List<Tooltip>();
-                ClearActiveTooltip();
+                // if currently displaying tooltips, update display
+                // allows for tooltips to continue displaying for a short distance after leaving the discovery range
+                _previousTooltips.Clear();
+                UpdateTooltipPosition();
                 return;
             }
 
             // get all tooltips on host
             List<Tooltip> discoveredTooltips = GetTooltips(tooltipHost).ToList();
 
-            // if previous and this frame's tooltip collections are of the same length, a change might have occured
-            if (discoveredTooltips.Count == _previousTooltips.Count)
-            {
-                // if the match is while they're both empty just exit early
-                if (discoveredTooltips.Count == 0)
-                    return;
-
-                UpdateTooltipDisplay(discoveredTooltips);
-            }
-            // if they are of different lengths, a change is guaranteed
-            else
-            {
-                UpdateTooltipDisplay(discoveredTooltips);
-            }
+            // update display as a change might have occured
+            // don't check first and filter, check happens inside UpdateTooltipDisplay - 
+            UpdateTooltipDisplay(discoveredTooltips);
 
             _previousTooltips = discoveredTooltips;
 
@@ -155,7 +185,6 @@ namespace ButterBoard.UI.Tooltips
             // if no tooltips were found, remove any that may be currently shown and exit
             if (tooltips.Count == 0)
             {
-                ClearActiveTooltip();
                 return;
             }
 
@@ -172,11 +201,13 @@ namespace ButterBoard.UI.Tooltips
             // compile tooltip
             string tooltipMessage = tooltipTextBuilder.ToString();
 
-            // skip setting tooltip if it has not changed
-            if (tooltipMessage == ActiveTooltipText)
-                return;
-
-            SetActiveTooltip(tooltipMessage);
+            // skip setting tooltip only if it has changed
+            if (tooltipMessage != ActiveTooltipText)
+                SetActiveTooltip(tooltipMessage);
+            
+            // update initial mouse position
+            // otherwise tooltip flickers while moving
+            _initialMousePosition = Input.mousePosition;
         }
 
         private void UpdateTooltipPosition()
@@ -185,17 +216,29 @@ namespace ButterBoard.UI.Tooltips
             if (!IsDisplaying)
                 return;
 
+            // update tooltip position
+            tooltipObject.transform.position = Input.mousePosition;
+            
+            // if in held mode, don't need to check to see if movement has occured
+            if (_mode == TooltipMode.HELD)
+                return;
+            
             // check if tooltip is in allowed distance from initial mouse position
             // if not disable and exit
             float distance = Vector2.Distance(_initialMousePosition, Input.mousePosition);
             if (distance > mouseDistanceThreshold)
             {
                 ClearActiveTooltip();
-                return;
             }
-
-            // update tooltip position
-            tooltipObject.transform.position = Input.mousePosition;
         }
+    }
+        
+    /// <summary>
+    /// An enum that describes how the <see cref="TooltipManager"/> handles tooltips set through <see cref="TooltipManager.SetTooltipOverride"/>.
+    /// </summary>
+    public enum TooltipMode
+    {
+        HOVER,
+        HELD,
     }
 }

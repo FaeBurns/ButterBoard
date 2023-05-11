@@ -336,7 +336,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Stop
+  m_text: Edit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -752,7 +752,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Run
+  m_text: Compile
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1977,6 +1977,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 522926508422906176, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -12.499954
+      objectReference: {fileID: 0}
     - target: {fileID: 522926510380155157, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_Name
       value: ProcessorEditorWindow
@@ -2092,6 +2096,14 @@ PrefabInstance:
     - target: {fileID: 6700636746546254144, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_Value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7194370441138356017, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7244589484320690672, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -12.499954
       objectReference: {fileID: 0}
     - target: {fileID: 8215111612137930746, guid: 9f069a02869cf0c4db92be55b83c86bc, type: 3}
       propertyPath: m_text

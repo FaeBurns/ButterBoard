@@ -13,9 +13,6 @@ namespace ButterBoard
         [SerializeField]
         private int moveThreshold = 5;
 
-        [SerializeField]
-        private float tileSizeScale = 0.25f;
-
         private void Awake()
         {
             _camera = Camera.main!;

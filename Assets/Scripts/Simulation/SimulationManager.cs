@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Coil.Connections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ButterBoard.Simulation
 {
@@ -17,13 +18,10 @@ namespace ButterBoard.Simulation
         [SerializeField]
         private float currentTickProgress;
 
-        [SerializeField]
-        [Range(1, 300)]
-        private int tickInterval = 1;
-
-        [SerializeField]
-        [Range(1, 5)]
-        private int burstTickCount = 1;
+        [field: FormerlySerializedAs("tickInterval")]
+        [field: SerializeField]
+        [field: Range(1, 300)]
+        public int TicksPerSecond { get; set; } = 60;
 
         public bool IsTickInProgress { get; private set; }
 
@@ -39,14 +37,15 @@ namespace ButterBoard.Simulation
 
         private void Update()
         {
-            currentTickProgress += (Time.deltaTime * 60);
-            if (currentTickProgress + float.Epsilon >= tickInterval)
+            currentTickProgress += Time.deltaTime;
+            float tickInterval = 1f / (float)TicksPerSecond;
+            
+            // if enough time has not yet passed, skip this frame
+            // otherwise DoTick while there is time left
+            while (currentTickProgress >= tickInterval)
             {
-                currentTickProgress = 0;
-                for (int i = 0; i < burstTickCount; i++)
-                {
-                    DoTick();
-                }
+                currentTickProgress -= tickInterval;
+                DoTick();
             }
         }
 
@@ -77,6 +76,8 @@ namespace ButterBoard.Simulation
             PowerManager.ApplyChanges();
 
             IsTickInProgress = false;
+
+            TickCount++;
         }
 
         public void RegisterTickObject(ITickableObject tickableObject)

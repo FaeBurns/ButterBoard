@@ -261,7 +261,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundSpriteRenderer: {fileID: 188542969}
   moveThreshold: 10
-  tileSizeScale: 1
 --- !u!212 &188542969
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -359,8 +358,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTickProgress: 0
-  tickInterval: 1
-  burstTickCount: 1
+  <TicksPerSecond>k__BackingField: 60
 --- !u!1 &311880495
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,11 +818,11 @@ RectTransform:
   m_Father: {fileID: 721110998}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -22}
-  m_SizeDelta: {x: 120.06, y: 31.01}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 66.18, y: 22.01}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &486377525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2141,8 +2139,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 60.03, y: -15.505}
-  m_SizeDelta: {x: 120.06, y: 31.01}
+  m_AnchoredPosition: {x: 33.09, y: -11.005}
+  m_SizeDelta: {x: 66.18, y: 22.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806292123
 MonoBehaviour:

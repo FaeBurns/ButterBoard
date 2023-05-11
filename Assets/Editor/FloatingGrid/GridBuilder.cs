@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using ButterBoard.FloatingGrid;
 using ButterBoard.Lookup;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
-namespace ButterBoard.FloatingGrid
+namespace ButterBoard.Editor.FloatingGrid
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public class GridBuilder : MonoBehaviour

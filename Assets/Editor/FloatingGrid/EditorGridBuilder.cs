@@ -1,8 +1,9 @@
 ﻿using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
+using ButterBoard.FloatingGrid;
 using UnityEngine;
 
-namespace ButterBoard.FloatingGrid
+namespace ButterBoard.Editor.FloatingGrid
 {
     [RequireComponent(typeof(GridBuilder))]
     [ExecuteInEditMode]

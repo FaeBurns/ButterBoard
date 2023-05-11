@@ -11,6 +11,8 @@ namespace ButterBoard
             // load all instruction definitions from file
             TextAsset instructionsTextAsset = AssetSource.Fetch<TextAsset>("InstructionDefinitions")!;
             InstructionManager.LoadSignatures(instructionsTextAsset.text);
+
+            Application.targetFrameRate = 60;
         }
     }
 }
