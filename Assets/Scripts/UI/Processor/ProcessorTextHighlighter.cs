@@ -282,22 +282,22 @@ namespace ButterBoard.UI.Processor
 
     public class FinalizingTransformCollection
     {
-        private readonly Dictionary<int, Stack<TextTransform>> _transforms;
+        private readonly Dictionary<int, LinkedList<TextTransform>> _transforms;
 
         public int LastFinalizerColumn { get; private set; } = 0;
 
         public FinalizingTransformCollection()
         {
-            _transforms = new Dictionary<int, Stack<TextTransform>>();
+            _transforms = new Dictionary<int, LinkedList<TextTransform>>();
         }
 
         public void Add(int column, TextTransform transform)
         {
             // if key is not found, add to
             if (!_transforms.ContainsKey(column))
-                _transforms.Add(column, new Stack<TextTransform>(1));
+                _transforms.Add(column, new LinkedList<TextTransform>());
 
-            _transforms[column].Push(transform);
+            _transforms[column].AddFirst(transform);
 
             int finalizerPosition = transform.StartColumn + transform.Length;
             if (finalizerPosition > LastFinalizerColumn)

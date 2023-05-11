@@ -27,6 +27,11 @@ namespace ButterBoard.UI.DraggableWindows
         // thought I had fixed this but might be in a newer version of BeanCore.Unity than is being used here
         public WindowControlBar ControlBar { get; protected set; } = null!;
 
+        public event EventHandler? Opened;
+        public event EventHandler? Closed;
+        public event EventHandler? Shown;
+        public event EventHandler? Hidden;
+
         /// <summary>
         /// Opens the <see cref="Window"/>.
         /// </summary>
@@ -74,12 +79,6 @@ namespace ButterBoard.UI.DraggableWindows
             Shown?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ShowWithoutNotify()
-        {
-            IsVisible = true;
-            gameObject.SetActive(true);
-        }
-
         /// <summary>
         /// Hide this <see cref="Window"/>.
         /// </summary>
@@ -111,9 +110,10 @@ namespace ButterBoard.UI.DraggableWindows
             ControlBar.Title = title;
         }
 
-        public event EventHandler? Opened;
-        public event EventHandler? Closed;
-        public event EventHandler? Shown;
-        public event EventHandler? Hidden;
+        private void ShowWithoutNotify()
+        {
+            IsVisible = true;
+            gameObject.SetActive(true);
+        }
     }
 }
