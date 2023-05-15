@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using ButterBoard.Building;
+using ButterBoard.Building.BuildActions.Move;
+using ButterBoard.Building.BuildActions.Place;
+using ButterBoard.Building.BuildActions.Remove;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.UI.Rack;
 using UnityEngine;
@@ -43,6 +47,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // get placeable component on target object
             FloatingPlaceable? placeable = target.GetComponent<FloatingPlaceable>();
 
+            moveInitialPosition = target.transform.position;
+            moveInitialRotation = placeable.PlacedRotation;
+            
             // throw if not found
             if (placeable == null)
                 throw new ArgumentException($"Cannot begin movement of object {target.name} as argument {nameof(target)} does not have a {nameof(FloatingPlaceable)} component");
@@ -80,6 +87,22 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // notify limiter of placement
             if (Context.PlacementType == PlacementType.PLACE)
                 PlacementLimitManager.MarkPlacement(Context.Placeable);
+            
+            BuildAction action; 
+            switch (Context.PlacementType)
+            {
+                case PlacementType.PLACE:
+                    BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
+                    action = new FloatingPlacementAction(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
+                    break;
+                case PlacementType.MOVE:
+                    action = new FloatingMoveAction(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            BuildActionManager.Instance.PushNoExecuteAction(action);
 
             return true;
         }
@@ -98,18 +121,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
-            // get all child placeables (includes self)
-            BasePlaceable[] childPlaceables = target.GetComponentsInChildren<BasePlaceable>();
-
-            foreach (BasePlaceable child in childPlaceables)
-            {
-                // check if child is self
-                if (child != target)
-                    // remove child if not
-                    PlacementManager.Instance.Remove(child);
-            }
-
-            base.Remove(target);
+            FloatingRemoveSelfAndChildrenAction action = new FloatingRemoveSelfAndChildrenAction(target.Key);
+            BuildActionManager.Instance.PushAndExecuteAction(action);
         }
     }
 

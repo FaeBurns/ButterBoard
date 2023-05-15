@@ -171,9 +171,9 @@ namespace ButterBoard.Simulation
         /// </summary>
         /// <param name="pin">The pin to check.</param>
         /// <returns></returns>
-        public static bool GetProvidingPower(GridPin pin)
+        public static bool GetIsProvidingPower(GridPin pin)
         {
-            return GetProvidingPower(pin.ConnectedPoint);
+            return GetIsProvidingPower(pin.ConnectedPoint);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace ButterBoard.Simulation
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <returns></returns>
-        public static bool GetProvidingPower(GridPoint point)
+        public static bool GetIsProvidingPower(GridPoint point)
         {
             return _poweredPoints.Contains(point);
         }

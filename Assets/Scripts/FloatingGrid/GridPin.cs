@@ -15,27 +15,10 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public PinIdentifierDisplay PinIdentifierDisplay { get; private set; } = null!;
 
-        public GridPoint ConnectedPoint { get; private set; } = null!;
+        public GridPoint ConnectedPoint { get; set; } = null!;
 
         [BindComponent(Parent = true)]
         public GridPlaceable Host { get; private set; } = null!;
-
-        public void Connect(GridPoint target)
-        {
-            ConnectedPoint = target;
-        }
-
-        public void Free()
-        {
-            // if ConnectedPoint is providing power, it will be doing so from this pin
-            // therefore it needs to be un-powered
-            if (PowerManager.GetProvidingPower(ConnectedPoint))
-            {
-                PowerManager.UnPower(ConnectedPoint);
-            }
-
-            ConnectedPoint = null!;
-        }
 
         public void DisplayIssue(PinPlacementIssueType issueType)
         {

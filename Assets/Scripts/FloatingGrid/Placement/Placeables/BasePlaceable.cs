@@ -7,18 +7,17 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
 {
     public abstract class BasePlaceable : ReferenceResolvedBehaviour
     {
+        // data saved after placement 
+        public string SourceAssetKey { get; set; } = String.Empty;
+        public float PlacedRotation { get; set; }
+        public int Key { get; set; } = -1;
+
         /// <summary>
         /// Gets the bounds collider of the placeable.
         /// </summary>
         [field: SerializeField]
         public Collider2D BoundsCollider { get; private set; } = null!;
-
-        [field: SerializeField]
-        public string SourceAssetKey { get; set; } = String.Empty;
-
-        [field: SerializeField]
-        public float PlacedRotation { get; set; }
-
+        
         [field: SerializeField]
         public float InitialRotationOffset { get; private set; }
 
@@ -60,6 +59,12 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         {
             // stops being unable to place things
             BoundsCollider.enabled = !display;
+        }
+
+        public Vector2 GetSize()
+        {
+            BoxCollider2D? boundsColliderBox = BoundsCollider as BoxCollider2D;
+            return boundsColliderBox == null ? Vector2.zero : boundsColliderBox.size;
         }
     }
 }

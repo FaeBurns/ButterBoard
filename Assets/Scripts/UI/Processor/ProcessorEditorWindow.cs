@@ -48,6 +48,12 @@ namespace ButterBoard.UI.Processor
 
         private void Update()
         {
+            lineDisplayFieldTransform.offsetMin = hiddenTextTransform.offsetMin;
+            lineDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
+
+            programDisplayFieldTransform.offsetMin = hiddenTextTransform.offsetMin;
+            programDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
+            
             CreateLineNumberText();
         }
 
@@ -108,15 +114,6 @@ namespace ButterBoard.UI.Processor
             _processorElement.Stop();
             UpdateWriteState();
             SetStatusDisplay("Processor Stopped.");
-        }
-
-        public void OnScroll(float value)
-        {
-            lineDisplayFieldTransform.offsetMin = hiddenTextTransform.offsetMin;
-            lineDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
-
-            programDisplayFieldTransform.offsetMin = hiddenTextTransform.offsetMin;
-            programDisplayFieldTransform.offsetMax = hiddenTextTransform.offsetMax;
         }
 
         private void CreateLineNumberText()

@@ -16,8 +16,11 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         [field: SerializeField]
         public SpriteTintHelper MainSpriteTintHelper { get; private set; } = null!;
 
+        /// <summary>
+        /// All GridPoints this GridPlaceable is blocking, except for those connected to by <see cref="Pins"/>.
+        /// </summary>
         [field: SerializeField]
-        public GridPoint[] OverlappingPoints { get; set; } = Array.Empty<GridPoint>();
+        public GridPoint[] BlockingPoints { get; set; } = Array.Empty<GridPoint>();
 
         [field: SerializeField]
         public GridHost? HostingGrid { get; set; }

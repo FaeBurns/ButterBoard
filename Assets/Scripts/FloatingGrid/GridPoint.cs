@@ -14,19 +14,22 @@ namespace ButterBoard.FloatingGrid
         private CircleCollider2D _pointCollider = null!;
 
         [field: SerializeField]
-        public GridPin? ConnectedPin { get; private set; }
+        public GridPin? ConnectedPin { get; set; }
 
         [field: SerializeField]
         public GridHost HostingGrid { get; private set; } = null!;
 
         [field: SerializeField]
-        public float Radius { get; private set; }
+        public float Radius { get; set; }
 
         [field: SerializeField]
         public bool Blocked { get; set; } = false;
 
         [field: SerializeField]
         public Wire Wire { get; set; } = null!;
+
+        [field: SerializeField]
+        public int PointIndex { get; set; } = 0;
 
         public bool Open => ConnectedPin == null && !Blocked;
 
@@ -46,16 +49,6 @@ namespace ButterBoard.FloatingGrid
             _scalableSprite.transform.localScale = scale;
             Radius = gridHost.Spacing / 4f;
             _pointCollider.radius = Radius;
-        }
-
-        public void Connect(GridPin target)
-        {
-            ConnectedPin = target;
-        }
-
-        public void Free()
-        {
-            ConnectedPin = null;
         }
     }
 }

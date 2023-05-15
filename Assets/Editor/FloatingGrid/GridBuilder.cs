@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ButterBoard.Building;
 using ButterBoard.FloatingGrid;
 using ButterBoard.Lookup;
 using JetBrains.Annotations;
@@ -22,10 +23,7 @@ namespace ButterBoard.Editor.FloatingGrid
                 if (point == null)
                     continue;
 
-                // free on both ends if possible
-                if (point.ConnectedPin != null)
-                    point.ConnectedPin.Free();
-                point.Free();
+                BuildManager.RemoveConnections(point);
 
                 // destroy - different versions required if in edit or play mode
                 if (Application.isPlaying)
@@ -44,8 +42,7 @@ namespace ButterBoard.Editor.FloatingGrid
         {
             Debug.Log($"Building grid with width {width}, height {height}, spacing {spacing}, offsetType {offsetType}");
             GameObject pointPrefab = AssetSource.Fetch<GameObject>(gridPointPrefabName)!;
-
-
+            
             GridHost gridHost = new GameObject("New Grid", typeof(GridHost)).GetComponent<GridHost>();
 
             // set parent of GridHost if set
@@ -77,6 +74,8 @@ namespace ButterBoard.Editor.FloatingGrid
             List<GridPointConnectedRow> connectedRows = new List<GridPointConnectedRow>();
             Vector3 offset = new Vector3(xOffset, yOffset, 0);
 
+            int index = 0;
+            
             // loop vertical
             for (int x = 0; x < width; x++)
             {
@@ -97,6 +96,8 @@ namespace ButterBoard.Editor.FloatingGrid
                     GameObject newObject = (GameObject)PrefabUtility.InstantiatePrefab(pointPrefab, connectedRow.transform);
                     newObject.transform.position = position;
                     GridPoint newGridPoint = newObject.GetComponent<GridPoint>();
+                    newGridPoint.PointIndex = index;
+                    index++;
 
                     allPoints.Add(newGridPoint);
                     rowPoints.Add(newGridPoint);

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ButterBoard.Building;
+using ButterBoard.Building.BuildActions.Move;
+using ButterBoard.Building.BuildActions.Place;
+using ButterBoard.Building.BuildActions.Remove;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.UI.Rack;
 using UnityEngine;
@@ -37,10 +41,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // disconnect all GridPins
             foreach (GridPin gridPin in Context.Placeable.Pins)
             {
-                if (gridPin.ConnectedPoint != null)
-                    gridPin.ConnectedPoint.Free();
-
-                gridPin.Free();
+                BuildManager.RemoveConnections(gridPin);
             }
 
             for (int i = 0; i < Context.Placeable.Pins.Count; i++)
@@ -49,7 +50,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             // unblock all points
-            foreach (GridPoint point in Context.Placeable.OverlappingPoints)
+            foreach (GridPoint point in Context.Placeable.BlockingPoints)
             {
                 point.Blocked = false;
             }
@@ -63,19 +64,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
-            GridPlaceable gridPlaceable = (GridPlaceable)target;
-
-            foreach (GridPoint overlappingPoint in gridPlaceable.OverlappingPoints)
-            {
-                overlappingPoint.Blocked = false;
-            }
-
-            foreach (GridPin pin in gridPlaceable.Pins)
-            {
-                pin.Free();
-            }
-
-            base.Remove(target);
+            GridPlaceable placeable = (GridPlaceable)target;
+            GridRemoveAction removeAction = new GridRemoveAction(target.Key, placeable.HostingGrid!.GetComponentInParent<BasePlaceable>().Key);
+            BuildActionManager.Instance.PushAndExecuteAction(removeAction);
         }
 
         protected override bool CommitPlacement()
@@ -113,6 +104,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // get set of all points targeted by pins
             HashSet<GridPoint> pinPoints = new HashSet<GridPoint>(pinTargets.Values);
 
+            List<int> blockingPointIndices = new List<int>();
+            
             // set points covered by bounds of placeable to blocked
             // but only those not getting connected to pins
             foreach (GridPoint gridPoint in overlappingPoints)
@@ -123,18 +116,28 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
                 // mark point as blocked
                 gridPoint.Blocked = true;
+                
+                blockingPointIndices.Add(gridPoint.PointIndex);
             }
 
+            int[] connectingPointIndices = new int[pinTargets.Count];
+            
             // connect all pins to points
+            int i = 0;
             foreach ((GridPin checkingPin, GridPoint gridPoint) in pinTargets)
             {
                 GridPin targetPin = _checkingToRealGridPinMapping[checkingPin];
 
-                targetPin.Connect(gridPoint);
-                gridPoint.Connect(targetPin);
+                BuildManager.Connect(targetPin, gridPoint);
+                
+                // record the index of the point being connected to - required for actions
+                connectingPointIndices[i] = gridPoint.PointIndex;
+                i++;
             }
 
-            Context.Placeable.OverlappingPoints = overlappingPoints.ToArray();
+            Context.Placeable.HostingGrid = gridTarget;
+
+            Context.Placeable.BlockingPoints = overlappingPoints.ToArray();
 
             Context.Placeable.ClearPlacementStatus();
             Context.PlacingObject.transform.SetParent(gridTarget.transform);
@@ -149,6 +152,24 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (Context.PlacementType == PlacementType.PLACE)
                 PlacementLimitManager.MarkPlacement(Context.Placeable);
 
+            int gridKey = gridTarget.GetComponentInParent<BasePlaceable>().Key;
+            
+            BuildAction action; 
+            switch (Context.PlacementType)
+            {
+                case PlacementType.PLACE:
+                    BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
+                    action = new GridPlacementAction(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKey, connectingPointIndices, blockingPointIndices.ToArray());
+                    break;
+                case PlacementType.MOVE:
+                    action = new GridMoveAction(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKey, connectingPointIndices, blockingPointIndices.ToArray());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            BuildActionManager.Instance.PushNoExecuteAction(action);
+                
             return true;
         }
 

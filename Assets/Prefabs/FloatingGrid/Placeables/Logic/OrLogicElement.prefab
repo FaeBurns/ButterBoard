@@ -215,8 +215,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoundsCollider>k__BackingField: {fileID: 5562461995019790424}
-  <SourceAssetKey>k__BackingField: 
-  <PlacedRotation>k__BackingField: 0
   <InitialRotationOffset>k__BackingField: -90
   <RotationStep>k__BackingField: 180
   <Place>k__BackingField:
@@ -234,7 +232,7 @@ MonoBehaviour:
   - {fileID: 3851725381411383732}
   <GridOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <MainSpriteTintHelper>k__BackingField: {fileID: 353863680299984425}
-  <OverlappingPoints>k__BackingField: []
+  <BlockingPoints>k__BackingField: []
   <HostingGrid>k__BackingField: {fileID: 0}
   <SnapsToGridSnapPoints>k__BackingField: 0
 --- !u!61 &5562461995019790424
@@ -261,7 +259,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.25, y: 2}
+  m_Size: {x: 2.2, y: 2.8}
   m_EdgeRadius: 0
 --- !u!114 &3219855493043888112
 MonoBehaviour:
@@ -339,8 +337,12 @@ PrefabInstance:
       value: OUTPUT_00
       objectReference: {fileID: 0}
     - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9238796
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.38268346
+      value: 0.38268343
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -430,6 +432,14 @@ PrefabInstance:
     - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9238796
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.38268343
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
@@ -521,8 +531,12 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.38268346
+      value: -0.9238796
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}

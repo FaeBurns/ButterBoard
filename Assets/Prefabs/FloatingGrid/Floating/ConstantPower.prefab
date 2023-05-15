@@ -424,8 +424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoundsCollider>k__BackingField: {fileID: 8696590763595488820}
-  <SourceAssetKey>k__BackingField: 
-  <PlacedRotation>k__BackingField: 0
   <InitialRotationOffset>k__BackingField: 0
   <RotationStep>k__BackingField: 90
   <Place>k__BackingField:
@@ -576,7 +574,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8623385584509438886, guid: 7df2817ec87d1054b9472c9c7b31df75, type: 3}
       propertyPath: <Radius>k__BackingField
-      value: 0.25
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8623385584509438886, guid: 7df2817ec87d1054b9472c9c7b31df75, type: 3}
+      propertyPath: <PointIndex>k__BackingField
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8623385584509438886, guid: 7df2817ec87d1054b9472c9c7b31df75, type: 3}
       propertyPath: <HostingGrid>k__BackingField

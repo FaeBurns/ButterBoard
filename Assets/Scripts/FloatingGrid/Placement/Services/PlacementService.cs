@@ -12,6 +12,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
     {
         protected readonly LerpSettings lerpSettings;
         protected readonly float displayZDistance;
+        protected Vector2 moveInitialPosition;
+        protected float moveInitialRotation;
 
         protected PlacementService(LerpSettings lerpSettings, float displayZDistance)
         {
@@ -68,6 +70,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             // get placeable component on target object
             T? placeable = target.GetComponent<T>();
+            
+            // save initial position and rotation
+            moveInitialPosition = target.transform.position;
+            moveInitialRotation = placeable.PlacedRotation;
 
             // throw if not found
             if (placeable == null)
@@ -101,16 +107,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// Removes the placeable
         /// </summary>
         /// <param name="target">The placeable to remove.</param>
-        public virtual void Remove(BasePlaceable target)
-        {
-            // invoke remove event
-            target.Remove.Invoke();
-
-            // notify PlacementLimitManager of removal
-            PlacementLimitManager.MarkRemoval(target);
-
-            Object.Destroy(target.gameObject);
-        }
+        public abstract void Remove(BasePlaceable target);
 
         public void TryCommitPlacement(Vector3 targetPosition, Quaternion targetRotation)
         {

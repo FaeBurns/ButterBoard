@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 
 namespace ButterBoard.UI.Rack
 {
+    [Obsolete]
     public static class PlacementLimitManager
     {
         private static readonly Dictionary<string, int> _recordedPlacementCounts = new Dictionary<string, int>();

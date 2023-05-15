@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ButterBoard.Building;
+using ButterBoard.Building.BuildActions.Move;
+using ButterBoard.Building.BuildActions.Place;
+using ButterBoard.Building.BuildActions.Remove;
 using ButterBoard.Cables;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Lookup;
@@ -17,6 +21,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         private GameObject? _prefab;
         private CablePlaceable? _startPlaceable;
         private CablePlacementType _placementType;
+        private GridHost _moveOriginalHost = null!;
+        private int _moveOriginalPointIndex = -1;
 
         public CablePlacementService(LerpSettings lerpSettings, float pinCheckDistanceRadiusThreshold, float displayZDistance) : base(lerpSettings, displayZDistance)
         {
@@ -43,8 +49,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (Context.Placeable.Pin.ConnectedPoint.Wire != Context.Placeable.OtherCable.Pin.ConnectedPoint.Wire)
                 SimulationManager.Instance.ConnectionManager.Disconnect(Context.Placeable.OtherCable.Pin.ConnectedPoint.Wire, Context.Placeable.Pin.ConnectedPoint.Wire);
 
-            Context.Placeable.Pin.ConnectedPoint.Free();
-            Context.Placeable.Pin.Free();
+            _moveOriginalHost = Context.Placeable.Pin.ConnectedPoint.HostingGrid;
+            _moveOriginalPointIndex = Context.Placeable.Pin.ConnectedPoint.PointIndex;
+            
+            BuildManager.RemoveConnections(Context.Placeable.Pin);
         }
 
         protected override bool CommitPlacement()
@@ -61,8 +69,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 return false;
 
             // perform connection
-            Context.Placeable.Pin.Connect(targetPoint);
-            targetPoint.Connect(Context.Placeable.Pin);
+            BuildManager.Connect(Context.Placeable.Pin, targetPoint);
 
             // perform connection of cable placeables if currently valid
             if (_placementType == CablePlacementType.END && _startPlaceable != null)
@@ -87,6 +94,27 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // notify limiter of placement
             if (Context.PlacementType == PlacementType.PLACE && _placementType == CablePlacementType.END)
                 PlacementLimitManager.MarkPlacement(Context.Placeable);
+
+            if (_placementType == CablePlacementType.END)
+            {
+                BuildAction action;
+                switch (Context.PlacementType)
+                {
+                    case PlacementType.PLACE:
+                        BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
+                        BuildManager.RegisterPlaceable(Context.Placeable.OtherCable, BuildManager.GetNextRegistryId());
+                        action = new CablePlacementAction(Context.Placeable);
+                        break;
+                    case PlacementType.MOVE:
+                        action = new CableMoveAction(Context.Placeable, _moveOriginalPointIndex, targetPoint.PointIndex, _moveOriginalHost, targetPoint.HostingGrid);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+                
+                BuildActionManager.Instance.PushNoExecuteAction(action);
+            }
 
             // notify of success
             return true;
@@ -178,32 +206,35 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
-            CablePlaceable cablePlaceable = (CablePlaceable)target;
+            CableRemoveAction removeAction = new CableRemoveAction(target.Key);
+            BuildActionManager.Instance.PushAndExecuteAction(removeAction);
 
-            // destroy display line
-            if (cablePlaceable.LineDisplay != null)
-                Object.Destroy(cablePlaceable.LineDisplay.gameObject);
-
-            // if an other exists
-            // remove it too
-            // should only be false if Remove is called during CancelPlacement
-            if (cablePlaceable.OtherCable != null)
-            {
-                // check if this placeable has a connected point - will be false if canceled during the second half of placement
-                if (cablePlaceable.Pin.ConnectedPoint != null)
-                {
-                    // check that the wires are not the same and that there is a local connection from target to its other
-                    if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire &&
-                        SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire))
-                    {
-                        SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
-                    }
-                }
-
-                Object.Destroy(cablePlaceable.OtherCable.gameObject);
-            }
-
-            base.Remove(target);
+            // CablePlaceable cablePlaceable = (CablePlaceable)target;
+            //
+            // // destroy display line
+            // if (cablePlaceable.LineDisplay != null)
+            //     Object.Destroy(cablePlaceable.LineDisplay.gameObject);
+            //
+            // // if an other exists
+            // // remove it too
+            // // should only be false if Remove is called during CancelPlacement
+            // if (cablePlaceable.OtherCable != null)
+            // {
+            //     // check if this placeable has a connected point - will be false if canceled during the second half of placement
+            //     if (cablePlaceable.Pin.ConnectedPoint != null)
+            //     {
+            //         // check that the wires are not the same and that there is a local connection from target to its other
+            //         if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire &&
+            //             SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire))
+            //         {
+            //             SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
+            //         }
+            //     }
+            //
+            //     Object.Destroy(cablePlaceable.OtherCable.gameObject);
+            // }
+            //
+            // base.Remove(target);
         }
 
         private GridPoint? GetGridPointAtPosition(Vector3 position)
