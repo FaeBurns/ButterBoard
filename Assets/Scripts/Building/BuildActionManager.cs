@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ButterBoard.FloatingGrid.Placement;
 using UnityEngine;
 
@@ -12,6 +11,7 @@ namespace ButterBoard.Building
     {
         private readonly Stack<BuildAction> _undoStack = new Stack<BuildAction>();
         private readonly Stack<BuildAction> _redoStack = new Stack<BuildAction>();
+        private readonly List<BuildAction> _lifetimeActionList = new List<BuildAction>();
             
         /// <summary>
         /// Executes an action and pushes it to the undo stack. Clears the redo stack.
@@ -20,6 +20,8 @@ namespace ButterBoard.Building
         public void PushAndExecuteAction(BuildAction action)
         {
             action.Execute();
+            
+            _lifetimeActionList.Add(action);
             _undoStack.Push(action);
             _redoStack.Clear();
         }
@@ -30,6 +32,8 @@ namespace ButterBoard.Building
         /// <param name="action"></param>
         public void PushNoExecuteAction(BuildAction action)
         {
+            _lifetimeActionList.Add(action);
+            
             _undoStack.Push(action);
             _redoStack.Clear();
         }
@@ -44,6 +48,9 @@ namespace ButterBoard.Building
             
             BuildAction action = _undoStack.Pop();
             action.UndoExecute();
+            
+            // remove last action - it's like it never happened :sparkles:
+            _lifetimeActionList.RemoveAt(_lifetimeActionList.Count - 1);
             _redoStack.Push(action);
         }
 
@@ -57,7 +64,24 @@ namespace ButterBoard.Building
             
             BuildAction action = _redoStack.Pop();
             action.Execute();
+            
+            // re-add action removed in undo
+            _lifetimeActionList.Add(action);
             _undoStack.Push(action);
+        }
+
+        /// <summary>
+        /// Clears both the undo and redo stacks.
+        /// </summary>
+        public void ClearUndoStack()
+        {
+            _undoStack.Clear();
+            _redoStack.Clear();
+        }
+
+        public List<BuildAction> GetLifetimeActions()
+        {
+            return _lifetimeActionList;
         }
 
         private void Update()

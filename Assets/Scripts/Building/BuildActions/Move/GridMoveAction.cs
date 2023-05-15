@@ -12,42 +12,48 @@ namespace ButterBoard.Building.BuildActions.Move
         [JsonProperty] private Vector2 _targetPosition;
         [JsonProperty] private float _targetRotation;
         [JsonProperty] private int _targetGridId;
-        [JsonProperty] private int[] _targetConnectingPointIndices;
-        [JsonProperty] private int[] _targetBlockingPointIndices;
+        [JsonProperty] private int[] _targetConnectingPointIndices = null!;
+        [JsonProperty] private int[] _targetBlockingPointIndices = null!;
 
-        [JsonIgnore] private readonly int _sourceGridId;
-        [JsonIgnore] private readonly Vector2 _sourcePosition;
-        [JsonIgnore] private readonly float _sourceRotation;
-        [JsonIgnore] private readonly int[] _sourceConnectingPointIndices;
-        [JsonIgnore] private readonly int[] _sourceBlockingPointIndices;
+        [JsonProperty] private Vector2 _sourcePosition;
+        [JsonProperty] private float _sourceRotation;
+        [JsonProperty] private int _sourceGridId;
+        [JsonProperty] private int[] _sourceConnectingPointIndices = null!;
+        [JsonProperty] private int[] _sourceBlockingPointIndices = null!;
 
-        public GridMoveAction(GridPlaceable placeable, Vector2 sourcePosition, float sourceRotation, Vector2 targetPosition, float targetRotation, int targetGridId, int[] targetConnectingPointIndices, int[] targetBlockingPointIndices)
+        public static GridMoveAction CreateInstance(GridPlaceable placeable, Vector2 sourcePosition, float sourceRotation, Vector2 targetPosition, float targetRotation, int targetGridId, int[] targetConnectingPointIndices, int[] targetBlockingPointIndices)
         {
-            _placeableKey = placeable.Key;
-
-            _sourcePosition = sourcePosition;
-            _targetPosition = targetPosition;
-            
-            _sourceRotation = sourceRotation;
-            _targetRotation = targetRotation;
-
-            _targetGridId = targetGridId;
-            _sourceGridId = placeable.HostingGrid!.GetComponentInParent<BasePlaceable>().Key;
-
-            _targetConnectingPointIndices = targetConnectingPointIndices;
-            _targetBlockingPointIndices = targetBlockingPointIndices;
-            
-            _sourceConnectingPointIndices = new int[placeable.Pins.Count];
+            int[] sourceConnectingPointIndices = new int[placeable.Pins.Count];
             for (int i = 0; i < placeable.Pins.Count; i++)
             {
-                _sourceConnectingPointIndices[i] = placeable.Pins[i].ConnectedPoint.PointIndex;
+                sourceConnectingPointIndices[i] = placeable.Pins[i].ConnectedPoint.PointIndex;
             }
 
-            _sourceBlockingPointIndices = new int[placeable.BlockingPoints.Length];
+            int[] sourceBlockingPointIndices = new int[placeable.BlockingPoints.Length];
             for (int i = 0; i < placeable.BlockingPoints.Length; i++)
             {
-                _sourceBlockingPointIndices[i] = placeable.BlockingPoints[i].PointIndex;
+                sourceBlockingPointIndices[i] = placeable.BlockingPoints[i].PointIndex;
             }
+
+            return new GridMoveAction()
+            {
+                _placeableKey = placeable.Key,
+
+                _sourcePosition = sourcePosition,
+                _targetPosition = targetPosition,
+
+                _sourceRotation = sourceRotation,
+                _targetRotation = targetRotation,
+
+                _targetGridId = targetGridId,
+                _sourceGridId = placeable.HostingGrid.Key,
+
+                _targetConnectingPointIndices = targetConnectingPointIndices,
+                _targetBlockingPointIndices = targetBlockingPointIndices,
+
+                _sourceConnectingPointIndices = sourceConnectingPointIndices,
+                _sourceBlockingPointIndices = sourceBlockingPointIndices,
+            };
         }
 
         public override void Execute()

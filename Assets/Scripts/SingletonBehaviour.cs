@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace ButterBoard
 {
@@ -7,11 +9,12 @@ namespace ButterBoard
     {
         public static T Instance { get; private set; } = null!;
 
-        public SingletonBehaviour()
+        protected virtual void Awake()
         {
             if (Instance != null)
             {
-                throw new InvalidOperationException("Singleton already exists");
+                Debug.Log($"Instance of {Instance.name} already exists during SingletonBehaviour constructor");
+                Destroy(Instance.gameObject);
             }
 
             Instance = (T)this;
@@ -19,6 +22,9 @@ namespace ButterBoard
 
         private void OnDestroy()
         {
+            if (Instance != null)
+                Debug.Log($"Destroying singleton {Instance.name}");
+            
             Instance = null!;
         }
     }

@@ -84,8 +84,9 @@ namespace ButterBoard.UI.Tooltips
             tooltipTextField.SetText(String.Empty);
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ReferenceResolver.ResolveReferences(this);
         }
 

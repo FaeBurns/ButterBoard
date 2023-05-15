@@ -16,8 +16,9 @@ namespace ButterBoard.UI.DraggableWindows
         [field: SerializeField]
         public RectTransform ViewportRectTransform { get; private set; } = null!;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ReferenceResolver.ResolveReferences(this);
         }
     }

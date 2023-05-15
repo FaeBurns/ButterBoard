@@ -1883,6 +1883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a31b694464c492682ee39562d6fa3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HostingPlaceable>k__BackingField: {fileID: 0}
   <Width>k__BackingField: 2
   <Height>k__BackingField: 25
   <Spacing>k__BackingField: 1
@@ -1939,7 +1940,9 @@ MonoBehaviour:
   - {fileID: 4316183395354655253}
   - {fileID: 4316183395946887539}
   - {fileID: 4316183395726674153}
-  <ConnectedRows>k__BackingField: []
+  <ConnectedRows>k__BackingField:
+  - {fileID: 5497279335830272495}
+  - {fileID: 5497279337169117060}
   <SnapPoints>k__BackingField: []
 --- !u!1 &5497279336191577662
 GameObject:
@@ -2097,6 +2100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a31b694464c492682ee39562d6fa3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HostingPlaceable>k__BackingField: {fileID: 5497279337363256387}
   <Width>k__BackingField: 30
   <Height>k__BackingField: 5
   <Spacing>k__BackingField: 1
@@ -2925,6 +2929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a31b694464c492682ee39562d6fa3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HostingPlaceable>k__BackingField: {fileID: 0}
   <Width>k__BackingField: 2
   <Height>k__BackingField: 25
   <Spacing>k__BackingField: 1
@@ -2981,7 +2986,9 @@ MonoBehaviour:
   - {fileID: 4316183395769656067}
   - {fileID: 4316183396054863405}
   - {fileID: 4316183396942185751}
-  <ConnectedRows>k__BackingField: []
+  <ConnectedRows>k__BackingField:
+  - {fileID: 5497279336441362792}
+  - {fileID: 5497279337251012480}
   <SnapPoints>k__BackingField: []
 --- !u!1 &5497279336329472283
 GameObject:

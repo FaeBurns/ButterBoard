@@ -129,7 +129,7 @@ namespace ButterBoard.Building.BuildHandlers
         
         public static GridPoint GetGridPoint(int gridPointIndex, int hostingGridId)
         {
-            GridHost hostingGrid = BuildManager.GetPlaceable(hostingGridId).GetComponentInChildren<GridHost>();
+            GridHost hostingGrid = BuildManager.GetRegisteredGridHost(hostingGridId);
             return hostingGrid.GridPoints[gridPointIndex];
         }
     }

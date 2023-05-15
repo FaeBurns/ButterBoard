@@ -23,7 +23,7 @@ namespace ButterBoard.FloatingGrid.Placement.Placeables
         public GridPoint[] BlockingPoints { get; set; } = Array.Empty<GridPoint>();
 
         [field: SerializeField]
-        public GridHost? HostingGrid { get; set; }
+        public GridHost HostingGrid { get; set; } = null!;
 
         [field: SerializeField]
         public bool SnapsToGridSnapPoints { get; set; }

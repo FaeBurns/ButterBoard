@@ -103,10 +103,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                     case PlacementType.PLACE:
                         BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
                         BuildManager.RegisterPlaceable(Context.Placeable.OtherCable, BuildManager.GetNextRegistryId());
-                        action = new CablePlacementAction(Context.Placeable);
+                        action = CablePlacementAction.CreateInstance(Context.Placeable);
                         break;
                     case PlacementType.MOVE:
-                        action = new CableMoveAction(Context.Placeable, _moveOriginalPointIndex, targetPoint.PointIndex, _moveOriginalHost, targetPoint.HostingGrid);
+                        action = CableMoveAction.CreateInstance(Context.Placeable, _moveOriginalPointIndex, targetPoint.PointIndex, _moveOriginalHost, targetPoint.HostingGrid);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -206,7 +206,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
-            CableRemoveAction removeAction = new CableRemoveAction(target.Key);
+            CableRemoveAction removeAction = CableRemoveAction.CreateInstance(target.Key);
             BuildActionManager.Instance.PushAndExecuteAction(removeAction);
 
             // CablePlaceable cablePlaceable = (CablePlaceable)target;

@@ -20,7 +20,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         public override void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
             // create real and display objects
-            GameObject placingObject = Object.Instantiate(prefab);
+            GameObject placingObject = Object.Instantiate(prefab, BuildManager.GetFloatingPlaceableHost());
 
             // get placeable component on placing object
             FloatingPlaceable? placeable = placingObject.GetComponent<FloatingPlaceable>();
@@ -93,10 +93,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             {
                 case PlacementType.PLACE:
                     BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
-                    action = new FloatingPlacementAction(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
+                    action = FloatingPlacementAction.CreateInstance(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
                     break;
                 case PlacementType.MOVE:
-                    action = new FloatingMoveAction(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
+                    action = FloatingMoveAction.CreateInstance(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -121,7 +121,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
-            FloatingRemoveSelfAndChildrenAction action = new FloatingRemoveSelfAndChildrenAction(target.Key);
+            FloatingRemoveSelfAndChildrenAction action = FloatingRemoveSelfAndChildrenAction.CreateInstance(target.Key);
             BuildActionManager.Instance.PushAndExecuteAction(action);
         }
     }

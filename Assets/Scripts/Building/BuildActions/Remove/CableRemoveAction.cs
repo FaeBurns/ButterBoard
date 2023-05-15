@@ -1,4 +1,5 @@
-﻿using ButterBoard.Building.BuildHandlers;
+﻿using System;
+using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
 
@@ -6,39 +7,33 @@ namespace ButterBoard.Building.BuildActions.Remove
 {
     public class CableRemoveAction : BuildAction
     {
-        [JsonProperty]
-        private int _cableEndKey;
+        [JsonProperty] private int _cableEndKey;
+        [JsonProperty] private int _cableOtherEndKey;
 
-        [JsonProperty]
-        private int _cableOtherEndKey;
+        [JsonProperty] private string _sourceAssetKey = String.Empty;
+        [JsonProperty] private int _pointIndexA;
+        [JsonProperty] private int _pointIndexB;
+        [JsonProperty] private int _cableEndAGridKey;
+        [JsonProperty] private int _cableEndBGridKey;
 
-        [JsonIgnore]
-        private readonly string _sourceAssetKey;
-        [JsonIgnore]
-        private readonly int _pointIndexA;
-        [JsonIgnore]
-        private readonly int _pointIndexB;
-        [JsonIgnore]
-        private readonly int _cableEndAGridKey;
-        [JsonIgnore]
-        private readonly int _cableEndBGridKey;
-        
-
-        public CableRemoveAction(int cableEndKey)
+        public static CableRemoveAction CreateInstance(int cableEndKey)
         {
             CablePlaceable placeable = BuildManager.GetPlaceable<CablePlaceable>(cableEndKey);
-            _sourceAssetKey = placeable.SourceAssetKey;
+            return new CableRemoveAction()
+            {
+                _sourceAssetKey = placeable.SourceAssetKey,
 
-            _pointIndexA = placeable.Pin.ConnectedPoint.PointIndex;
-            _pointIndexB = placeable.OtherCable.Pin.ConnectedPoint.PointIndex;
-            
-            _cableEndKey = cableEndKey;
-            _cableOtherEndKey = placeable.OtherCable.Key;
+                _pointIndexA = placeable.Pin.ConnectedPoint.PointIndex,
+                _pointIndexB = placeable.OtherCable.Pin.ConnectedPoint.PointIndex,
 
-            _cableEndAGridKey = placeable.Pin.ConnectedPoint.HostingGrid.GetComponentInParent<BasePlaceable>().Key;
-            _cableEndBGridKey = placeable.OtherCable.Pin.ConnectedPoint.HostingGrid.GetComponentInParent<BasePlaceable>().Key;
+                _cableEndKey = cableEndKey,
+                _cableOtherEndKey = placeable.OtherCable.Key,
+
+                _cableEndAGridKey = placeable.Pin.ConnectedPoint.HostingGrid.Key,
+                _cableEndBGridKey = placeable.OtherCable.Pin.ConnectedPoint.HostingGrid.Key,
+            };
         }
-        
+
         public override void Execute()
         {
             CableBuildHandler.Remove(BuildManager.GetPlaceable<CablePlaceable>(_cableEndKey));

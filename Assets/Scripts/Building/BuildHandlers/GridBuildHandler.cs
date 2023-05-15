@@ -11,13 +11,13 @@ namespace ButterBoard.Building.BuildHandlers
 {
     public static class GridBuildHandler
     {
-        public static GridPlaceable Place(string prefabKey, Vector2 position, float rotation, int gridHostPlaceableId, int[] connectingPointIndices, int[] blockingPointIndices)
+        public static GridPlaceable Place(string prefabKey, Vector2 position, float rotation, int gridHostId, int[] connectingPointIndices, int[] blockingPointIndices)
         {
             // create prefab
             GameObject prefab = AssetSource.Fetch<GameObject>(prefabKey)!;
 
             // get grid to connect to
-            GridHost hostGrid = BuildManager.GetPlaceable(gridHostPlaceableId).GetComponentInChildren<GridHost>();
+            GridHost hostGrid = BuildManager.GetRegisteredGridHost(gridHostId);
 
             // spawn placeable at position and get GridPlaceable component from it
             GridPlaceable placeable = Object.Instantiate(prefab, position, Quaternion.Euler(0, 0, rotation), hostGrid.transform).GetComponent<GridPlaceable>();
@@ -53,12 +53,10 @@ namespace ButterBoard.Building.BuildHandlers
         {
             Unlock(target);
 
-            BasePlaceable gridPlaceable = BuildManager.GetPlaceable(targetGridId);
-            GridHost gridHost = gridPlaceable.GetComponentInChildren<GridHost>();
+            GridHost gridHost = BuildManager.GetRegisteredGridHost(targetGridId);
 
             target.transform.SetPositionAndRotation(targetPosition, Quaternion.Euler(0, 0, targetRotation));
-            
-            gridPlaceable.PlacedRotation = targetRotation;
+            target.PlacedRotation = targetRotation;
             
             Lock(target, gridHost, connectingPointIndices, blockingPointIndices);
         }
@@ -101,7 +99,7 @@ namespace ButterBoard.Building.BuildHandlers
                 point.Blocked = false;
             }
 
-            placeable.HostingGrid = null;
+            placeable.HostingGrid = null!;
         }
     }
 }

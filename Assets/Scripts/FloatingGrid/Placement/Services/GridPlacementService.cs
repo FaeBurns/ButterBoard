@@ -65,7 +65,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         public override void Remove(BasePlaceable target)
         {
             GridPlaceable placeable = (GridPlaceable)target;
-            GridRemoveAction removeAction = new GridRemoveAction(target.Key, placeable.HostingGrid!.GetComponentInParent<BasePlaceable>().Key);
+            GridRemoveAction removeAction = GridRemoveAction.CreateInstance(target.Key, placeable.HostingGrid.Key);
             BuildActionManager.Instance.PushAndExecuteAction(removeAction);
         }
 
@@ -152,17 +152,17 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (Context.PlacementType == PlacementType.PLACE)
                 PlacementLimitManager.MarkPlacement(Context.Placeable);
 
-            int gridKey = gridTarget.GetComponentInParent<BasePlaceable>().Key;
+            int gridKey = gridTarget.Key;
             
             BuildAction action; 
             switch (Context.PlacementType)
             {
                 case PlacementType.PLACE:
                     BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
-                    action = new GridPlacementAction(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKey, connectingPointIndices, blockingPointIndices.ToArray());
+                    action = GridPlacementAction.CreateInstance(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKey, connectingPointIndices, blockingPointIndices.ToArray());
                     break;
                 case PlacementType.MOVE:
-                    action = new GridMoveAction(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKey, connectingPointIndices, blockingPointIndices.ToArray());
+                    action = GridMoveAction.CreateInstance(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKey, connectingPointIndices, blockingPointIndices.ToArray());
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

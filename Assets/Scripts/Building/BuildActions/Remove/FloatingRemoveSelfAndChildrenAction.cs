@@ -8,21 +8,16 @@ namespace ButterBoard.Building.BuildActions.Remove
 {
     public class FloatingRemoveSelfAndChildrenAction : BuildAction
     {
-        [JsonProperty]
-        private FloatingRemoveSelfOnlyAction _removeSelfAction;
-        
-        [JsonProperty]
-        private BuildAction[] _childActions;
+        [JsonProperty] private FloatingRemoveSelfOnlyAction _removeSelfAction = null!;
+        [JsonProperty] private BuildAction[] _childActions = Array.Empty<BuildAction>();
 
-        public FloatingRemoveSelfAndChildrenAction(int placeableKey)
+        public static FloatingRemoveSelfAndChildrenAction CreateInstance(int placeableKey)
         {
-            _removeSelfAction = new FloatingRemoveSelfOnlyAction(placeableKey);
-
             FloatingPlaceable placeable = BuildManager.GetPlaceable<FloatingPlaceable>(placeableKey);
 
             // get all child placeables
             BasePlaceable[] childPlaceables = placeable.GetComponentsInChildren<BasePlaceable>();
-            _childActions = new BuildAction[childPlaceables.Length - 1];
+            BuildAction[] childActions = new BuildAction[childPlaceables.Length - 1];
 
             // start at 1 - first will always be the floating host
             for (int i = 1; i < childPlaceables.Length; i++)
@@ -30,19 +25,25 @@ namespace ButterBoard.Building.BuildActions.Remove
                 switch (childPlaceables[i])
                 {
                     case CablePlaceable cablePlaceable:
-                        _childActions[i - 1] = new CableRemoveAction(cablePlaceable.Key);
+                        childActions[i - 1] = CableRemoveAction.CreateInstance(cablePlaceable.Key);
                         break;
                     case FloatingPlaceable floatingPlaceable:
-                        _childActions[i - 1] = new FloatingRemoveSelfOnlyAction(floatingPlaceable.Key);
+                        childActions[i - 1] = FloatingRemoveSelfOnlyAction.CreateInstance(floatingPlaceable.Key);
                         break;
                     case GridPlaceable gridPlaceable:
-                        _childActions[i - 1] = new GridRemoveAction(gridPlaceable.Key, placeableKey);
+                        childActions[i - 1] = GridRemoveAction.CreateInstance(gridPlaceable.Key, placeableKey);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(childPlaceables));
 
                 }
             }
+            
+            return new FloatingRemoveSelfAndChildrenAction()
+            {
+                _removeSelfAction = FloatingRemoveSelfOnlyAction.CreateInstance(placeableKey),
+                _childActions = childActions,
+            };
         }
 
         public override void Execute()

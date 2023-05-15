@@ -10,13 +10,13 @@ namespace ButterBoard.Building
     public class BuildManager : SingletonBehaviour<BuildManager>
     {
         private static readonly Dictionary<int, BasePlaceable> _registeredPlaceables = new Dictionary<int, BasePlaceable>();
-        private static int _nextId = 0;
+        private static readonly Dictionary<int, GridHost> _registeredGridHosts = new Dictionary<int, GridHost>();
+        
+        private static int _nextId;
+        private static int _nextGridHostId;
 
         [SerializeField]
         private Transform floatingPlaceableHost = null!;
-
-        [SerializeField]
-        private LayerMask gridPointLayerMask;
 
         public static Transform GetFloatingPlaceableHost() => Instance.floatingPlaceableHost;
 
@@ -141,9 +141,33 @@ namespace ButterBoard.Building
             _registeredPlaceables.Remove(key);
         }
 
-        public static LayerMask GetGridPointLayerMask()
+        /// <summary>
+        /// Resets the placeable registry.
+        /// </summary>
+        public static void ResetRegistry()
         {
-            return Instance.gridPointLayerMask;
+            _nextId = 0;
+            _nextGridHostId = 0;
+            _registeredGridHosts.Clear();
+            _registeredPlaceables.Clear();
+        }
+
+        public static int RegisterGridHost(GridHost host)
+        {
+            host.Key = _nextGridHostId++;
+            _registeredGridHosts.Add(host.Key, host);
+
+            return host.Key;
+        }
+
+        public static GridHost GetRegisteredGridHost(int id)
+        {
+            return _registeredGridHosts[id];
+        }
+
+        public static void RemoveRegisteredGridHost(int id)
+        {
+            _registeredGridHosts.Remove(id);
         }
     }
 }

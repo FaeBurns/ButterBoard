@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ButterBoard.Building;
+using ButterBoard.FloatingGrid.Placement.Placeables;
 using UnityEngine;
 
 namespace ButterBoard.FloatingGrid
@@ -14,6 +17,9 @@ namespace ButterBoard.FloatingGrid
             GridPoints = gridPoints;
             ConnectedRows = connectedRows;
         }
+
+        [field: SerializeField]
+        public int Key { get; set; } = -1;
 
         [field: SerializeField]
         public int Width { get; private set; }
@@ -38,5 +44,15 @@ namespace ButterBoard.FloatingGrid
 
         [field: SerializeField]
         public List<GameObject> SnapPoints { get; private set; } = null!;
+
+        private void Awake()
+        {
+            BuildManager.RegisterGridHost(this);
+        }
+
+        private void OnDestroy()
+        {
+            BuildManager.RemoveRegisteredGridHost(Key);
+        }
     }
 }

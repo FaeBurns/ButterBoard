@@ -1,4 +1,5 @@
-﻿using ButterBoard.Building.BuildHandlers;
+﻿using System;
+using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -7,45 +8,44 @@ namespace ButterBoard.Building.BuildActions.Remove
 {
     public class GridRemoveAction : BuildAction
     {
-        [JsonProperty]
-        private int _placeableKey;
+        [JsonProperty] private int _placeableKey;
 
-        [JsonIgnore]
-        private readonly string _sourceAssetKey;
-        [JsonIgnore]
-        private readonly Vector2 _location;
-        [JsonIgnore]
-        private readonly float _rotation;
-        [JsonIgnore]
-        private readonly int _gridHostId;
-        [JsonIgnore]
-        private readonly int[] _connectingPointIndices;
-        [JsonIgnore]
-        private readonly int[] _blockingPointIndices;
+        [JsonProperty] private string _sourceAssetKey = String.Empty;
+        [JsonProperty] private Vector2 _location;
+        [JsonProperty] private float _rotation;
+        [JsonProperty] private int _gridHostId;
+        [JsonProperty] private int[] _connectingPointIndices = Array.Empty<int>();
+        [JsonProperty] private int[] _blockingPointIndices = Array.Empty<int>();
 
-        public GridRemoveAction(int placeableKey, int gridHostId)
+        public static GridRemoveAction CreateInstance(int placeableKey, int gridHostId)
         {
-            _placeableKey = placeableKey;
-
             GridPlaceable placeable = BuildManager.GetPlaceable<GridPlaceable>(placeableKey);
             Transform placeableTransform = placeable.transform;
-
-            _sourceAssetKey = placeable.SourceAssetKey;
-            _location = placeableTransform.position;
-            _rotation = placeableTransform.rotation.eulerAngles.z;
-            _gridHostId = gridHostId;
-
-            _connectingPointIndices = new int[placeable.Pins.Count];
+            
+            int[] connectingPointIndices = new int[placeable.Pins.Count];
             for (int i = 0; i < placeable.Pins.Count; i++)
             {
-                _connectingPointIndices[i] = placeable.Pins[i].ConnectedPoint.PointIndex;
+                connectingPointIndices[i] = placeable.Pins[i].ConnectedPoint.PointIndex;
             }
 
-            _blockingPointIndices = new int[placeable.BlockingPoints.Length];
+            int[] blockingPointIndices = new int[placeable.BlockingPoints.Length];
             for (int i = 0; i < placeable.BlockingPoints.Length; i++)
             {
-                _blockingPointIndices[i] = placeable.BlockingPoints[i].PointIndex;
+                blockingPointIndices[i] = placeable.BlockingPoints[i].PointIndex;
             }
+
+            return new GridRemoveAction()
+            {
+                _placeableKey = placeableKey,
+
+                _sourceAssetKey = placeable.SourceAssetKey,
+                _location = placeableTransform.position,
+                _rotation = placeableTransform.rotation.eulerAngles.z,
+                _gridHostId = gridHostId,
+                
+                _connectingPointIndices = connectingPointIndices,
+                _blockingPointIndices = blockingPointIndices,
+            };
         }
 
         public override void Execute()
