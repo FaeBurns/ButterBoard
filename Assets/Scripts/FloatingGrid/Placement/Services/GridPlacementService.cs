@@ -148,10 +148,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 pinIdentifier.gameObject.SetActive(false);
             }
 
-            // notify limiter of placement
-            if (Context.PlacementType == PlacementType.PLACE)
-                PlacementLimitManager.MarkPlacement(Context.Placeable);
-
             int gridKey = gridTarget.Key;
             
             BuildAction action; 

@@ -39,9 +39,8 @@ namespace ButterBoard.UI.Rack
             // cancel any placement in progress
             if (PlacementManager.Instance.Placing)
                 PlacementManager.Instance.Cancel();
-
-            if (PlacementLimitManager.CanPlace(_currentEntryAsset))
-                PlacementManager.Instance.BeginPlace(_currentEntryAsset.SpawnTargetSourceKey);
+            
+            PlacementManager.Instance.BeginPlace(_currentEntryAsset.SpawnTargetSourceKey);
         }
     }
 }

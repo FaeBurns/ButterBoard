@@ -83,10 +83,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // clear display status
             Context.Placeable.ClearPlacementStatus();
-
-            // notify limiter of placement
-            if (Context.PlacementType == PlacementType.PLACE)
-                PlacementLimitManager.MarkPlacement(Context.Placeable);
             
             BuildAction action; 
             switch (Context.PlacementType)

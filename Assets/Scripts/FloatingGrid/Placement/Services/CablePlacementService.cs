@@ -91,10 +91,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // set parent to target point's grid
             Context.PlacingObject.transform.SetParent(targetPoint.HostingGrid.transform);
 
-            // notify limiter of placement
-            if (Context.PlacementType == PlacementType.PLACE && _placementType == CablePlacementType.END)
-                PlacementLimitManager.MarkPlacement(Context.Placeable);
-
             if (_placementType == CablePlacementType.END)
             {
                 BuildAction action;

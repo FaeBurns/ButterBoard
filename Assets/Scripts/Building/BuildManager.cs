@@ -12,8 +12,14 @@ namespace ButterBoard.Building
         private static readonly Dictionary<int, BasePlaceable> _registeredPlaceables = new Dictionary<int, BasePlaceable>();
         private static readonly Dictionary<int, GridHost> _registeredGridHosts = new Dictionary<int, GridHost>();
         
-        private static int _nextId;
-        private static int _nextGridHostId;
+        private static int NextId { get => Instance.nextId; set => Instance.nextId = value; }
+        private static int NextGridHostId { get => Instance.nextGridHostId; set => Instance.nextGridHostId = value; }
+
+        [SerializeField]
+        private int nextId;
+
+        [SerializeField]
+        private int nextGridHostId;
 
         [SerializeField]
         private Transform floatingPlaceableHost = null!;
@@ -90,7 +96,7 @@ namespace ButterBoard.Building
         /// </summary>
         public static int GetNextRegistryId()
         {
-            return _nextId++;
+            return NextId++;
         }
 
         /// <summary>
@@ -146,15 +152,15 @@ namespace ButterBoard.Building
         /// </summary>
         public static void ResetRegistry()
         {
-            _nextId = 0;
-            _nextGridHostId = 0;
+            NextId = 0;
+            NextGridHostId = 0;
             _registeredGridHosts.Clear();
             _registeredPlaceables.Clear();
         }
 
         public static int RegisterGridHost(GridHost host)
         {
-            host.Key = _nextGridHostId++;
+            host.Key = NextGridHostId++;
             _registeredGridHosts.Add(host.Key, host);
 
             return host.Key;
@@ -168,6 +174,20 @@ namespace ButterBoard.Building
         public static void RemoveRegisteredGridHost(int id)
         {
             _registeredGridHosts.Remove(id);
+        }
+
+        /// <summary>
+        /// Updates the internal next register id to be 1 higher than the highest used id.
+        /// </summary>
+        public static void UpdateNextPlaceableId()
+        {
+            int highestKey = -1;
+            foreach (int key in _registeredPlaceables.Keys)
+            {
+                if (key > highestKey)
+                    highestKey = key;
+            }
+            NextId = highestKey + 1;
         }
     }
 }

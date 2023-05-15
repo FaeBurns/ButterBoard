@@ -62,6 +62,9 @@ namespace ButterBoard.Building.SaveSystem
             
             // clear undo and redo stack - don't want to be able to undo loaded actions
             BuildActionManager.Instance.ClearUndoStack();
+            
+            // make placement possible
+            BuildManager.UpdateNextPlaceableId();
         }
 
         private void Update()
