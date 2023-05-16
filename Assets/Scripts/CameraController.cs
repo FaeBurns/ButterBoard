@@ -30,6 +30,11 @@ namespace ButterBoard
         [SerializeField]
         private float maxZoom = 8;
 
+        /// <summary>
+        /// Public property for zoom - used in saving/loading
+        /// </summary>
+        public float Zoom { get => zoom; set => zoom = value; }
+
         private void LateUpdate()
         {
             // don't move or zoom camera if a ui element is selected

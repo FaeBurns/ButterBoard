@@ -189,5 +189,16 @@ namespace ButterBoard.Building
             }
             NextId = highestKey + 1;
         }
+
+        public static IEnumerable<BasePlaceable> GetAllRegisteredPlaceables()
+        {
+            foreach (BasePlaceable placeable in _registeredPlaceables.Values)
+            {
+                // just make sure, should be able to freely return _registeredPlaceables.Values but gonna check just in case something has been missed
+                Debug.Assert(placeable != null);
+                if (placeable != null)
+                    yield return placeable;
+            }
+        }
     }
 }

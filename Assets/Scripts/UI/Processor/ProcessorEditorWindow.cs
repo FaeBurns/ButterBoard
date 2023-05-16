@@ -63,6 +63,7 @@ namespace ButterBoard.UI.Processor
             programInputField.text = _processorElement.UnvalidatedProgramText;
 
             SetStatusDisplay(processorElement.IsActive ? "Processor Running" : "Processor Stopped");
+            UpdateWriteState();
         }
 
         public void OnInputChanged(string text)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ButterBoard.Building.SaveSystem;
+using ButterBoard.Building.SaveSystem.SaveDataTypes;
 using ButterBoard.FloatingGrid;
 using Toaster;
 using Toaster.Execution;
@@ -9,7 +11,7 @@ using UnityEngine;
 
 namespace ButterBoard.Simulation.Elements
 {
-    public class ProcessorElement : TickableBehaviourWithPins
+    public class ProcessorElement : TickableBehaviourWithPins, ISaveLoadListener
     {
         private bool _previousResetValue;
 
@@ -210,6 +212,23 @@ namespace ButterBoard.Simulation.Elements
             // clear all pins and unset error
             SetIndexedPinValues(0, IndexedPinCount - 1, new bool[IndexedPinCount]);
             PowerManager.UnPower(errorPin);
+        }
+
+        public PlaceableSaveData Save()
+        {
+            return new ProcessorSaveData()
+            {
+                ProgramText = UnvalidatedProgramText,
+                IsProgramTextValid = ValidProgramText == UnvalidatedProgramText && !String.IsNullOrEmpty(ValidProgramText),
+            };
+        }
+
+        public void Load(PlaceableSaveData data)
+        {
+            ProcessorSaveData processorSaveData = (ProcessorSaveData)data;
+            UnvalidatedProgramText = processorSaveData.ProgramText;
+            if (processorSaveData.IsProgramTextValid)
+                TrySetProgram(processorSaveData.ProgramText);
         }
     }
 }
