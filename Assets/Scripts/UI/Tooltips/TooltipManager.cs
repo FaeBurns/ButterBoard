@@ -18,7 +18,7 @@ namespace ButterBoard.UI.Tooltips
         private bool _isOverriden;
         
         private Vector2 _initialMousePosition = Vector2.zero;
-        private List<Tooltip> _previousTooltips = new List<Tooltip>();
+        private Tooltip[] _previousTooltips = Array.Empty<Tooltip>();
 
         [SerializeField]
         private GameObject tooltipObject = null!;
@@ -110,25 +110,30 @@ namespace ButterBoard.UI.Tooltips
             if (_mode == TooltipMode.HELD && !Input.GetMouseButton(0))
             {
                 ClearActiveTooltip();
-                _previousTooltips.Clear();
+                
+                if (_previousTooltips.Length > 0)
+                    _previousTooltips = Array.Empty<Tooltip>();
+                
                 return;
             }
             
             // get tooltip host under cursor
-            TextTooltipHost? tooltipHost = CheckForTooltips();
+            ITooltipHost? tooltipHost = CheckForTooltips();
 
             // if nothing was found
             if (tooltipHost == null)
             {
                 // if currently displaying tooltips, update display
                 // allows for tooltips to continue displaying for a short distance after leaving the discovery range
-                _previousTooltips.Clear();
+                if (_previousTooltips.Length > 0)
+                    _previousTooltips = Array.Empty<Tooltip>();
+                
                 UpdateTooltipPosition();
                 return;
             }
 
             // get all tooltips on host
-            List<Tooltip> discoveredTooltips = GetTooltips(tooltipHost).ToList();
+            Tooltip[] discoveredTooltips = tooltipHost.GetTooltips().ToArray();
 
             // update display as a change might have occured
             // don't check first and filter, check happens inside UpdateTooltipDisplay - 
@@ -139,7 +144,7 @@ namespace ButterBoard.UI.Tooltips
             UpdateTooltipPosition();
         }
 
-        private TextTooltipHost? CheckForTooltips()
+        private ITooltipHost? CheckForTooltips()
         {
             PointerEventData pointerEventData = new PointerEventData(EventSystem.current)
             {
@@ -152,7 +157,7 @@ namespace ButterBoard.UI.Tooltips
 
             foreach (RaycastResult raycastResult in raycastResults)
             {
-                TextTooltipHost tooltipHost = raycastResult.gameObject.GetComponent<TextTooltipHost>();
+                ITooltipHost tooltipHost = raycastResult.gameObject.GetComponent<ITooltipHost>();
                 if (tooltipHost != null)
                     return tooltipHost;
             }
@@ -160,31 +165,10 @@ namespace ButterBoard.UI.Tooltips
             return null;
         }
 
-        private IEnumerable<Tooltip> GetTooltips(TextTooltipHost tooltipHost)
-        {
-            Vector3 mousePosition = Input.mousePosition;
-
-            // should probably check if mouse is inside window rect first
-            // should probably also not do this every frame
-
-            // check against programInputField.textComponent rather than programDisplayField to make sure it does not include rtf tags
-
-            // if camera is provided it will search for world text
-            int intersectingLine = TMP_TextUtilities.FindIntersectingLine(tooltipHost.TextComponent, mousePosition, null!);
-            if (intersectingLine == -1)
-                return new List<Tooltip>();
-
-            int intersectingCharacter = TMP_TextUtilities.FindIntersectingCharacter(tooltipHost.TextComponent, mousePosition, null!, true);
-            if (intersectingCharacter == -1)
-                return new List<Tooltip>();
-
-            return tooltipHost.TooltipCollection.FindTooltipsAtPosition(intersectingLine, intersectingCharacter);
-        }
-
-        private void UpdateTooltipDisplay(List<Tooltip> tooltips)
+        private void UpdateTooltipDisplay(Tooltip[] tooltips)
         {
             // if no tooltips were found, remove any that may be currently shown and exit
-            if (tooltips.Count == 0)
+            if (tooltips.Length == 0)
             {
                 return;
             }

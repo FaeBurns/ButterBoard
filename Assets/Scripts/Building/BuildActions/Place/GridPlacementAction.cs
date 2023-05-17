@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using UnityEngine;
 
 namespace ButterBoard.Building.BuildActions.Place
 {
+    [DisplayName("Place")]
     public class GridPlacementAction : BuildAction
     {
         [JsonProperty] private string _prefabKey = String.Empty;

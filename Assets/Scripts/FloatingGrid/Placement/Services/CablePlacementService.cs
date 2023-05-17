@@ -108,8 +108,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                         throw new ArgumentOutOfRangeException();
                 }
                 
-                
-                BuildActionManager.Instance.PushNoExecuteAction(action);
+                BuildActionManager.Instance.PushActionNoExecute(action);
             }
 
             // notify of success
@@ -202,35 +201,39 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
-            CableRemoveAction removeAction = CableRemoveAction.CreateInstance(target.Key);
-            BuildActionManager.Instance.PushAndExecuteAction(removeAction);
+            if (target.Key != -1)
+            {
+                CableRemoveAction removeAction = CableRemoveAction.CreateInstance(target.Key);
+                BuildActionManager.Instance.PushAndExecuteAction(removeAction);
+                return;
+            }
 
-            // CablePlaceable cablePlaceable = (CablePlaceable)target;
-            //
-            // // destroy display line
-            // if (cablePlaceable.LineDisplay != null)
-            //     Object.Destroy(cablePlaceable.LineDisplay.gameObject);
-            //
-            // // if an other exists
-            // // remove it too
-            // // should only be false if Remove is called during CancelPlacement
-            // if (cablePlaceable.OtherCable != null)
-            // {
-            //     // check if this placeable has a connected point - will be false if canceled during the second half of placement
-            //     if (cablePlaceable.Pin.ConnectedPoint != null)
-            //     {
-            //         // check that the wires are not the same and that there is a local connection from target to its other
-            //         if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire &&
-            //             SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire))
-            //         {
-            //             SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
-            //         }
-            //     }
-            //
-            //     Object.Destroy(cablePlaceable.OtherCable.gameObject);
-            // }
-            //
-            // base.Remove(target);
+            CablePlaceable cablePlaceable = (CablePlaceable)target;
+            
+            // destroy display line
+            if (cablePlaceable.LineDisplay != null)
+                Object.Destroy(cablePlaceable.LineDisplay.gameObject);
+            
+            // if an other exists
+            // remove it too
+            // should only be false if Remove is called during CancelPlacement
+            if (cablePlaceable.OtherCable != null)
+            {
+                // check if this placeable has a connected point - will be false if canceled during the second half of placement
+                if (cablePlaceable.Pin.ConnectedPoint != null)
+                {
+                    // check that the wires are not the same and that there is a local connection from target to its other
+                    if (cablePlaceable.Pin.ConnectedPoint.Wire != cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire &&
+                        SimulationManager.Instance.ConnectionManager.GetLocalConnections(cablePlaceable.Pin.ConnectedPoint.Wire).Contains(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire))
+                    {
+                        SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
+                    }
+                }
+            
+                Object.Destroy(cablePlaceable.OtherCable.gameObject);
+            }
+            
+            Object.Destroy(cablePlaceable.gameObject);
         }
 
         private GridPoint? GetGridPointAtPosition(Vector3 position)

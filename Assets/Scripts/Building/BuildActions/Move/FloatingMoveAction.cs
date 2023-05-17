@@ -1,10 +1,12 @@
-﻿using ButterBoard.Building.BuildHandlers;
+﻿using System.ComponentModel;
+using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace ButterBoard.Building.BuildActions.Move
 {
+    [DisplayName("Move")]
     public class FloatingMoveAction : BuildAction
     {
         [JsonProperty] private int _placeableKey;

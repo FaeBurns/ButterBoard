@@ -8,6 +8,7 @@ using ButterBoard.Building.BuildActions.Remove;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.UI.Rack;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ButterBoard.FloatingGrid.Placement.Services
 {
@@ -64,6 +65,13 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
+            // cancel placement
+            if (target.Key == -1)
+            {
+                Object.Destroy(target.gameObject);
+                return;
+            }
+            
             GridPlaceable placeable = (GridPlaceable)target;
             GridRemoveAction removeAction = GridRemoveAction.CreateInstance(target.Key, placeable.HostingGrid.Key);
             BuildActionManager.Instance.PushAndExecuteAction(removeAction);
@@ -164,7 +172,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                     throw new ArgumentOutOfRangeException();
             }
             
-            BuildActionManager.Instance.PushNoExecuteAction(action);
+            BuildActionManager.Instance.PushActionNoExecute(action);
                 
             return true;
         }

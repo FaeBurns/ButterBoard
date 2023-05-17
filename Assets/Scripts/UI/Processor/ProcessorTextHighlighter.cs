@@ -16,7 +16,7 @@ namespace ButterBoard.UI.Processor
     {
         private readonly ExecutionConfig _validationConfig;
         private readonly List<TextTransform> _transforms = new List<TextTransform>();
-        private readonly List<Tooltip> _tooltips = new List<Tooltip>();
+        private readonly List<TextPositionedTooltip> _tooltips = new List<TextPositionedTooltip>();
         private readonly Parser _parser;
         private readonly TokenProgram _tokenProgram;
         private readonly TokenProgram _tokenProgramWithoutComments;
@@ -116,7 +116,7 @@ namespace ButterBoard.UI.Processor
                     true);
                 _transforms.Add(transform);
 
-                _tooltips.Add(new Tooltip(error));
+                _tooltips.Add(new TextPositionedTooltip(new Tooltip(error.Message), error));
             }
         }
 
@@ -248,7 +248,7 @@ namespace ButterBoard.UI.Processor
                 builder.AppendLine();
         }
 
-        public IEnumerable<Tooltip> GetTooltips()
+        public IEnumerable<TextPositionedTooltip> GetTooltips()
         {
             return _tooltips;
         }

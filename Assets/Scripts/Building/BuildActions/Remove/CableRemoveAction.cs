@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
 
 namespace ButterBoard.Building.BuildActions.Remove
 {
+    [DisplayName("Remove")]
     public class CableRemoveAction : BuildAction
     {
         [JsonProperty] private int _cableEndKey;

@@ -98,7 +98,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                     throw new ArgumentOutOfRangeException();
             }
             
-            BuildActionManager.Instance.PushNoExecuteAction(action);
+            BuildActionManager.Instance.PushActionNoExecute(action);
 
             return true;
         }
@@ -117,6 +117,11 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void Remove(BasePlaceable target)
         {
+            if (target.Key == -1)
+            {
+                Object.Destroy(target.gameObject);
+            }
+            
             FloatingRemoveSelfAndChildrenAction action = FloatingRemoveSelfAndChildrenAction.CreateInstance(target.Key);
             BuildActionManager.Instance.PushAndExecuteAction(action);
         }

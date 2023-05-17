@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aca1ec18cb140f3809a013b91697bcb, type: 3}
-  m_Name: ExitDialogWindow
+  m_Name: ActionHistoryEntry
   m_EditorClassIdentifier: 
-  key: UI/Windows/ExitDialog
-  storedObject: {fileID: 6552402459302778573, guid: a123d9b2abd15734cac98fdc98331604, type: 3}
+  key: UI/ActionHistoryEntry
+  storedObject: {fileID: 824714557540379558, guid: 5fb1d000353186f41b7f129bdf907f8e, type: 3}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using ButterBoard.FloatingGrid.Placement.Placeables;
+using ButterBoard.UI.ActionHistory;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,9 +33,15 @@ namespace ButterBoard.Building.SaveSystem
                 CameraPosition = Camera.main!.transform.position,
                 CameraZoom = Camera.main!.GetComponent<CameraController>().Zoom,
             };
+            
+            ActionHistoryHost.Instance.PushMessage("Saving File");
 
             string jsonData = JsonConvert.SerializeObject(saveData, Formatting.Indented, GetJsonSettings());
             File.WriteAllText(fileName, jsonData);
+
+            LastLoadedFilePath = fileName;
+            
+            ActionHistoryHost.Instance.PushMessage("File Saved");
         }
 
         public void Load(string fileName)
@@ -47,15 +54,24 @@ namespace ButterBoard.Building.SaveSystem
             // ReSharper disable once JoinNullCheckWithUsage
             if (saveData == null)
                 throw new FileLoadException("File contained invalid data and could not be loaded", fileName);
-            
-            LastLoadedFilePath = fileName;
 
-            new GameObject().AddComponent<LoadTrigger>().SaveData = saveData;
+            LoadTrigger loadTrigger = new GameObject().AddComponent<LoadTrigger>(); 
+            loadTrigger.SaveData = saveData;
+            loadTrigger.SourceFilePath = fileName;
 
             SceneManager.LoadScene(mainSceneName);
         }
 
-        public void LoadImmediate(SaveData saveData)
+        public void Reset()
+        {
+            BuildManager.ResetRegistry();
+            LastLoadedFilePath = String.Empty;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            
+            PersistantMessenger.CreateInstance(() => ActionHistoryHost.Instance.PushMessage("Reset Successfully"));
+        }
+
+        public void LoadImmediate(SaveData saveData, string sourceFilePath)
         {
             BuildManager.ResetRegistry();
 
@@ -76,6 +92,10 @@ namespace ButterBoard.Building.SaveSystem
 
             Camera.main!.transform.position = new Vector3(saveData.CameraPosition.x, saveData.CameraPosition.y, -100);
             Camera.main!.GetComponent<CameraController>().Zoom = saveData.CameraZoom;
+
+            LastLoadedFilePath = sourceFilePath;
+            
+            ActionHistoryHost.Instance.PushMessage("Loaded File");
         }
 
         private static void LoadIndividualData(SaveData saveData)
@@ -135,13 +155,12 @@ namespace ButterBoard.Building.SaveSystem
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.J))
-                Save(debugSaveLoadPath);
-            
-            else if (Input.GetKeyDown(KeyCode.K))
-            {
-                Load(debugSaveLoadPath);
-            }
+            // skip if no save path is set
+            if (LastLoadedFilePath == String.Empty)
+                return;
+
+            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
+                Save(LastLoadedFilePath);
         }
         
         private JsonSerializerSettings GetJsonSettings()

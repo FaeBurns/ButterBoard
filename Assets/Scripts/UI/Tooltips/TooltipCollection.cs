@@ -6,12 +6,12 @@ using ButterBoard.UI.Processor;
 
 namespace ButterBoard.UI.Tooltips
 {
-    public class TooltipCollection : ICollection<Tooltip>
+    public class TooltipCollection : ICollection<TextPositionedTooltip>
     {
         /// <summary>
         /// Maps line index to the tooltips found on that line.
         /// </summary>
-        private readonly Dictionary<int, List<Tooltip>> _tooltips = new Dictionary<int, List<Tooltip>>();
+        private readonly Dictionary<int, List<TextPositionedTooltip>> _tooltips = new Dictionary<int, List<TextPositionedTooltip>>();
 
         public int Count { get; private set; }
 
@@ -31,11 +31,11 @@ namespace ButterBoard.UI.Tooltips
 
             List<Tooltip> result = new List<Tooltip>();
 
-            foreach (Tooltip tooltipArea in _tooltips[line])
+            foreach (TextPositionedTooltip tooltipArea in _tooltips[line])
             {
-                int endColumn = tooltipArea.startColumn + tooltipArea.length;
-                if (tooltipArea.startColumn <= column && column <= endColumn)
-                    result.Add(tooltipArea);
+                int endColumn = tooltipArea.StartColumn + tooltipArea.Length;
+                if (tooltipArea.StartColumn <= column && column <= endColumn)
+                    result.Add(tooltipArea.Tooltip);
             }
 
             return result;
@@ -54,9 +54,9 @@ namespace ButterBoard.UI.Tooltips
         /// Records a collection of <see cref="Tooltip">Tooltips</see>.
         /// </summary>
         /// <param name="tooltipAreas">The tooltips to record.</param>
-        public void AddRange(IEnumerable<Tooltip> tooltipAreas)
+        public void AddRange(IEnumerable<TextPositionedTooltip> tooltipAreas)
         {
-            foreach (Tooltip tooltipArea in tooltipAreas)
+            foreach (TextPositionedTooltip tooltipArea in tooltipAreas)
             {
                 Add(tooltipArea);
             }
@@ -66,21 +66,21 @@ namespace ButterBoard.UI.Tooltips
         /// Adds a <see cref="Tooltip"/>.
         /// </summary>
         /// <param name="tooltip">The tooltip to record.</param>
-        public void Add(Tooltip tooltip)
+        public void Add(TextPositionedTooltip tooltip)
         {
-            if (!_tooltips.ContainsKey(tooltip.line))
-                _tooltips.Add(tooltip.line, new List<Tooltip>());
+            if (!_tooltips.ContainsKey(tooltip.Line))
+                _tooltips.Add(tooltip.Line, new List<TextPositionedTooltip>());
 
-            _tooltips[tooltip.line].Add(tooltip);
+            _tooltips[tooltip.Line].Add(tooltip);
             Count++;
         }
 
         /// <inheritdoc/>
-        public IEnumerator<Tooltip> GetEnumerator()
+        public IEnumerator<TextPositionedTooltip> GetEnumerator()
         {
-            foreach (List<Tooltip> lineTooltips in _tooltips.Values)
+            foreach (List<TextPositionedTooltip> lineTooltips in _tooltips.Values)
             {
-                foreach (Tooltip tooltip in lineTooltips)
+                foreach (TextPositionedTooltip tooltip in lineTooltips)
                 {
                     yield return tooltip;
                 }
@@ -94,23 +94,23 @@ namespace ButterBoard.UI.Tooltips
         }
 
         /// <inheritdoc/>
-        public bool Contains(Tooltip item)
+        public bool Contains(TextPositionedTooltip item)
         {
-            if (!_tooltips.ContainsKey(item.line))
+            if (!_tooltips.ContainsKey(item.Line))
                 return false;
 
-            List<Tooltip> lineTooltips = _tooltips[item.line];
+            List<TextPositionedTooltip> lineTooltips = _tooltips[item.Line];
 
             return lineTooltips.Contains(item);
         }
 
         /// <inheritdoc/>
-        public void CopyTo(Tooltip[] array, int arrayIndex)
+        public void CopyTo(TextPositionedTooltip[] array, int arrayIndex)
         {
             int currentIndex = arrayIndex;
 
             // use enumerator
-            foreach (Tooltip tooltip in this)
+            foreach (TextPositionedTooltip tooltip in this)
             {
                 if (currentIndex >= array.Length)
                     return;
@@ -120,12 +120,12 @@ namespace ButterBoard.UI.Tooltips
         }
 
         /// <inheritdoc/>
-        public bool Remove(Tooltip item)
+        public bool Remove(TextPositionedTooltip item)
         {
-            if (!_tooltips.ContainsKey(item.line))
+            if (!_tooltips.ContainsKey(item.Line))
                 return false;
 
-            List<Tooltip> lineTooltips = _tooltips[item.line];
+            List<TextPositionedTooltip> lineTooltips = _tooltips[item.Line];
 
             return lineTooltips.Remove(item);
         }

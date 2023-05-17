@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using ButterBoard.FloatingGrid.Placement;
+using ButterBoard.UI.ActionHistory;
 using UnityEngine;
 
 namespace ButterBoard.Building
@@ -30,7 +33,7 @@ namespace ButterBoard.Building
         /// Pushes an action to the undo stack without executing it. Clears the redo stack
         /// </summary>
         /// <param name="action"></param>
-        public void PushNoExecuteAction(BuildAction action)
+        public void PushActionNoExecute(BuildAction action)
         {
             _lifetimeActionList.Add(action);
             
@@ -52,6 +55,8 @@ namespace ButterBoard.Building
             // remove last action - it's like it never happened :sparkles:
             _lifetimeActionList.RemoveAt(_lifetimeActionList.Count - 1);
             _redoStack.Push(action);
+            
+            ActionHistoryHost.Instance.PushMessage($"Undo {GetActionDisplayName(action)}");
         }
 
         /// <summary>
@@ -68,6 +73,8 @@ namespace ButterBoard.Building
             // re-add action removed in undo
             _lifetimeActionList.Add(action);
             _undoStack.Push(action);
+            
+            ActionHistoryHost.Instance.PushMessage($"Redo {GetActionDisplayName(action)}");
         }
 
         /// <summary>
@@ -86,22 +93,37 @@ namespace ButterBoard.Building
 
         private void Update()
         {
-            // bool controlDown = true;
-            // controlDown = controlDown && Input.GetKey(KeyCode.LeftControl);
-            // controlDown = controlDown && Input.GetKey(KeyCode.RightControl);
-            //
-            // if (!controlDown)
-            //     return;
+            
+#if !UNITY_EDITOR
+            // only require control if not in the editor - editor window hooks Ctrl+z/y inputs
+            bool controlDown = true;
+            controlDown = controlDown && Input.GetKey(KeyCode.LeftControl);
+            controlDown = controlDown && Input.GetKey(KeyCode.RightControl);
+            
+            if (!controlDown)
+                return;
+#endif
             
             // don't allow any actions while placing
             if (PlacementManager.Instance.Placing)
                 return;
-            
+
             if (Input.GetKeyDown(KeyCode.Z))
-                Undo();
+            {
+                // (Ctrl+)Shift+Z is redo, without shift is undo
+                if (Input.GetKey(KeyCode.LeftShift))
+                    Redo();
+                else
+                    Undo();
+            }
             
             if (Input.GetKeyDown(KeyCode.Y))
                 Redo();
+        }
+
+        private string GetActionDisplayName(BuildAction action)
+        {
+            return action.GetType().GetCustomAttribute<DisplayNameAttribute>().DisplayName;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
@@ -6,6 +7,7 @@ using UnityEngine;
 
 namespace ButterBoard.Building.BuildActions.Remove
 {
+    [DisplayName("Remove")]
     public class FloatingRemoveSelfAndChildrenAction : BuildAction
     {
         [JsonProperty] private FloatingRemoveSelfOnlyAction _removeSelfAction = null!;

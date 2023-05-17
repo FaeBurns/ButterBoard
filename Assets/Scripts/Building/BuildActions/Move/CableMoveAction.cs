@@ -1,10 +1,12 @@
-﻿using ButterBoard.Building.BuildHandlers;
+﻿using System.ComponentModel;
+using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
 
 namespace ButterBoard.Building.BuildActions.Move
 {
+    [DisplayName("Move")]
     public class CableMoveAction : BuildAction
     {
         [JsonProperty] private int _cableKey;
