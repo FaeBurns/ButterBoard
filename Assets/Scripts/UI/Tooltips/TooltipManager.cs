@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using BeanCore.Unity.ReferenceResolver;
+using ButterBoard.UI.DraggableWindows;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace ButterBoard.UI.Tooltips
 {
@@ -16,7 +19,7 @@ namespace ButterBoard.UI.Tooltips
     {
         private TooltipMode _mode = TooltipMode.HOVER;
         private bool _isOverriden;
-        
+
         private Vector2 _initialMousePosition = Vector2.zero;
         private Tooltip[] _previousTooltips = Array.Empty<Tooltip>();
 
@@ -25,6 +28,12 @@ namespace ButterBoard.UI.Tooltips
 
         [SerializeField]
         private TextMeshProUGUI tooltipTextField = null!;
+
+        [SerializeField]
+        private RectTransform tooltipTransform = null!;
+
+        [SerializeField]
+        private CanvasScaler _canvasScaler = null!;
 
         [SerializeField]
         private float mouseDistanceThreshold = 5;
@@ -101,7 +110,7 @@ namespace ButterBoard.UI.Tooltips
                     ClearActiveTooltip();
                     return;
                 }
-                
+
                 UpdateTooltipPosition();
                 return;
             }
@@ -110,13 +119,13 @@ namespace ButterBoard.UI.Tooltips
             if (_mode == TooltipMode.HELD && !Input.GetMouseButton(0))
             {
                 ClearActiveTooltip();
-                
+
                 if (_previousTooltips.Length > 0)
                     _previousTooltips = Array.Empty<Tooltip>();
-                
+
                 return;
             }
-            
+
             // get tooltip host under cursor
             ITooltipHost? tooltipHost = CheckForTooltips();
 
@@ -127,7 +136,7 @@ namespace ButterBoard.UI.Tooltips
                 // allows for tooltips to continue displaying for a short distance after leaving the discovery range
                 if (_previousTooltips.Length > 0)
                     _previousTooltips = Array.Empty<Tooltip>();
-                
+
                 UpdateTooltipPosition();
                 return;
             }
@@ -136,7 +145,7 @@ namespace ButterBoard.UI.Tooltips
             Tooltip[] discoveredTooltips = tooltipHost.GetTooltips().ToArray();
 
             // update display as a change might have occured
-            // don't check first and filter, check happens inside UpdateTooltipDisplay - 
+            // don't check first and filter, check happens inside UpdateTooltipDisplay -
             UpdateTooltipDisplay(discoveredTooltips);
 
             _previousTooltips = discoveredTooltips;
@@ -189,7 +198,7 @@ namespace ButterBoard.UI.Tooltips
             // skip setting tooltip only if it has changed
             if (tooltipMessage != ActiveTooltipText)
                 SetActiveTooltip(tooltipMessage);
-            
+
             // update initial mouse position
             // otherwise tooltip flickers while moving
             _initialMousePosition = Input.mousePosition;
@@ -202,12 +211,12 @@ namespace ButterBoard.UI.Tooltips
                 return;
 
             // update tooltip position
-            tooltipObject.transform.position = Input.mousePosition;
-            
+            tooltipObject.transform.position = LimitTooltipToViewport(Input.mousePosition);
+
             // if in held mode, don't need to check to see if movement has occured
             if (_mode == TooltipMode.HELD)
                 return;
-            
+
             // check if tooltip is in allowed distance from initial mouse position
             // if not disable and exit
             float distance = Vector2.Distance(_initialMousePosition, Input.mousePosition);
@@ -216,8 +225,29 @@ namespace ButterBoard.UI.Tooltips
                 ClearActiveTooltip();
             }
         }
+
+        private Vector2 LimitTooltipToViewport(Vector2 inputPosition)
+        {
+            // just copied from WindowDragHandle
+            // except some Mathf.Min calls needed to be changed to .Max
+            // no clue why it's different here
+            Vector2 tooltipSize = tooltipTransform.sizeDelta;
+            Vector2 viewportSize = ((RectTransform)_canvasScaler.transform).sizeDelta;
+
+            // limit to fit inside right and top borders
+            // mouse will never go above top of window so don't need to limit in that way
+            Vector2 topRightPosition = new Vector2(Mathf.Min(inputPosition.x, viewportSize.x), Mathf.Min(inputPosition.y, viewportSize.y));
+
+            // limit to fit inside left and bottom borders
+            topRightPosition = new Vector2(Mathf.Max(topRightPosition.x, tooltipSize.x), Mathf.Max(topRightPosition.y, tooltipSize.y));
+
+            // scale position by canvas scale
+            RectTransform scalerTransform = (RectTransform)_canvasScaler.transform;
+            Vector3 scalerScale = scalerTransform.localScale;
+            return new Vector2(topRightPosition.x / scalerScale.x, topRightPosition.y / scalerScale.y);
+        }
     }
-        
+
     /// <summary>
     /// An enum that describes how the <see cref="TooltipManager"/> handles tooltips set through <see cref="TooltipManager.SetTooltipOverride"/>.
     /// </summary>
