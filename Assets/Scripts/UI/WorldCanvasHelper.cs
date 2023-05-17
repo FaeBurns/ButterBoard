@@ -20,9 +20,6 @@ namespace ButterBoard.UI
         [SerializeField]
         private float rotationOffset = 0;
 
-        [SerializeField]
-        private bool allowInput = true;
-
         protected override void Awake()
         {
             base.Awake();
@@ -30,8 +27,6 @@ namespace ButterBoard.UI
             ReferenceResolver.ResolveReferences(this);
 
             _canvas.worldCamera = Camera.main;
-
-            DisableInteraction();
         }
 
         private void Update()
@@ -41,8 +36,7 @@ namespace ButterBoard.UI
 
         public void EnableInteraction()
         {
-            if (allowInput)
-                _raycaster.enabled = true;
+            _raycaster.enabled = true;
         }
 
         public void DisableInteraction()

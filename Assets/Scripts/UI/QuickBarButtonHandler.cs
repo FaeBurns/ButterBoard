@@ -10,7 +10,7 @@ namespace ButterBoard.UI
     public class QuickBarButtonHandler : MonoBehaviour
     {
         private BrowserProperties _browserProperties = null!;
-        
+
         private SimulationManagerWindow? _simulationManagerWindow;
         private DialogWindow? _exitDialogWindow;
         private DialogWindow? _resetDialogWindow;
@@ -18,7 +18,7 @@ namespace ButterBoard.UI
         public void Awake()
         {
             string basePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            
+
             _browserProperties = new BrowserProperties()
             {
                 title = "",
@@ -47,9 +47,17 @@ namespace ButterBoard.UI
 
         public void ExitButton()
         {
-            _exitDialogWindow ??= DialogWindow.CreateWindow();
+            if (_exitDialogWindow == null)
+                _exitDialogWindow = DialogWindow.CreateWindow();
             _exitDialogWindow.BringToFront();
-            _exitDialogWindow.SetDialog("Are you sure you want to exit?", "Are you sure?", ExitButtonResult, "Exit", "Cancel");
+
+            TimeSpan timeSinceLastSave = DateTime.Now - SaveLoadManager.Instance.LastSaveTime;
+            string lastSaveString = ToReadableString(timeSinceLastSave, 5);
+
+            if (String.IsNullOrEmpty(SaveLoadManager.Instance.LastLoadedFilePath))
+                lastSaveString = "never";
+
+            _exitDialogWindow.SetDialog($"Are you sure you want to exit?\nLast save {lastSaveString}.", "Are you sure?", ExitButtonResult, "Exit", "Cancel");
         }
 
         public void SaveButton()
@@ -60,7 +68,7 @@ namespace ButterBoard.UI
                 SaveTo(SaveLoadManager.Instance.LastLoadedFilePath);
                 return;
             }
-                
+
             new FileBrowser().SaveFileBrowser(_browserProperties, "save", ".json", SaveTo);
         }
 
@@ -76,8 +84,11 @@ namespace ButterBoard.UI
 
         public void ResetButton()
         {
-            _resetDialogWindow ??= DialogWindow.CreateWindow();
+            if (_resetDialogWindow == null)
+                _resetDialogWindow = DialogWindow.CreateWindow();
+
             _resetDialogWindow.BringToFront();
+
             _resetDialogWindow.SetDialog("Are you sure you want to reset? This cannot be undone.", "Are you sure?", ResetButtonResult, "Restart", "Cancel");
         }
 
@@ -107,8 +118,35 @@ namespace ButterBoard.UI
         {
             if (!result)
                 return;
-            
+
             SaveLoadManager.Instance.Reset();
+        }
+
+        private string ToReadableString(TimeSpan span, float justNowSecondsThreshold)
+        {
+            // https://gist.github.com/Rychu-Pawel/fefb89e21b764e97e4993ff517ff0129
+
+            if (span.TotalSeconds < justNowSecondsThreshold)
+                return "just now";
+
+            return span switch
+            {
+                { TotalDays: > 1 } => $"{span.Days:0} {PluralizeString("day", span.Days)} ago",
+                { TotalHours: > 1 } => $"{span.Hours:0} {PluralizeString("hour", span.Hours)} ago",
+                { Minutes: > 1 } => $"{span.Minutes:0} {PluralizeString("minute", span.Minutes)} ago",
+                _ => $"{span.Seconds:0} {PluralizeString("second", span.Days)} ago",
+            };
+        }
+
+        private string PluralizeString(string baseString, int amount)
+        {
+            if (amount == 1)
+                return baseString;
+
+            if (baseString.EndsWith('s'))
+                return baseString + "es";
+
+            return baseString + "s";
         }
     }
 }

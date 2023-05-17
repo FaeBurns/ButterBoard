@@ -185,8 +185,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoundsCollider>k__BackingField: {fileID: 3482539594821746882}
-  <SourceAssetKey>k__BackingField: 
-  <PlacedRotation>k__BackingField: 0
   <InitialRotationOffset>k__BackingField: 0
   <RotationStep>k__BackingField: 90
   <Place>k__BackingField:
@@ -205,7 +203,7 @@ MonoBehaviour:
   - {fileID: 3593368634523062293}
   <GridOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <MainSpriteTintHelper>k__BackingField: {fileID: 6851204153980194922}
-  <OverlappingPoints>k__BackingField: []
+  <BlockingPoints>k__BackingField: []
   <HostingGrid>k__BackingField: {fileID: 0}
   <SnapsToGridSnapPoints>k__BackingField: 1
 --- !u!61 &3482539594821746882
@@ -313,7 +311,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2922070141963488101}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -400,6 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationOffset: 0
+  allowInput: 1
 --- !u!1 &6413718207103679855
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,7 +562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8693646718488105767}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 2.7, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

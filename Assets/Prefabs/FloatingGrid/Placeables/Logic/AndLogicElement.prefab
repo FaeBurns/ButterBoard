@@ -219,8 +219,7 @@ GameObject:
   - component: {fileID: 7780094356705948337}
   - component: {fileID: 4568979112040321002}
   - component: {fileID: 6310420671841947987}
-  - component: {fileID: 4453089214177033671}
-  - component: {fileID: 5935194147110242593}
+  - component: {fileID: 2505865274718656146}
   m_Layer: 0
   m_Name: TypeDisplay
   m_TagString: Untagged
@@ -293,7 +292,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &4453089214177033671
+--- !u!114 &2505865274718656146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -302,28 +301,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5545676300065573165}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: 18ef183e1c67472fa898c570d01d22c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &5935194147110242593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5545676300065573165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 410fe05e79fc4afd967e15e26f009dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationOffset: 0
-  allowInput: 0
 --- !u!1 &6167488902515997903
 GameObject:
   m_ObjectHideFlags: 0

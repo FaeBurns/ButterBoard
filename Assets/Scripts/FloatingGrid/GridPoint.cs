@@ -1,4 +1,5 @@
-﻿using BeanCore.Unity.ReferenceResolver;
+﻿using System;
+using BeanCore.Unity.ReferenceResolver;
 using BeanCore.Unity.ReferenceResolver.Attributes;
 using Coil;
 using UnityEngine;
@@ -7,14 +8,31 @@ namespace ButterBoard.FloatingGrid
 {
     public class GridPoint : MonoBehaviour
     {
+        private GridPin? _connectedPin;
+
+        /// <summary>
+        /// Event fired when a <see cref="GridPin"/> is connected or disconnected.
+        /// </summary>
+        public event EventHandler? ConnectionStateChanged;
+
         [BindComponent(Child = true)]
         private SpriteRenderer _scalableSprite = null!;
 
         [BindComponent]
         private CircleCollider2D _pointCollider = null!;
 
-        [field: SerializeField]
-        public GridPin? ConnectedPin { get; set; }
+        public GridPin? ConnectedPin
+        {
+            get => _connectedPin;
+            set
+            {
+                if (_connectedPin != value)
+                {
+                    _connectedPin = value;
+                    ConnectionStateChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         [field: SerializeField]
         public GridHost HostingGrid { get; private set; } = null!;

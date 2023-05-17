@@ -70,6 +70,16 @@ namespace ButterBoard.Editor.FloatingGrid
                 PrefabUtility.RecordPrefabInstancePropertyModifications(target);
             }
 
+            if (GUILayout.Button("Fix GridLineIndicator Z"))
+            {
+                GridHost gridHost = (GridHost)target;
+                foreach (GridLineIndicator lineIndicator in gridHost.GetComponentsInChildren<GridLineIndicator>())
+                {
+                    lineIndicator.transform.localPosition = new Vector3(lineIndicator.transform.localPosition.x, lineIndicator.transform.localPosition.y, 0.1f);
+                    PrefabUtility.RecordPrefabInstancePropertyModifications(lineIndicator.transform);
+                }
+            }
+
             if (GUILayout.Button("Fix ConnectedRows"))
             {
                 GridHost gridHost = (GridHost)target;

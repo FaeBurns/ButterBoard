@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using ButterBoard.Building.BuildActions;
 using ButterBoard.FloatingGrid.Placement;
 using ButterBoard.UI.ActionHistory;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace ButterBoard.Building
         private readonly Stack<BuildAction> _undoStack = new Stack<BuildAction>();
         private readonly Stack<BuildAction> _redoStack = new Stack<BuildAction>();
         private readonly List<BuildAction> _lifetimeActionList = new List<BuildAction>();
-            
+
         /// <summary>
         /// Executes an action and pushes it to the undo stack. Clears the redo stack.
         /// <param name="action">The action to perform.</param>
@@ -23,7 +24,7 @@ namespace ButterBoard.Building
         public void PushAndExecuteAction(BuildAction action)
         {
             action.Execute();
-            
+
             _lifetimeActionList.Add(action);
             _undoStack.Push(action);
             _redoStack.Clear();
@@ -36,7 +37,7 @@ namespace ButterBoard.Building
         public void PushActionNoExecute(BuildAction action)
         {
             _lifetimeActionList.Add(action);
-            
+
             _undoStack.Push(action);
             _redoStack.Clear();
         }
@@ -48,14 +49,14 @@ namespace ButterBoard.Building
         {
             if (_undoStack.Count == 0)
                 return;
-            
+
             BuildAction action = _undoStack.Pop();
             action.UndoExecute();
-            
-            // remove last action - it's like it never happened :sparkles:
-            _lifetimeActionList.RemoveAt(_lifetimeActionList.Count - 1);
+
+            // add the reverse of the last action
+            _lifetimeActionList.Add(new ReverseAction(action));
             _redoStack.Push(action);
-            
+
             ActionHistoryHost.Instance.PushMessage($"Undo {GetActionDisplayName(action)}");
         }
 
@@ -66,14 +67,14 @@ namespace ButterBoard.Building
         {
             if (_redoStack.Count == 0)
                 return;
-            
+
             BuildAction action = _redoStack.Pop();
             action.Execute();
-            
+
             // re-add action removed in undo
             _lifetimeActionList.Add(action);
             _undoStack.Push(action);
-            
+
             ActionHistoryHost.Instance.PushMessage($"Redo {GetActionDisplayName(action)}");
         }
 
@@ -93,17 +94,17 @@ namespace ButterBoard.Building
 
         private void Update()
         {
-            
+
 #if !UNITY_EDITOR
             // only require control if not in the editor - editor window hooks Ctrl+z/y inputs
             bool controlDown = true;
             controlDown = controlDown && Input.GetKey(KeyCode.LeftControl);
             controlDown = controlDown && Input.GetKey(KeyCode.RightControl);
-            
+
             if (!controlDown)
                 return;
 #endif
-            
+
             // don't allow any actions while placing
             if (PlacementManager.Instance.Placing)
                 return;
@@ -116,7 +117,7 @@ namespace ButterBoard.Building
                 else
                     Undo();
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Y))
                 Redo();
         }

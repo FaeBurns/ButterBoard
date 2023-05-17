@@ -47,12 +47,18 @@ namespace ButterBoard.FloatingGrid
 
         private void Awake()
         {
-            BuildManager.RegisterGridHost(this);
+            GetComponentInParent<BasePlaceable>().Place.AddListener(OnPlaced);
         }
 
         private void OnDestroy()
         {
-            BuildManager.RemoveRegisteredGridHost(Key);
+            if (Key != -1)
+                BuildManager.RemoveRegisteredGridHost(Key);
+        }
+
+        private void OnPlaced()
+        {
+            BuildManager.RegisterGridHost(this);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             // get placeable component on target object
             T? placeable = target.GetComponent<T>();
-            
+
             // save initial position and rotation
             moveInitialPosition = target.transform.position;
             moveInitialRotation = placeable.PlacedRotation;
@@ -217,8 +217,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 // snap position and rotation to that of checking object
                 Context.PlacingObject.transform.position = targetPosition;
                 Context.PlacingObject.transform.rotation = targetRotation;
-
-                Debug.Log($"current: {currentDisplayPosition} | lerp: {lerpPosition} | target {targetPosition}");
 
                 // don't need to bother updating position/rotation
                 // display object is deleted immediately after

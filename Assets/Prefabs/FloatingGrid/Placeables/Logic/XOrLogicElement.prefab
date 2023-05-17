@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 6646871281793340919}
   - component: {fileID: 2042042465293671676}
   - component: {fileID: 4609186925684626226}
-  - component: {fileID: 784793211846047896}
-  - component: {fileID: 2427454385248492769}
+  - component: {fileID: 225600863730871242}
   m_Layer: 0
   m_Name: TypeDisplay
   m_TagString: Untagged
@@ -85,7 +84,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &784793211846047896
+--- !u!114 &225600863730871242
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,28 +93,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1024609658507661491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: 18ef183e1c67472fa898c570d01d22c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &2427454385248492769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1024609658507661491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 410fe05e79fc4afd967e15e26f009dc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationOffset: 0
-  allowInput: 0
 --- !u!1 &2632609383754618658
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +351,7 @@ GameObject:
   - component: {fileID: 5562461995019790424}
   - component: {fileID: 5318543310153056308}
   m_Layer: 0
-  m_Name: XOrLogicElement 1
+  m_Name: XOrLogicElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

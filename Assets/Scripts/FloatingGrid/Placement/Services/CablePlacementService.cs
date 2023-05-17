@@ -120,8 +120,6 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // get grid under target
             GridPoint? targetPoint = GetGridPointAtPosition(targetPosition);
 
-            Debug.Log($"targetPoint found: {targetPoint == null}");
-
             // if no target found
             if (targetPoint == null)
             {

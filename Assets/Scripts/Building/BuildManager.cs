@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Simulation;
@@ -11,7 +12,7 @@ namespace ButterBoard.Building
     {
         private static readonly Dictionary<int, BasePlaceable> _registeredPlaceables = new Dictionary<int, BasePlaceable>();
         private static readonly Dictionary<int, GridHost> _registeredGridHosts = new Dictionary<int, GridHost>();
-        
+
         private static int NextId { get => Instance.nextId; set => Instance.nextId = value; }
         private static int NextGridHostId { get => Instance.nextGridHostId; set => Instance.nextGridHostId = value; }
 
@@ -41,7 +42,7 @@ namespace ButterBoard.Building
             {
                 PowerManager.UnPower(point);
             }
-            
+
             point.ConnectedPin.ConnectedPoint = null!;
             point.ConnectedPin = null;
         }
@@ -61,7 +62,7 @@ namespace ButterBoard.Building
             {
                 PowerManager.UnPower(pin);
             }
-            
+
             pin.ConnectedPoint.ConnectedPin = null;
             pin.ConnectedPoint = null!;
         }
@@ -109,7 +110,7 @@ namespace ButterBoard.Building
         {
             if (_registeredPlaceables.ContainsKey(id))
                 throw new InvalidOperationException($"id {id} already exists");
-            
+
             // register placeable
             _registeredPlaceables.Add(id, placeable);
             placeable.Key = id;

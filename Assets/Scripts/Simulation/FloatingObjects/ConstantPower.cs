@@ -1,4 +1,5 @@
-﻿using ButterBoard.FloatingGrid;
+﻿using System;
+using ButterBoard.FloatingGrid;
 using Coil;
 using UnityEngine;
 
@@ -12,7 +13,13 @@ namespace ButterBoard.Simulation.FloatingObjects
         protected override void Awake()
         {
             powerPoint.Wire = new Wire();
+            powerPoint.ConnectionStateChanged += OnConnectionStateChanged;
             base.Awake();
+        }
+
+        private void OnConnectionStateChanged(object sender, EventArgs e)
+        {
+            SimulationManager.Instance.RegisterTickObject(this);
         }
 
         public override void DoTick()

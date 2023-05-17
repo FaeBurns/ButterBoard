@@ -16,9 +16,11 @@ namespace ButterBoard.Building.SaveSystem
 
         [SerializeField]
         private string debugSaveLoadPath = String.Empty;
-        
+
+        public DateTime LastSaveTime { get; private set; }
+
         public string LastLoadedFilePath { get; private set; } = String.Empty;
-        
+
         public void Save(string fileName)
         {
             string directoryName = Path.GetDirectoryName(fileName)!;
@@ -33,29 +35,31 @@ namespace ButterBoard.Building.SaveSystem
                 CameraPosition = Camera.main!.transform.position,
                 CameraZoom = Camera.main!.GetComponent<CameraController>().Zoom,
             };
-            
+
             ActionHistoryHost.Instance.PushMessage("Saving File");
 
             string jsonData = JsonConvert.SerializeObject(saveData, Formatting.Indented, GetJsonSettings());
             File.WriteAllText(fileName, jsonData);
 
             LastLoadedFilePath = fileName;
-            
+
             ActionHistoryHost.Instance.PushMessage("File Saved");
+
+            LastSaveTime = DateTime.Now;
         }
 
         public void Load(string fileName)
         {
             if (!File.Exists(fileName))
                 throw new FileNotFoundException("Could not load file, file does not exist", fileName);
-            
+
             SaveData? saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(fileName), GetJsonSettings());
-            
+
             // ReSharper disable once JoinNullCheckWithUsage
             if (saveData == null)
                 throw new FileLoadException("File contained invalid data and could not be loaded", fileName);
 
-            LoadTrigger loadTrigger = new GameObject().AddComponent<LoadTrigger>(); 
+            LoadTrigger loadTrigger = new GameObject().AddComponent<LoadTrigger>();
             loadTrigger.SaveData = saveData;
             loadTrigger.SourceFilePath = fileName;
 
@@ -67,7 +71,7 @@ namespace ButterBoard.Building.SaveSystem
             BuildManager.ResetRegistry();
             LastLoadedFilePath = String.Empty;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            
+
             PersistantMessenger.CreateInstance(() => ActionHistoryHost.Instance.PushMessage("Reset Successfully"));
         }
 
@@ -80,10 +84,10 @@ namespace ButterBoard.Building.SaveSystem
                 // use BuildActionManager - still need to keep track of these ones for the next save
                 BuildActionManager.Instance.PushAndExecuteAction(buildAction);
             }
-            
+
             // clear undo and redo stack - don't want to be able to undo loaded actions
             BuildActionManager.Instance.ClearUndoStack();
-            
+
             // make placement possible
             BuildManager.UpdateNextPlaceableId();
 
@@ -94,8 +98,10 @@ namespace ButterBoard.Building.SaveSystem
             Camera.main!.GetComponent<CameraController>().Zoom = saveData.CameraZoom;
 
             LastLoadedFilePath = sourceFilePath;
-            
+
             ActionHistoryHost.Instance.PushMessage("Loaded File");
+
+            LastSaveTime = DateTime.Now;
         }
 
         private static void LoadIndividualData(SaveData saveData)
@@ -125,7 +131,7 @@ namespace ButterBoard.Building.SaveSystem
         private static List<PlaceableSaveData> SaveIndividualData()
         {
             List<PlaceableSaveData> result = new List<PlaceableSaveData>();
-            
+
             // keep track of those that have already been saved as searching through all children can cause some to show up multiple times
             HashSet<ISaveLoadListener> alreadySavedComponents = new HashSet<ISaveLoadListener>();
             foreach (BasePlaceable placeable in BuildManager.GetAllRegisteredPlaceables())
@@ -137,11 +143,11 @@ namespace ButterBoard.Building.SaveSystem
                     // skip if not a direct child
                     if(((Component)saveLoadListener).GetComponentInParent<BasePlaceable>() != placeable)
                         continue;
-                    
+
                     // skip if already saved
                     if (alreadySavedComponents.Contains(saveLoadListener))
                         continue;
-    
+
                     PlaceableSaveData saveData = saveLoadListener.Save();
                     saveData.PlaceableKey = placeable.Key;
                     result.Add(saveData);
@@ -162,7 +168,7 @@ namespace ButterBoard.Building.SaveSystem
             if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
                 Save(LastLoadedFilePath);
         }
-        
+
         private JsonSerializerSettings GetJsonSettings()
         {
             return new JsonSerializerSettings()
