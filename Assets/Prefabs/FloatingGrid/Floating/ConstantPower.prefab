@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a31b694464c492682ee39562d6fa3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Key>k__BackingField: -1
   <Width>k__BackingField: 1
   <Height>k__BackingField: 2
   <Spacing>k__BackingField: 1
@@ -274,6 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GridPoints>k__BackingField:
   - {fileID: 2219146778605506072}
+  lineIndicator: {fileID: 0}
 --- !u!1 &3991657912740796834
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,7 +488,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 2}
+  m_Size: {x: 3.9, y: 1.9}
   m_EdgeRadius: 0
 --- !u!114 &24306393814759887
 MonoBehaviour:

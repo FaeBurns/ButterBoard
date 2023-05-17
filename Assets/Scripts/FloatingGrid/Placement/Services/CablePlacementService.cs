@@ -51,7 +51,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             _moveOriginalHost = Context.Placeable.Pin.ConnectedPoint.HostingGrid;
             _moveOriginalPointIndex = Context.Placeable.Pin.ConnectedPoint.PointIndex;
-            
+
             BuildManager.RemoveConnections(Context.Placeable.Pin);
         }
 
@@ -107,7 +107,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                
+
                 BuildActionManager.Instance.PushActionNoExecute(action);
             }
 
@@ -119,6 +119,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             // get grid under target
             GridPoint? targetPoint = GetGridPointAtPosition(targetPosition);
+
+            Debug.Log($"targetPoint found: {targetPoint == null}");
 
             // if no target found
             if (targetPoint == null)
@@ -132,8 +134,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             // snap position to grid
-            Vector3 snappedPosition = PlacementHelpers.SnapPositionToGrid(targetPoint.HostingGrid, targetPosition, Vector3.zero);
-            SetPositionAndRotation(snappedPosition, targetRotation);
+            //Vector3 snappedPosition = PlacementHelpers.SnapPositionToGrid(targetPoint.HostingGrid, targetPosition, Vector3.zero);
+            SetPositionAndRotation(targetPoint.transform.position, targetRotation);
 
             // if targeted point is not open
             if (!targetPoint.Open)
@@ -209,11 +211,11 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             CablePlaceable cablePlaceable = (CablePlaceable)target;
-            
+
             // destroy display line
             if (cablePlaceable.LineDisplay != null)
                 Object.Destroy(cablePlaceable.LineDisplay.gameObject);
-            
+
             // if an other exists
             // remove it too
             // should only be false if Remove is called during CancelPlacement
@@ -229,10 +231,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                         SimulationManager.Instance.ConnectionManager.Disconnect(cablePlaceable.OtherCable.Pin.ConnectedPoint.Wire, cablePlaceable.Pin.ConnectedPoint.Wire);
                     }
                 }
-            
+
                 Object.Destroy(cablePlaceable.OtherCable.gameObject);
             }
-            
+
             Object.Destroy(cablePlaceable.gameObject);
         }
 
@@ -240,7 +242,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         {
             List<GridPoint> points = GetOverlapsCircle<GridPoint>(position, _pinCheckDistanceRadiusThreshold + Context.Size.x);
 
-            // if nothing was found, return 0
+            // if nothing was found, return null
             if (points.Count == 0)
                 return null;
 

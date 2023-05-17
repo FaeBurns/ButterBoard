@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a23782cccb40a280493278ef5b06a3, type: 3}
+  m_Name: _Logic
+  m_EditorClassIdentifier: 
+  <DisplayName>k__BackingField: Logic
+  <CategoryEntries>k__BackingField:
+  - {fileID: 11400000, guid: 79b93777805faa045b3ad5adf1e452c9, type: 2}
+  - {fileID: 11400000, guid: e61bc0f649cbf414287632628fd0f004, type: 2}
+  - {fileID: 11400000, guid: 38b4fb8f7771d2d46a95150b27edaffd, type: 2}
+  - {fileID: 11400000, guid: bdadfb539a5bce94bb1180a93c37d224, type: 2}

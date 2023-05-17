@@ -49,7 +49,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             moveInitialPosition = target.transform.position;
             moveInitialRotation = placeable.PlacedRotation;
-            
+
             // throw if not found
             if (placeable == null)
                 throw new ArgumentException($"Cannot begin movement of object {target.name} as argument {nameof(target)} does not have a {nameof(FloatingPlaceable)} component");
@@ -83,8 +83,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             // clear display status
             Context.Placeable.ClearPlacementStatus();
-            
-            BuildAction action; 
+
+            BuildAction action;
             switch (Context.PlacementType)
             {
                 case PlacementType.PLACE:
@@ -97,7 +97,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             BuildActionManager.Instance.PushActionNoExecute(action);
 
             return true;
@@ -105,6 +105,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         protected override void UpdatePosition(Vector3 targetPosition, Quaternion targetRotation)
         {
+            // if left control is held, snap position to a grid
+            if (Input.GetKey(KeyCode.LeftControl))
+                targetPosition = PlacementHelpers.SnapPositionToLocalGridOfSize(targetPosition, 1);
+
             SetPositionAndRotation(targetPosition, targetRotation);
 
             List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingPlaceable);
@@ -120,8 +124,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             if (target.Key == -1)
             {
                 Object.Destroy(target.gameObject);
+                return;
             }
-            
+
             FloatingRemoveSelfAndChildrenAction action = FloatingRemoveSelfAndChildrenAction.CreateInstance(target.Key);
             BuildActionManager.Instance.PushAndExecuteAction(action);
         }

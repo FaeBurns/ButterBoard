@@ -27,7 +27,7 @@ namespace ButterBoard.UI.Tooltips
                 return new List<Tooltip>();
 
             int lineRelativeCharacter = GetLineRelativeCharacterIndex(TextComponent.text, intersectingLine, intersectingCharacter);
-            
+
             return TooltipCollection.FindTooltipsAtPosition(intersectingLine, lineRelativeCharacter);
         }
 
@@ -48,7 +48,8 @@ namespace ButterBoard.UI.Tooltips
                     return globalCharacterIndex - accumulatedCharacters;
                 }
 
-                accumulatedCharacters += lineText.Length;
+                // add one as \n is two characters
+                accumulatedCharacters += lineText.Length + 1;
             }
 
             throw new Exception("Unreachable");

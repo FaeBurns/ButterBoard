@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ButterBoard.Cables;
 using Coil;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ namespace ButterBoard.FloatingGrid
     {
         [field: SerializeField]
         public List<GridPoint> GridPoints { get; private set; } = null!;
+
+        [SerializeField]
+        public GridLineIndicator? lineIndicator;
 
         public void Initialize(List<GridPoint> gridPoints)
         {
@@ -23,6 +27,9 @@ namespace ButterBoard.FloatingGrid
             {
                 gridPoint.Wire = wire;
             }
+
+            if (lineIndicator != null)
+                lineIndicator.Initialize(wire);
         }
     }
 }

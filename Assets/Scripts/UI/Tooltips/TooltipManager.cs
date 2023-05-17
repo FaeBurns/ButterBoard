@@ -232,19 +232,17 @@ namespace ButterBoard.UI.Tooltips
             // except some Mathf.Min calls needed to be changed to .Max
             // no clue why it's different here
             Vector2 tooltipSize = tooltipTransform.sizeDelta;
-            Vector2 viewportSize = ((RectTransform)_canvasScaler.transform).sizeDelta;
+            Vector2 scale = ((RectTransform)_canvasScaler.transform).localScale;
+            Vector2 viewportSize = ((RectTransform)_canvasScaler.transform).sizeDelta * scale;
 
             // limit to fit inside right and top borders
             // mouse will never go above top of window so don't need to limit in that way
             Vector2 topRightPosition = new Vector2(Mathf.Min(inputPosition.x, viewportSize.x), Mathf.Min(inputPosition.y, viewportSize.y));
 
             // limit to fit inside left and bottom borders
-            topRightPosition = new Vector2(Mathf.Max(topRightPosition.x, tooltipSize.x), Mathf.Max(topRightPosition.y, tooltipSize.y));
+            topRightPosition = new Vector2(Mathf.Max(topRightPosition.x, tooltipSize.x * scale.x), Mathf.Max(topRightPosition.y, tooltipSize.y * scale.y));
 
-            // scale position by canvas scale
-            RectTransform scalerTransform = (RectTransform)_canvasScaler.transform;
-            Vector3 scalerScale = scalerTransform.localScale;
-            return new Vector2(topRightPosition.x / scalerScale.x, topRightPosition.y / scalerScale.y);
+            return topRightPosition;
         }
     }
 

@@ -2846,6 +2846,71 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1482245956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1482245957}
+  - component: {fileID: 1482245959}
+  - component: {fileID: 1482245958}
+  m_Layer: 0
+  m_Name: Builder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1482245957
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482245956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1482245958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482245956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a8452ece0694923b1cb117ce36accd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activeHost: {fileID: 0}
+  targetTransform: {fileID: 0}
+  gridOffsetType: 0
+  width: 12
+  height: 2
+  spacing: 1
+--- !u!114 &1482245959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482245956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 694b5da252cb479faf44bb62a349db67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridPointPrefabName: FloatingGrid/Grid_Point
+  rowDirection: 0
 --- !u!1 &1501067716
 GameObject:
   m_ObjectHideFlags: 0
@@ -2962,6 +3027,7 @@ GameObject:
   - component: {fileID: 1522117767}
   - component: {fileID: 1522117768}
   - component: {fileID: 1522117769}
+  - component: {fileID: 1522117770}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3017,6 +3083,20 @@ MonoBehaviour:
   constantColor: {r: 0.44716978, g: 0.5464254, b: 1, a: 1}
   lineNumberColor: {r: 1, g: 1, b: 1, a: 1}
   currentLineNumberColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!114 &1522117770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522117766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db695dd0c5c499cb6b06e0e5706efcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLineUnpoweredColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+  gridLinePoweredColor: {r: 0.24313726, g: 0.7176471, b: 0.62352943, a: 1}
 --- !u!1 &1561428112
 GameObject:
   m_ObjectHideFlags: 0
