@@ -71,7 +71,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 Object.Destroy(target.gameObject);
                 return;
             }
-            
+
             GridPlaceable placeable = (GridPlaceable)target;
             GridRemoveAction removeAction = GridRemoveAction.CreateInstance(target.Key, placeable.HostingGrid.Key);
             BuildActionManager.Instance.PushAndExecuteAction(removeAction);
@@ -113,7 +113,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             HashSet<GridPoint> pinPoints = new HashSet<GridPoint>(pinTargets.Values);
 
             List<int> blockingPointIndices = new List<int>();
-            
+
             // set points covered by bounds of placeable to blocked
             // but only those not getting connected to pins
             foreach (GridPoint gridPoint in overlappingPoints)
@@ -124,12 +124,12 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
                 // mark point as blocked
                 gridPoint.Blocked = true;
-                
+
                 blockingPointIndices.Add(gridPoint.PointIndex);
             }
 
             int[] connectingPointIndices = new int[pinTargets.Count];
-            
+
             // connect all pins to points
             int i = 0;
             foreach ((GridPin checkingPin, GridPoint gridPoint) in pinTargets)
@@ -137,7 +137,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 GridPin targetPin = _checkingToRealGridPinMapping[checkingPin];
 
                 BuildManager.Connect(targetPin, gridPoint);
-                
+
                 // record the index of the point being connected to - required for actions
                 connectingPointIndices[i] = gridPoint.PointIndex;
                 i++;
@@ -148,7 +148,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             Context.Placeable.BlockingPoints = overlappingPoints.ToArray();
 
             Context.Placeable.ClearPlacementStatus();
-            Context.PlacingObject.transform.SetParent(gridTarget.transform);
+            Context.PlacingObject.transform.SetParent(gridTarget.AttachedPlaceablesHostTransform.transform);
 
             // hide all PinIdentifierDisplays
             foreach (PinIdentifierDisplay pinIdentifier in Context.Placeable.GetComponentsInChildren<PinIdentifierDisplay>())
@@ -157,8 +157,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             }
 
             int gridKey = gridTarget.Key;
-            
-            BuildAction action; 
+
+            BuildAction action;
             switch (Context.PlacementType)
             {
                 case PlacementType.PLACE:
@@ -171,9 +171,9 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             BuildActionManager.Instance.PushActionNoExecute(action);
-                
+
             return true;
         }
 

@@ -45,9 +45,15 @@ namespace ButterBoard.FloatingGrid
         [field: SerializeField]
         public List<GameObject> SnapPoints { get; private set; } = null!;
 
+        public Transform AttachedPlaceablesHostTransform { get; private set; } = null!;
+
         private void Awake()
         {
             GetComponentInParent<BasePlaceable>().Place.AddListener(OnPlaced);
+
+            AttachedPlaceablesHostTransform = new GameObject().transform;
+            AttachedPlaceablesHostTransform.SetParent(transform);
+            AttachedPlaceablesHostTransform.transform.position = new Vector3(0, 0, -1);
         }
 
         private void OnDestroy()

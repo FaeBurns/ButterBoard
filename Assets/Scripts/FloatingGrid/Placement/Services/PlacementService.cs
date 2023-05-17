@@ -223,6 +223,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 Context.PlacingObject.transform.position = targetPosition;
                 Context.PlacingObject.transform.rotation = targetRotation;
 
+                // stops visual issues with things overlapping
+                // no clue how it took this long to start showing
+                Context.PlacingObject.transform.localPosition = new Vector3(Context.CheckingObject.transform.localPosition.x, Context.CheckingObject.transform.localPosition.y, 0);
+
                 // don't need to bother updating position/rotation
                 // display object is deleted immediately after
                 return true;
@@ -291,6 +295,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// <param name="rotation"></param>
         protected void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
+            position.z = 0;
             Context.CheckingObject.transform.SetPositionAndRotation(position, rotation);
 
             Vector3 displayPosition = Vector3.Lerp(Context.PlacingObject.transform.position, position, lerpSettings.TranslateLerp * Time.deltaTime);

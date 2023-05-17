@@ -24,13 +24,13 @@ namespace ButterBoard.Building.BuildHandlers
             placeable.SourceAssetKey = prefabKey;
 
             Lock(placeable, hostGrid, connectingPointIndices, blockingPointIndices);
-            
+
             // hide all PinIdentifierDisplays
             foreach (PinIdentifierDisplay pinIdentifier in placeable.GetComponentsInChildren<PinIdentifierDisplay>())
             {
                 pinIdentifier.gameObject.SetActive(false);
             }
-            
+
             // notify of placement
             placeable.Place?.Invoke();
 
@@ -43,9 +43,9 @@ namespace ButterBoard.Building.BuildHandlers
         public static void Remove(GridPlaceable target)
         {
             target.Remove.Invoke();
-            
+
             Unlock(target);
-            
+
             Object.Destroy(target.gameObject);
         }
 
@@ -57,7 +57,7 @@ namespace ButterBoard.Building.BuildHandlers
 
             target.transform.SetPositionAndRotation(targetPosition, Quaternion.Euler(0, 0, targetRotation));
             target.PlacedRotation = targetRotation;
-            
+
             Lock(target, gridHost, connectingPointIndices, blockingPointIndices);
         }
 
@@ -70,21 +70,24 @@ namespace ButterBoard.Building.BuildHandlers
             placeable.BlockingPoints = new GridPoint[blockingPointIndices.Length];
             for (int i = 0; i < blockingPointIndices.Length; i++)
             {
-                placeable.BlockingPoints[i] = targetGrid.GridPoints[i];
-                targetGrid.GridPoints[i].Blocked = true;
+                int pointIndex = blockingPointIndices[i];
+                placeable.BlockingPoints[i] = targetGrid.GridPoints[pointIndex];
+                targetGrid.GridPoints[pointIndex].Blocked = true;
             }
 
             Debug.Assert(connectingPointIndices.Length == placeable.Pins.Count, "connectingPointIndices.Length == placeable.Pins.Count");
-            
+
             // connect points
             for (int i = 0; i < connectingPointIndices.Length; i++)
             {
                 int pointIndex = connectingPointIndices[i];
                 BuildManager.Connect(placeable.Pins[i], targetGrid.GridPoints[pointIndex]);
             }
-            
+
             placeable.HostingGrid = targetGrid;
-            placeable.transform.SetParent(targetGrid.transform);
+            placeable.transform.SetParent(targetGrid.AttachedPlaceablesHostTransform.transform);
+
+            placeable.transform.localPosition = new Vector3(placeable.transform.localPosition.x, placeable.transform.localPosition.y, 0);
         }
 
         private static void Unlock(GridPlaceable placeable)
