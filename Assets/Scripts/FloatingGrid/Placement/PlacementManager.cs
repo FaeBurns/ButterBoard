@@ -176,6 +176,9 @@ namespace ButterBoard.FloatingGrid.Placement
             // set the final rotation
             placeable.PlacedRotation = _rotationTarget;
 
+            // store the placement type for later
+            PlacementType placementType = ActiveService.GetPlacementType();
+
             // clear active service
             ActiveService = null;
 
@@ -183,6 +186,11 @@ namespace ButterBoard.FloatingGrid.Placement
             _rotationTarget = 0;
 
             WorldCanvasHelper.ExecuteOnAll(h => h.EnableInteraction());
+
+            // if left shift is held, restart placement of a new instance of the same object
+            // but only if the last active placement type was a place operation - don't allow duplication by holding shift when moving
+            if (placementType == PlacementType.PLACE && Input.GetKey(KeyCode.LeftShift))
+                BeginPlace(placeable.SourceAssetKey);
         }
 
         private void SelectUpdate()

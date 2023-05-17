@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoundsCollider>k__BackingField: {fileID: 5562461995019790424}
-  <InitialRotationOffset>k__BackingField: -90
+  <InitialRotationOffset>k__BackingField: 90
   <RotationStep>k__BackingField: 180
   <Place>k__BackingField:
     m_PersistentCalls:
