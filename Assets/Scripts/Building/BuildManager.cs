@@ -12,6 +12,7 @@ namespace ButterBoard.Building
     {
         private static readonly Dictionary<int, BasePlaceable> _registeredPlaceables = new Dictionary<int, BasePlaceable>();
         private static readonly Dictionary<int, GridHost> _registeredGridHosts = new Dictionary<int, GridHost>();
+        private static readonly Stack<int> _removedGridIdStack = new Stack<int>();
 
         private static int NextId { get => Instance.nextId; set => Instance.nextId = value; }
         private static int NextGridHostId { get => Instance.nextGridHostId; set => Instance.nextGridHostId = value; }
@@ -161,7 +162,11 @@ namespace ButterBoard.Building
 
         public static int RegisterGridHost(GridHost host)
         {
-            host.Key = NextGridHostId++;
+            if (_removedGridIdStack.Count > 0)
+                host.Key = _removedGridIdStack.Pop();
+            else
+                host.Key = NextGridHostId++;
+
             _registeredGridHosts.Add(host.Key, host);
 
             return host.Key;
@@ -175,6 +180,7 @@ namespace ButterBoard.Building
         public static void RemoveRegisteredGridHost(int id)
         {
             _registeredGridHosts.Remove(id);
+            _removedGridIdStack.Push(id);
         }
 
         /// <summary>
