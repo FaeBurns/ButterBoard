@@ -49,22 +49,9 @@ namespace ButterBoard.FloatingGrid
 
         private void Awake()
         {
-            GetComponentInParent<BasePlaceable>().Place.AddListener(OnPlaced);
-
             AttachedPlaceablesHostTransform = new GameObject().transform;
             AttachedPlaceablesHostTransform.SetParent(transform);
             AttachedPlaceablesHostTransform.transform.position = new Vector3(0, 0, -1);
-        }
-
-        private void OnDestroy()
-        {
-            if (Key != -1)
-                BuildManager.RemoveRegisteredGridHost(Key);
-        }
-
-        private void OnPlaced()
-        {
-            BuildManager.RegisterGridHost(this);
         }
     }
 }

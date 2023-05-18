@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ButterBoard.FloatingGrid;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.Simulation;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace ButterBoard.Building
 {
@@ -169,16 +171,23 @@ namespace ButterBoard.Building
 
             _registeredGridHosts.Add(host.Key, host);
 
+            Debug.Log($"Registered grid with key {host.Key}");
+            
             return host.Key;
         }
 
         public static GridHost GetRegisteredGridHost(int id)
         {
+            Debug.Log($"Retrieving grid with key {id}");
+            if (_registeredGridHosts.ContainsKey(id))
+                Debugger.Break();
             return _registeredGridHosts[id];
         }
 
         public static void RemoveRegisteredGridHost(int id)
         {
+            Debug.Log($"Removing grid key {id}");
+            
             _registeredGridHosts.Remove(id);
             _removedGridIdStack.Push(id);
         }
