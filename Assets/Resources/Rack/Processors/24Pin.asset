@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: 24Pin
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: 24Pin Processor
+  <Description>k__BackingField: A processor with 24 accessible pins
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Buildables/Processor_24
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1
+  <MaxBuildCount>k__BackingField: 0

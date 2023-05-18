@@ -97,9 +97,9 @@ namespace ButterBoard.Building
 
 #if !UNITY_EDITOR
             // only require control if not in the editor - editor window hooks Ctrl+z/y inputs
-            bool controlDown = true;
-            controlDown = controlDown && Input.GetKey(KeyCode.LeftControl);
-            controlDown = controlDown && Input.GetKey(KeyCode.RightControl);
+            bool controlDown = false;
+            controlDown = controlDown || Input.GetKey(KeyCode.LeftControl);
+            controlDown = controlDown || Input.GetKey(KeyCode.RightControl);
 
             if (!controlDown)
                 return;

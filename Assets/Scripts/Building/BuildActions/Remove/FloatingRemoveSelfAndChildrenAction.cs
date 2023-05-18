@@ -43,7 +43,7 @@ namespace ButterBoard.Building.BuildActions.Remove
                         childActions.Add(FloatingRemoveSelfOnlyAction.CreateInstance(floatingPlaceable.Key));
                         break;
                     case GridPlaceable gridPlaceable:
-                        childActions.Add(GridRemoveAction.CreateInstance(gridPlaceable.Key, placeableKey));
+                        childActions.Add(GridRemoveAction.CreateInstance(gridPlaceable.Key, gridPlaceable.HostingGrid.Key));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(childPlaceable));

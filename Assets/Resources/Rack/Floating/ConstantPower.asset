@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ConstantPower
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Power Source
+  <Description>k__BackingField: Provides power
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/ConstantPower
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1

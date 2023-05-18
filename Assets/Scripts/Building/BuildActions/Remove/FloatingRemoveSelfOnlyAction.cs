@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using ButterBoard.Building.BuildHandlers;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using Newtonsoft.Json;
@@ -15,7 +16,8 @@ namespace ButterBoard.Building.BuildActions.Remove
         [JsonProperty] private string _sourceAssetKey = String.Empty;
         [JsonProperty] private Vector2 _location;
         [JsonProperty] private float _rotation;
-        
+        [JsonProperty] private int[] _gridKeys = Array.Empty<int>();
+
         public static FloatingRemoveSelfOnlyAction CreateInstance(int placeableKey)
         {
             FloatingPlaceable placeable = BuildManager.GetPlaceable<FloatingPlaceable>(placeableKey);
@@ -28,6 +30,7 @@ namespace ButterBoard.Building.BuildActions.Remove
                 _sourceAssetKey = placeable.SourceAssetKey,
                 _location = placeableTransform.position,
                 _rotation = placeableTransform.rotation.eulerAngles.z,
+                _gridKeys = placeable.GridHosts.Select(h => h.Key).ToArray(),
             };
         }
 
@@ -41,6 +44,7 @@ namespace ButterBoard.Building.BuildActions.Remove
         {
             FloatingPlaceable placeable = FloatingBuildHandler.Place(_sourceAssetKey, _location, _rotation);
             BuildManager.RegisterPlaceable(placeable, _placeableKey);
+            _gridKeys = BuildManager.RegisterFloatingGrids(placeable, _gridKeys);
         }
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Digit Display
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Digit Display
+  <Description>k__BackingField: Displays an 8 bit value as a number
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Placeables/DigitDisplay
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1

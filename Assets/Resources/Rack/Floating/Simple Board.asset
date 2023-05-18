@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Simple Board
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Simple Board
+  <Description>k__BackingField: A 25x9 board
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/SimpleBoard
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1

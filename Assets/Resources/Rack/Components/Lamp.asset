@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Lamp
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Lamp
+  <Description>k__BackingField: Displays a wire's state
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Placeables/Lamp
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1
+  <MaxBuildCount>k__BackingField: 0

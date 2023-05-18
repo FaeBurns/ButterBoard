@@ -1760,7 +1760,7 @@ MonoBehaviour:
   tooltipTextField: {fileID: 1806292123}
   tooltipTransform: {fileID: 486377524}
   _canvasScaler: {fileID: 332288688}
-  mouseDistanceThreshold: 20
+  mouseDistanceThreshold: 10
 --- !u!1 &719356762
 GameObject:
   m_ObjectHideFlags: 0

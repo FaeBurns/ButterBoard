@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SmallLogicBoard
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Small Logic Board
+  <Description>k__BackingField: A small board designed to hold a logic element
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/SmallLogicBoard
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1

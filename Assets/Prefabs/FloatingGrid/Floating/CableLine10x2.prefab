@@ -370,6 +370,8 @@ MonoBehaviour:
   <Remove>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
+  <GridHosts>k__BackingField:
+  - {fileID: 3049186539547194320}
   <MainSpriteTintHelper>k__BackingField: {fileID: 3049186539164894399}
 --- !u!61 &3049186540557061344
 BoxCollider2D:

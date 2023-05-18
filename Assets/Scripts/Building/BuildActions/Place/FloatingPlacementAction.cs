@@ -14,6 +14,7 @@ namespace ButterBoard.Building.BuildActions.Place
         [JsonProperty] private Vector2 _location;
         [JsonProperty] private float _rotation;
         [JsonProperty] private int _recordedKey = -1;
+        [JsonProperty] private int[] _gridKeys = Array.Empty<int>();
 
         public static FloatingPlacementAction CreateInstance(FloatingPlaceable placeable, Vector2 location, float rotation)
         {
@@ -30,6 +31,7 @@ namespace ButterBoard.Building.BuildActions.Place
         {
             FloatingPlaceable spawnedPlaceable = FloatingBuildHandler.Place(_prefabKey, _location, _rotation);
             _recordedKey = BuildManager.RegisterPlaceable(spawnedPlaceable, BuildManager.GetNextOrExistingId(_recordedKey));
+            _gridKeys = BuildManager.RegisterFloatingGrids(spawnedPlaceable, _gridKeys);
         }
 
         public override void UndoExecute()

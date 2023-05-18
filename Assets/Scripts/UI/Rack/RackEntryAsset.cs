@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ButterBoard.UI.Rack
 {
@@ -6,10 +7,13 @@ namespace ButterBoard.UI.Rack
     public class RackEntryAsset : ScriptableObject
     {
         [field: SerializeField]
-        public string DisplayName { get; private set; } = "";
+        public string DisplayName { get; private set; } = String.Empty;
 
         [field: SerializeField]
-        public string SpawnTargetSourceKey { get; private set; } = "";
+        public string Description { get; private set; } = String.Empty;
+
+        [field: SerializeField]
+        public string SpawnTargetSourceKey { get; private set; } = String.Empty;
 
         [field: SerializeField]
         public Sprite Sprite { get; private set; } = null!;

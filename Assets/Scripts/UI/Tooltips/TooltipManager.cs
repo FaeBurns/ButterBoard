@@ -99,7 +99,7 @@ namespace ButterBoard.UI.Tooltips
             ReferenceResolver.ResolveReferences(this);
         }
 
-        private void Update()
+        private void LateUpdate()
         {
             // is tooltip set manually by something else
             if (_isOverriden)
@@ -234,6 +234,9 @@ namespace ButterBoard.UI.Tooltips
             Vector2 tooltipSize = tooltipTransform.sizeDelta;
             Vector2 scale = ((RectTransform)_canvasScaler.transform).localScale;
             Vector2 viewportSize = ((RectTransform)_canvasScaler.transform).sizeDelta * scale;
+
+            // magic numbers ooooo
+            inputPosition += new Vector2(tooltipSize.x + 20, -15);
 
             // limit to fit inside right and top borders
             // mouse will never go above top of window so don't need to limit in that way

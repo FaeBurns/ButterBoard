@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Toggle
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Toggle
+  <Description>k__BackingField: Only outputs to a pin if the corresponding input
+    pin is powered
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Placeables/Toggle
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1
+  <MaxBuildCount>k__BackingField: 0

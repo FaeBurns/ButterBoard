@@ -1,4 +1,7 @@
-﻿using ButterBoard.FloatingGrid.Placement;
+﻿using BeanCore.Unity.ReferenceResolver;
+using BeanCore.Unity.ReferenceResolver.Attributes;
+using ButterBoard.FloatingGrid.Placement;
+using ButterBoard.UI.Tooltips;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +21,13 @@ namespace ButterBoard.UI.Rack
         [SerializeField]
         private Sprite fallbackSprite = null!;
 
+        [BindComponent(Child = true)]
+        private ConstantTooltipHost tooltipHost = null!;
+
         public void SetDisplayEntry(RackEntryAsset entryAsset)
         {
+            ReferenceResolver.ResolveReferences(this);
+
             _currentEntryAsset = entryAsset;
             textHost.SetText(entryAsset.DisplayName);
 
@@ -32,6 +40,9 @@ namespace ButterBoard.UI.Rack
             {
                 thumbnailImage.sprite = entryAsset.Sprite;
             }
+
+            if (!string.IsNullOrEmpty(entryAsset.Description))
+                tooltipHost.tooltip = entryAsset.Description;
         }
 
         public void TryBeginPlacement()
@@ -39,7 +50,7 @@ namespace ButterBoard.UI.Rack
             // cancel any placement in progress
             if (PlacementManager.Instance.Placing)
                 PlacementManager.Instance.Cancel();
-            
+
             PlacementManager.Instance.BeginPlace(_currentEntryAsset.SpawnTargetSourceKey);
         }
     }

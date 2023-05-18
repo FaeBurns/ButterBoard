@@ -5,8 +5,8 @@ namespace ButterBoard.Cables
 {
     public class GridLineIndicator : MonoBehaviour
     {
-        private Wire _wire;
-        
+        private Wire _wire = null!;
+
         [SerializeField]
         private SpriteRenderer spriteRenderer = null!;
 

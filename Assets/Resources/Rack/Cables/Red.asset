@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Red
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Red
+  <Description>k__BackingField: A Red Cable
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/CableRED
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1
+  <MaxBuildCount>k__BackingField: 0

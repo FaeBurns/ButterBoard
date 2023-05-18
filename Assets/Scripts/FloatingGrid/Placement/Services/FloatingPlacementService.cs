@@ -84,6 +84,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // clear display status
             Context.Placeable.ClearPlacementStatus();
 
+            // register grids if this is placement - will already be registered if move
+            if (Context.PlacementType == PlacementType.PLACE)
+                BuildManager.RegisterFloatingGrids(Context.Placeable, Array.Empty<int>());
+
             BuildAction action;
             switch (Context.PlacementType)
             {

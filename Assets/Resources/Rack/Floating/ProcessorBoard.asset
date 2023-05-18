@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ProcessorBoard
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Processor Board
+  <Description>k__BackingField: A simple board that can hold a 24pin processor
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Floating/ProcessorBoard
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Digit Input
   m_EditorClassIdentifier: 
   <DisplayName>k__BackingField: Digit Input
+  <Description>k__BackingField: Allows the input of an 8 bit value
   <SpawnTargetSourceKey>k__BackingField: FloatingGrid/Placeables/DigitInput
   <Sprite>k__BackingField: {fileID: 0}
   <Enabled>k__BackingField: 1

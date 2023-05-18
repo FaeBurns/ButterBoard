@@ -226,8 +226,14 @@ namespace ButterBoard.FloatingGrid.Placement
 
             // left mouse binds to pickup/movement
             if (leftMouse)
-                // begin movement
-                BeginMove(pickupTarget.gameObject);
+            {
+                // if shift is held, create a new copy of the same object instead
+                if (Input.GetKey(KeyCode.LeftShift))
+                    BeginPlace(pickupTarget.SourceAssetKey);
+                else
+                    // begin movement
+                    BeginMove(pickupTarget.gameObject);
+            }
 
             // right mouse binds to removal
             else if (rightMouse)

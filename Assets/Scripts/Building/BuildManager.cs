@@ -14,7 +14,6 @@ namespace ButterBoard.Building
     {
         private static readonly Dictionary<int, BasePlaceable> _registeredPlaceables = new Dictionary<int, BasePlaceable>();
         private static readonly Dictionary<int, GridHost> _registeredGridHosts = new Dictionary<int, GridHost>();
-        private static readonly Stack<int> _removedGridIdStack = new Stack<int>();
 
         private static int NextId { get => Instance.nextId; set => Instance.nextId = value; }
         private static int NextGridHostId { get => Instance.nextGridHostId; set => Instance.nextGridHostId = value; }
@@ -162,17 +161,14 @@ namespace ButterBoard.Building
             _registeredPlaceables.Clear();
         }
 
-        public static int RegisterGridHost(GridHost host)
+        private static int RegisterGridHost(GridHost host, int knownKey)
         {
-            if (_removedGridIdStack.Count > 0)
-                host.Key = _removedGridIdStack.Pop();
-            else
-                host.Key = NextGridHostId++;
+            host.Key = knownKey == -1 ? NextGridHostId++ : knownKey;
 
             _registeredGridHosts.Add(host.Key, host);
 
             Debug.Log($"Registered grid with key {host.Key}");
-            
+
             return host.Key;
         }
 
@@ -187,9 +183,8 @@ namespace ButterBoard.Building
         public static void RemoveRegisteredGridHost(int id)
         {
             Debug.Log($"Removing grid key {id}");
-            
+
             _registeredGridHosts.Remove(id);
-            _removedGridIdStack.Push(id);
         }
 
         /// <summary>
@@ -215,6 +210,27 @@ namespace ButterBoard.Building
                 if (placeable != null)
                     yield return placeable;
             }
+        }
+
+        public static int[] RegisterFloatingGrids(FloatingPlaceable placeable, int[] keys)
+        {
+            int[] finalKeys = new int[placeable.GridHosts.Count];
+            if (keys.Length == placeable.GridHosts.Count)
+            {
+                for (int i = 0; i < placeable.GridHosts.Count; i++)
+                {
+                    finalKeys[i] = RegisterGridHost(placeable.GridHosts[i], keys[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < placeable.GridHosts.Count; i++)
+                {
+                    finalKeys[i] = RegisterGridHost(placeable.GridHosts[i], -1);
+                }
+            }
+
+            return finalKeys;
         }
     }
 }

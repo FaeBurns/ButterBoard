@@ -50,8 +50,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BoundsCollider>k__BackingField: {fileID: 9077913995179929035}
-  <SourceAssetKey>k__BackingField: 
-  <PlacedRotation>k__BackingField: 0
   <InitialRotationOffset>k__BackingField: 90
   <RotationStep>k__BackingField: 180
   <Place>k__BackingField:
@@ -90,7 +88,7 @@ MonoBehaviour:
   - {fileID: 322510063015649729}
   <GridOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <MainSpriteTintHelper>k__BackingField: {fileID: 8731793072211409686}
-  <OverlappingPoints>k__BackingField: []
+  <BlockingPoints>k__BackingField: []
   <HostingGrid>k__BackingField: {fileID: 0}
   <SnapsToGridSnapPoints>k__BackingField: 1
 --- !u!61 &9077913995179929035
@@ -3125,11 +3123,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2901139469050667593, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_Name
-      value: Pin_12_Ground
+      value: Pin_12_Unused
       objectReference: {fileID: 0}
     - target: {fileID: 6655107401844458441, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_text
-      value: GROUND
+      value: UNUSED
       objectReference: {fileID: 0}
     - target: {fileID: 7240827473139626461, guid: ea3f9574e390df34b824ea25d88d9692, type: 3}
       propertyPath: m_LocalRotation.w
