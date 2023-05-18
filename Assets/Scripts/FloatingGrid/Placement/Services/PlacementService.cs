@@ -225,7 +225,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
                 // stops visual issues with things overlapping
                 // no clue how it took this long to start showing
-                Context.PlacingObject.transform.localPosition = new Vector3(Context.CheckingObject.transform.localPosition.x, Context.CheckingObject.transform.localPosition.y, 0);
+                Context.PlacingObject.transform.localPosition = new Vector3(Context.PlacingObject.transform.localPosition.x, Context.PlacingObject.transform.localPosition.y, 0);
 
                 // don't need to bother updating position/rotation
                 // display object is deleted immediately after
