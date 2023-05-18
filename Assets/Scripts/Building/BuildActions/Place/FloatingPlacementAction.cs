@@ -16,7 +16,7 @@ namespace ButterBoard.Building.BuildActions.Place
         [JsonProperty] private int _recordedKey = -1;
         [JsonProperty] private int[] _gridKeys = Array.Empty<int>();
 
-        public static FloatingPlacementAction CreateInstance(FloatingPlaceable placeable, Vector2 location, float rotation)
+        public static FloatingPlacementAction CreateInstance(FloatingPlaceable placeable, Vector2 location, float rotation, int[] gridKeys)
         {
             return new FloatingPlacementAction()
             {
@@ -24,6 +24,7 @@ namespace ButterBoard.Building.BuildActions.Place
                 _location = location,
                 _rotation = rotation,
                 _recordedKey = placeable.Key,
+                _gridKeys = gridKeys,
             };
         }
 

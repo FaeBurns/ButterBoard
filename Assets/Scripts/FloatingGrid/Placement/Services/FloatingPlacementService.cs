@@ -84,16 +84,17 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             // clear display status
             Context.Placeable.ClearPlacementStatus();
 
+            int[] gridKeys = Array.Empty<int>();
             // register grids if this is placement - will already be registered if move
             if (Context.PlacementType == PlacementType.PLACE)
-                BuildManager.RegisterFloatingGrids(Context.Placeable, Array.Empty<int>());
+                gridKeys = BuildManager.RegisterFloatingGrids(Context.Placeable, Array.Empty<int>());
 
             BuildAction action;
             switch (Context.PlacementType)
             {
                 case PlacementType.PLACE:
                     BuildManager.RegisterPlaceable(Context.Placeable, BuildManager.GetNextRegistryId());
-                    action = FloatingPlacementAction.CreateInstance(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
+                    action = FloatingPlacementAction.CreateInstance(Context.Placeable, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z, gridKeys);
                     break;
                 case PlacementType.MOVE:
                     action = FloatingMoveAction.CreateInstance(Context.Placeable, moveInitialPosition, moveInitialRotation, Context.CheckingObject.transform.position, Context.CheckingObject.transform.rotation.eulerAngles.z);
