@@ -54,7 +54,8 @@ namespace ButterBoard.Building
             action.UndoExecute();
 
             // add the reverse of the last action
-            _lifetimeActionList.Add(new ReverseAction(action));
+            //_lifetimeActionList.Add(new ReverseAction(action));
+            _lifetimeActionList.RemoveAt(_lifetimeActionList.Count - 1);
             _redoStack.Push(action);
 
             ActionHistoryHost.Instance.PushMessage($"Undo {GetActionDisplayName(action)}");
