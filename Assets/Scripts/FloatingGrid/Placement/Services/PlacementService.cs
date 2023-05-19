@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ButterBoard.Building;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.UI.Rack;
 using UnityEngine;
@@ -34,9 +35,11 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// <param name="assetSourceKey"></param>
         public virtual void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
+            Vector3 worldMousePos = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
+            
             // create real and display objects
-            GameObject placingObject = Object.Instantiate(prefab);
-            GameObject checkingDuplicate = Object.Instantiate(prefab);
+            GameObject placingObject = Object.Instantiate(prefab, worldMousePos, Quaternion.identity);
+            GameObject checkingDuplicate = Object.Instantiate(prefab, worldMousePos, Quaternion.identity);
 
             // get placeable component on placing object
             T? placeable = placingObject.GetComponent<T>();

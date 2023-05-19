@@ -14,7 +14,27 @@ namespace ButterBoard.UI.ActionHistory
 
         [SerializeField]
         private int maxEntries = 5;
-        
+
+        private void Start()
+        {
+            Application.logMessageReceived += OnLogMessageReceived;
+        }
+
+        private void OnDestroy()
+        {
+            Application.logMessageReceived -= OnLogMessageReceived;
+        }
+
+        private void OnLogMessageReceived(string logString, string stacktrace, LogType type)
+        {
+            // skip if level is too low
+            if (type == LogType.Log || type == LogType.Warning)
+                return;
+            
+            // otherwise display issue
+            PushMessage(logString);
+        }
+
         public void PushMessage(string message, float lifetimeSeconds = 5)
         {
             // create new instance of message object

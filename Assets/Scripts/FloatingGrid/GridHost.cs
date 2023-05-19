@@ -51,7 +51,7 @@ namespace ButterBoard.FloatingGrid
         {
             AttachedPlaceablesHostTransform = new GameObject().transform;
             AttachedPlaceablesHostTransform.SetParent(transform);
-            AttachedPlaceablesHostTransform.transform.position = new Vector3(0, 0, -1);
+            AttachedPlaceablesHostTransform.localPosition = new Vector3(0, 0, -2);
         }
 
         private void OnDestroy()

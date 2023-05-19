@@ -19,8 +19,10 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         public override void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
+            Vector3 worldMousePos = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
+            
             // create real and display objects
-            GameObject placingObject = Object.Instantiate(prefab, BuildManager.GetFloatingPlaceableHost());
+            GameObject placingObject = Object.Instantiate(prefab, worldMousePos, Quaternion.identity, BuildManager.GetFloatingPlaceableHost());
 
             // get placeable component on placing object
             FloatingPlaceable? placeable = placingObject.GetComponent<FloatingPlaceable>();
