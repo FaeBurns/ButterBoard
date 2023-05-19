@@ -27,7 +27,7 @@ namespace ButterBoard.FloatingGrid
                         string powerSourceStatus = (PowerManager.GetIsProvidingPower(gridPoint) ? "Source" : "Not Source");
 
                         Debug.Log(
-                            $"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections | {poweredStatus} | {powerSourceStatus}");
+                            $"[{gridPoint.gameObject.name}] {(gridPoint.Open ? "Open" : "Closed")} | {(gridPoint.Blocked ? "Blocked" : "Free")} | {(gridPoint.ConnectedPin != null ? "Connected" : "Disconnected")} | {localWires.Count} Local Connections | {globalWires.Count} Global Connections | {poweredStatus} | {powerSourceStatus} | Grid Key ({gridPoint.HostingGrid.Key}) | Index ({gridPoint.PointIndex})");
                     }
                 }
                 catch (Exception e)

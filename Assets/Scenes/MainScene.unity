@@ -3135,8 +3135,8 @@ MonoBehaviour:
   activeHost: {fileID: 0}
   targetTransform: {fileID: 0}
   gridOffsetType: 0
-  width: 3
-  height: 7
+  width: 12
+  height: 8
   spacing: 1
 --- !u!114 &1482245959
 MonoBehaviour:
@@ -3151,7 +3151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPointPrefabName: FloatingGrid/Grid_Point
-  rowDirection: 0
+  rowDirection: 1
 --- !u!1 &1501067716
 GameObject:
   m_ObjectHideFlags: 0

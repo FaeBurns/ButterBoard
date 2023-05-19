@@ -175,7 +175,7 @@ namespace ButterBoard.Building
         public static GridHost GetRegisteredGridHost(int id)
         {
             Debug.Log($"Retrieving grid with key {id}");
-            if (_registeredGridHosts.ContainsKey(id))
+            if (!_registeredGridHosts.ContainsKey(id))
                 Debugger.Break();
             return _registeredGridHosts[id];
         }
