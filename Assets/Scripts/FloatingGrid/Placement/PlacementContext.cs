@@ -12,10 +12,7 @@ namespace ButterBoard.FloatingGrid.Placement
             Placeable = placeable;
             CheckingPlaceable = checkingPlaceable;
             PlacementType = placementType;
-
-            // kinda stinky but it works
-            BoxCollider2D? boundsColliderBox = placeable.BoundsCollider as BoxCollider2D;
-            Size = boundsColliderBox == null ? Vector2.zero : boundsColliderBox.size;
+            Size = placeable.GetSize();
         }
 
         /// <summary>

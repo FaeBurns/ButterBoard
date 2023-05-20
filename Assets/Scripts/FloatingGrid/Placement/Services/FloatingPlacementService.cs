@@ -20,7 +20,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         public override void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
             Vector3 worldMousePos = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
-            
+
             // create real and display objects
             GameObject placingObject = Object.Instantiate(prefab, worldMousePos, Quaternion.identity, BuildManager.GetFloatingPlaceableHost());
 
@@ -75,7 +75,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         protected override bool CommitPlacement()
         {
             // check if placement is valid
-            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingPlaceable);
+            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingObject);
             bool canPlace = allOverlapPlaceables.Count == 0;
 
             // if cannot place
@@ -118,7 +118,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
             SetPositionAndRotation(targetPosition, targetRotation);
 
-            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingPlaceable);
+            List<FloatingPlaceable> allOverlapPlaceables = GetOverlaps<FloatingPlaceable>(Context.CheckingObject);
 
             bool canPlace = allOverlapPlaceables.Count == 0;
             string statusMessage = canPlace ? String.Empty : "Placement Invalid";

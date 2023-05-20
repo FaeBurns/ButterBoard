@@ -90,7 +90,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
                 return false;
 
             // get list of all overlapping points
-            List<GridPoint> overlappingPoints = GetOverlaps<GridPoint>(Context.CheckingPlaceable);
+            List<GridPoint> overlappingPoints = GetOverlaps<GridPoint>(Context.CheckingObject);
 
             // check if any of those points are occupied - cannot be placed over closed ports that aren't on the pins
             isValid = true;
@@ -221,7 +221,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
             IReadOnlyList<PinPlacementIssue> placementIssues = GetPinIssues(targetGrid, Context.CheckingPlaceable);
 
             // get list of all overlapping points
-            List<GridPoint> overlappingPoints = GetOverlaps<GridPoint>(Context.CheckingPlaceable);
+            List<GridPoint> overlappingPoints = GetOverlaps<GridPoint>(Context.CheckingObject);
 
             // check if any of those points are occupied - cannot be placed over closed ports
             bool isValid = true;

@@ -36,7 +36,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         public virtual void BeginPrefabPlacement(GameObject prefab, string assetSourceKey)
         {
             Vector3 worldMousePos = Camera.main!.ScreenToWorldPoint(Input.mousePosition);
-            
+
             // create real and display objects
             GameObject placingObject = Object.Instantiate(prefab, worldMousePos, Quaternion.identity);
             GameObject checkingDuplicate = Object.Instantiate(prefab, worldMousePos, Quaternion.identity);
@@ -244,7 +244,7 @@ namespace ButterBoard.FloatingGrid.Placement.Services
         /// <param name="target">The target object used to define the position and rotation. Size is received from <see cref="PlacementContext{T}.Size">Context.Size</see></param>
         /// <typeparam name="TComponent">The type of component to search for.</typeparam>
         /// <returns></returns>
-        protected List<TComponent> GetOverlaps<TComponent>(BasePlaceable target) where TComponent : Component
+        protected List<TComponent> GetOverlaps<TComponent>(GameObject target) where TComponent : Component
         {
             return GetOverlaps<TComponent>(target.transform.position, Context.Size, target.transform.rotation.eulerAngles.z);
         }
