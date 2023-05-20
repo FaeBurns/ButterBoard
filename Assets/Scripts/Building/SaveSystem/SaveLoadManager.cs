@@ -165,8 +165,10 @@ namespace ButterBoard.Building.SaveSystem
             if (LastLoadedFilePath == String.Empty)
                 return;
 
-            if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.S))
+#if !UNITY_EDITOR
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.S))
                 Save(LastLoadedFilePath);
+#endif
         }
 
         private JsonSerializerSettings GetJsonSettings()

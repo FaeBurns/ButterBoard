@@ -1,0 +1,212 @@
+{
+  "$type": "ButterBoard.Building.SaveSystem.SaveData, ButterBoard",
+  "SavedBuildActions": [
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.FloatingPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Floating/ProcessorBoard",
+      "_location": [
+        0.0,
+        0.0
+      ],
+      "_rotation": 0.0,
+      "_recordedKey": 0,
+      "_gridKeys": [
+        0
+      ]
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Buildables/Processor_24",
+      "_targetPosition": [
+        0.0,
+        0.0
+      ],
+      "_targetRotation": 90.0,
+      "_connectingPointIndices": [
+        25,
+        27,
+        29,
+        31,
+        33,
+        35,
+        37,
+        39,
+        41,
+        43,
+        45,
+        47,
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14,
+        16,
+        18,
+        20,
+        22
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 1
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        5.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        23
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 2
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        4.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        21
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 3
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        3.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        19
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 4
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        2.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        17
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 5
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        1.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        15
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 6
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        -0.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        11
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 7
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        0.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        13
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 8
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.GridPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Placeables/Lamp",
+      "_targetPosition": [
+        -1.5,
+        2.5
+      ],
+      "_targetRotation": 0.0,
+      "_connectingPointIndices": [
+        9
+      ],
+      "_blockingPointIndices": [],
+      "_targetGridKey": 0,
+      "_recordedKey": 9
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.FloatingPlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/Floating/ConstantPower",
+      "_location": [
+        -10.0,
+        -4.0
+      ],
+      "_rotation": 0.0,
+      "_recordedKey": 10,
+      "_gridKeys": [
+        1
+      ]
+    },
+    {
+      "$type": "ButterBoard.Building.BuildActions.Place.CablePlacementAction, ButterBoard",
+      "_prefabKey": "FloatingGrid/CableRED",
+      "_cableEndAGridKey": 0,
+      "_cableEndBGridKey": 1,
+      "_pointAIndex": 24,
+      "_pointBIndex": 0,
+      "_cableEndKey": 11,
+      "_cableOtherEndKey": 12
+    }
+  ],
+  "ObjectSaveData": [
+    {
+      "$type": "ButterBoard.Building.SaveSystem.SaveDataTypes.ProcessorSaveData, ButterBoard",
+      "ProgramText": ":loop\nadd 1\nstp .p12:8 $acc\njmp loop",
+      "IsProgramTextValid": true,
+      "PlaceableKey": 1
+    }
+  ],
+  "CameraPosition": [
+    -1.56691849,
+    -2.60805869
+  ],
+  "CameraZoom": 11.000001
+}

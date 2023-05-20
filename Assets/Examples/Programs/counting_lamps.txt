@@ -1,0 +1,4 @@
+:loop
+stp .p12:8 $acc
+add 1
+jmp loop
