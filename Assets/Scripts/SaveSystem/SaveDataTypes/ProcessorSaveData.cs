@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace ButterBoard.Building.SaveSystem.SaveDataTypes
+namespace ButterBoard.SaveSystem.SaveDataTypes
 {
     public class ProcessorSaveData : PlaceableSaveData
     {

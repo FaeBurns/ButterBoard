@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ButterBoard.Building;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace ButterBoard.Building.SaveSystem
+namespace ButterBoard.SaveSystem
 {
     public class SaveData
     {

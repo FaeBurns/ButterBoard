@@ -112,8 +112,8 @@ namespace ButterBoard.FloatingGrid.Placement.Services
 
         protected override void UpdatePosition(Vector3 targetPosition, Quaternion targetRotation)
         {
-            // if left control is held, snap position to a grid
-            if (Input.GetKey(KeyCode.LeftControl))
+            // if left control is __NOT__ held, snap position to a grid
+            if (!Input.GetKey(KeyCode.LeftControl))
                 targetPosition = PlacementHelpers.SnapPositionToLocalGridOfSize(targetPosition, 1);
 
             SetPositionAndRotation(targetPosition, targetRotation);

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace ButterBoard.Building.SaveSystem
+namespace ButterBoard.SaveSystem
 {
     public class PersistantMessenger : MonoBehaviour
     {

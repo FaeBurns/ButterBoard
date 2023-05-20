@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using ButterBoard.Building;
 using ButterBoard.FloatingGrid.Placement.Placeables;
 using ButterBoard.UI.ActionHistory;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace ButterBoard.Building.SaveSystem
+namespace ButterBoard.SaveSystem
 {
     public class SaveLoadManager : SingletonBehaviour<SaveLoadManager>
     {
@@ -16,6 +18,9 @@ namespace ButterBoard.Building.SaveSystem
 
         [SerializeField]
         private string debugSaveLoadPath = String.Empty;
+
+        [SerializeField]
+        private GameObject loadingIndicatorHost = null!;
 
         public DateTime LastSaveTime { get; private set; }
 
@@ -53,7 +58,10 @@ namespace ButterBoard.Building.SaveSystem
             if (!File.Exists(fileName))
                 throw new FileNotFoundException("Could not load file, file does not exist", fileName);
 
-            SaveData? saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(fileName), GetJsonSettings());
+            string fileText = File.ReadAllText(fileName);
+            // fix old saves
+            fileText = fileText.Replace("ButterBoard.Building.SaveSystem", "ButterBoard.SaveSystem");
+            SaveData? saveData = JsonConvert.DeserializeObject<SaveData>(fileText, GetJsonSettings());
 
             // ReSharper disable once JoinNullCheckWithUsage
             if (saveData == null)
@@ -63,6 +71,15 @@ namespace ButterBoard.Building.SaveSystem
             loadTrigger.SaveData = saveData;
             loadTrigger.SourceFilePath = fileName;
 
+            loadingIndicatorHost.gameObject.SetActive(true);
+
+            // wait one frame to allow loading indicator to show
+            StartCoroutine(WaitFrameAndLoadScene());
+        }
+
+        private IEnumerator WaitFrameAndLoadScene()
+        {
+            yield return null;
             SceneManager.LoadScene(mainSceneName);
         }
 
@@ -89,7 +106,7 @@ namespace ButterBoard.Building.SaveSystem
             BuildActionManager.Instance.ClearUndoStack();
 
             // make placement possible
-            BuildManager.UpdateNextPlaceableId();
+            BuildManager.UpdateNextIds();
 
             // load data for individual ISaveLoadListener<> types
             LoadIndividualData(saveData);
@@ -100,6 +117,7 @@ namespace ButterBoard.Building.SaveSystem
             LastLoadedFilePath = sourceFilePath;
 
             ActionHistoryHost.Instance.PushMessage("Loaded File");
+            loadingIndicatorHost.gameObject.SetActive(false);
 
             LastSaveTime = DateTime.Now;
         }

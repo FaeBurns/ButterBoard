@@ -167,16 +167,21 @@ namespace ButterBoard.Building
 
             _registeredGridHosts.Add(host.Key, host);
 
+            #if UNITY_EDITOR
             Debug.Log($"Registered grid with key {host.Key}");
+            #endif
 
             return host.Key;
         }
 
         public static GridHost GetRegisteredGridHost(int id)
         {
+            #if UNITY_EDITOR
             Debug.Log($"Retrieving grid with key {id}");
             if (!_registeredGridHosts.ContainsKey(id))
                 Debugger.Break();
+            #endif
+
             return _registeredGridHosts[id];
         }
 
@@ -190,15 +195,13 @@ namespace ButterBoard.Building
         /// <summary>
         /// Updates the internal next register id to be 1 higher than the highest used id.
         /// </summary>
-        public static void UpdateNextPlaceableId()
+        public static void UpdateNextIds()
         {
-            int highestKey = -1;
-            foreach (int key in _registeredPlaceables.Keys)
-            {
-                if (key > highestKey)
-                    highestKey = key;
-            }
+            int highestKey = _registeredPlaceables.Keys.Max();
             NextId = highestKey + 1;
+
+            int highestGridKey = _registeredGridHosts.Keys.Max();
+            NextGridHostId = highestGridKey + 1;
         }
 
         public static IEnumerable<BasePlaceable> GetAllRegisteredPlaceables()

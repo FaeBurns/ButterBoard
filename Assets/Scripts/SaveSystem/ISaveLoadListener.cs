@@ -1,4 +1,4 @@
-﻿namespace ButterBoard.Building.SaveSystem
+﻿namespace ButterBoard.SaveSystem
 {
     /// <summary>
     /// Interface for save and load events on a placeable object.

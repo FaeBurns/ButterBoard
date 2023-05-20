@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ButterBoard.Building;
+using Newtonsoft.Json;
 
-namespace ButterBoard.Building.SaveSystem
+namespace ButterBoard.SaveSystem
 {
     public class SavedBuildAction
     {

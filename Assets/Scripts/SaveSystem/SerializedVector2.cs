@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ButterBoard.Building.SaveSystem
+namespace ButterBoard.SaveSystem
 {
     [Serializable]
     public class SerializedVector2

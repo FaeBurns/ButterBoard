@@ -11,17 +11,17 @@
 
 ### Building
 
-| Action                               |                        Binding |
-|:-------------------------------------|-------------------------------:|
-| Place                                |                     Left Click |
-| Remove                               |                    Right Click |
-| Pick up                              |                     Left Click |
-| Copy placed object                   | Left Shift (Hold) + Left Click |
-| Cancel Placement                     |                         Escape |
-| Snap to background grid (Grids only) |               Left Ctrl (Hold) |
-| Place multiple                       |              Left Shift (Hold) |
-| Rotate left                          |                              Q |
-| Rotate Right                         |                              E |
+| Action              |                        Binding |
+|:--------------------|-------------------------------:|
+| Place               |                     Left Click |
+| Remove              |                    Right Click |
+| Pick up             |                     Left Click |
+| Copy placed object  | Left Shift (Hold) + Left Click |
+| Cancel Placement    |                         Escape |
+| Place Grid Freeform |               Left Ctrl (Hold) |
+| Place multiple      |              Left Shift (Hold) |
+| Rotate left         |                              Q |
+| Rotate Right        |                              E |
 
 ### Misc
 | Action     |                  Binding |

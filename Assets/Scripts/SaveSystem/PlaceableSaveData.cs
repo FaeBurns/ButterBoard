@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ButterBoard.Building.SaveSystem
+﻿namespace ButterBoard.SaveSystem
 {
     /// <summary>
     /// Save data for a component on a placeable object.
